@@ -1,0 +1,1718 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS for Beginners - Interactive Course</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #0a0f1a;
+            --bg-card: #111827;
+            --fg: #f1f5f9;
+            --muted: #64748b;
+            --accent: #22d3ee;
+            --accent-warm: #fbbf24;
+            --border: #1e293b;
+            --code-bg: #1a1f2e;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        code,
+        pre,
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.15), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(251, 191, 36, 0.1), transparent), linear-gradient(180deg, var(--bg) 0%, #0d1424 100%);
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        
+        .slides-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide {
+                transition: opacity 0.3s ease;
+                transform: none !important;
+            }
+        }
+        
+        .slide-content {
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .slide-number {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slide-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--fg) 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .bullet-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            line-height: 1.6;
+        }
+        
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 8px;
+            height: 8px;
+            background: #a78bfa;
+            border-radius: 2px;
+            transform: rotate(45deg);
+        }
+        
+        .highlight {
+            color: #a78bfa;
+            font-weight: 600;
+        }
+        
+        .highlight-warm {
+            color: var(--accent-warm);
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: 'CSS';
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+        
+        .code-block.html::before {
+            content: 'HTML';
+        }
+        
+        .selector {
+            color: #f472b6;
+        }
+        
+        .property {
+            color: #22d3ee;
+        }
+        
+        .value {
+            color: #34d399;
+        }
+        
+        .comment {
+            color: var(--muted);
+            font-style: italic;
+        }
+        
+        .unit {
+            color: #fbbf24;
+        }
+        
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .exercise-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-warm);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+        
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to top, var(--bg), transparent);
+            padding: 2rem;
+        }
+        
+        .nav-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a78bfa, var(--accent-warm));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn:hover {
+            border-color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
+        }
+        
+        .nav-btn:focus-visible {
+            outline: 2px solid #a78bfa;
+            outline-offset: 2px;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .nav-btn:disabled:hover {
+            border-color: var(--border);
+            background: var(--bg-card);
+        }
+        
+        .slide-counter {
+            font-size: 0.875rem;
+            color: var(--muted);
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .instructor-note {
+            background: rgba(34, 211, 238, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 1rem 1.25rem;
+            margin-top: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        
+        .instructor-note strong {
+            color: var(--accent);
+        }
+        
+        .analogy-box {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px dashed rgba(167, 139, 250, 0.4);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+        
+        .analogy-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #a78bfa, var(--accent-warm));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide.active .slide-content>* {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .slide.active .slide-content>*:nth-child(1) {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(2) {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(3) {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(4) {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(5) {
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide.active .slide-content>* {
+                animation: none;
+                opacity: 1;
+            }
+        }
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        kbd {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: inherit;
+            font-size: 0.7rem;
+        }
+        
+        .demo-box {
+            background: var(--bg-card);
+            border: 2px solid #a78bfa;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+        
+        .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-right: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (max-width: 640px) {
+            .slide {
+                padding: 1rem;
+            }
+            .slide-title {
+                font-size: 1.75rem;
+            }
+            .bullet-list li {
+                font-size: 1rem;
+                padding-left: 1.5rem;
+            }
+            .code-block {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+            .nav-inner {
+                flex-wrap: wrap;
+            }
+            .keyboard-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="slides-container" id="slidesContainer">
+    </div>
+
+    <div class="keyboard-hint">
+        <kbd>←</kbd> <kbd>→</kbd> to navigate
+    </div>
+
+    <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
+        <div class="nav-inner">
+            <button class="nav-btn" id="prevBtn" aria-label="Previous slide">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Prev
+            </button>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Slide progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="slide-counter" id="slideCounter">1 / 1</span>
+            <button class="nav-btn" id="nextBtn" aria-label="Next slide">
+                Next
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // Slide data
+        const slides = [
+            // === TITLE SLIDE ===
+            {
+                type: 'title',
+                title: 'CSS for Beginners',
+                subtitle: 'Master the art of styling web pages',
+                section: 'start'
+            },
+
+            // === SECTION: CSS BASICS ===
+            {
+                type: 'section',
+                title: 'CSS Basics',
+                subtitle: 'Understanding how to style elements',
+                section: 'basics'
+            },
+
+            // What is CSS?
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'What is CSS?',
+                content: [
+                    'CSS stands for <span class="highlight">Cascading Style Sheets</span>',
+                    'It controls the <span class="highlight">visual presentation</span> of HTML',
+                    'CSS describes how elements should be displayed'
+                ],
+                analogy: 'If HTML is the skeleton of a house, CSS is the paint, wallpaper, and decorations that make it beautiful.',
+                instructorNote: 'Emphasize "Cascading" - styles can override each other based on specificity and order.'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'CSS Syntax',
+                code: `selector {
+  property: value;
+}
+
+/* Example */
+h1 {
+  color: blue;
+  font-size: 24px;
+}`
+            },
+
+            // Selectors
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'CSS Selectors',
+                content: [
+                    '<span class="highlight">Element</span> selector: targets HTML tags (p, h1, div)',
+                    '<span class="highlight">Class</span> selector: targets .classname (reusable)',
+                    '<span class="highlight">ID</span> selector: targets #idname (unique per page)'
+                ],
+                instructorNote: 'Best practice: Use classes for styling, IDs for JavaScript hooks and anchor links.'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'Types of Selectors',
+                code: `/* Element selector */
+p {
+  color: gray;
+}
+
+/* Class selector (most common) */
+.highlight {
+  background: yellow;
+}
+
+/* ID selector (use sparingly) */
+#header {
+  background: navy;
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'basics',
+                title: 'Practice: Selectors',
+                exercise: 'Write CSS to: make all paragraphs gray, create a class called "warning" with red text, and style an element with id="logo" to have a blue background.',
+                hint: 'Remember: element {} .class {} #id {}'
+            },
+
+            // How to add CSS
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'How to Add CSS',
+                content: [
+                    '<span class="highlight">External CSS</span>: Separate .css file (recommended)',
+                    '<span class="highlight">Internal CSS</span>: Inside &lt;style&gt; tag in &lt;head&gt;',
+                    '<span class="highlight">Inline CSS</span>: style attribute on elements (avoid)'
+                ],
+                analogy: 'External CSS is like a central wardrobe - change one file and your whole site updates. Inline is like painting clothes individually - hard to maintain.'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'Adding CSS to HTML',
+                code: `/* External CSS (in head) */
+<link rel="stylesheet" href="styles.css">
+
+/* Internal CSS (in head) */
+<style>
+  h1 { color: purple; }
+</style>
+
+/* Inline CSS (avoid) */
+<p style="color: red;">Text</p>`
+            },
+
+            // Comments
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'CSS Comments',
+                content: [
+                    'Comments help document your code',
+                    'They are <span class="highlight">ignored</span> by the browser',
+                    'Use them to organize sections and explain logic'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'Writing Comments',
+                code: `/* This is a single-line comment */
+
+/*
+   This is a
+   multi-line comment
+*/
+
+/* Header Styles */
+header {
+  background: #333;
+}`
+            },
+
+            // === SECTION: COLORS & BACKGROUNDS ===
+            {
+                type: 'section',
+                title: 'Colors & Backgrounds',
+                subtitle: 'Bringing your pages to life',
+                section: 'colors'
+            },
+
+            // Colors
+            {
+                type: 'explain',
+                section: 'colors',
+                title: 'CSS Colors',
+                content: [
+                    '<span class="highlight">Named colors</span>: red, blue, coral, tomato',
+                    '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF',
+                    '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - includes transparency',
+                    '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - intuitive color model'
+                ],
+                instructorNote: 'RGBA and HSLA allow transparency with the alpha channel (0-1). Hex is most common in production.'
+            },
+
+            {
+                type: 'code',
+                section: 'colors',
+                title: 'Color Formats',
+                code: `/* Different ways to set red */
+color: red;
+color: #FF0000;
+color: #F00; /* shorthand */
+color: rgb(255, 0, 0);
+color: hsl(0, 100%, 50%);
+
+/* With transparency */
+color: rgba(255, 0, 0, 0.5);
+color: hsla(0, 100%, 50%, 0.5);`
+            },
+
+            // Backgrounds
+            {
+                type: 'explain',
+                section: 'colors',
+                title: 'Background Properties',
+                content: [
+                    '<code>background-color</code>: solid color fill',
+                    '<code>background-image</code>: use an image',
+                    '<code>background-size</code>: cover, contain, or specific size',
+                    '<code>background-position</code>: center, top, coordinates'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'colors',
+                title: 'Background Examples',
+                code: `.hero {
+  background-color: #1a1a2e;
+  background-image: url("hero.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Shorthand */
+.hero {
+  background: #1a1a2e url("hero.jpg") 
+              center/cover no-repeat;
+}`
+            },
+
+            // Gradients
+            {
+                type: 'explain',
+                section: 'colors',
+                title: 'CSS Gradients',
+                content: [
+                    'Create smooth <span class="highlight">color transitions</span>',
+                    '<code>linear-gradient</code>: straight line transition',
+                    '<code>radial-gradient</code>: circular transition',
+                    'Use multiple colors for complex effects'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'colors',
+                title: 'Gradient Examples',
+                code: `/* Linear gradient */
+.gradient {
+  background: linear-gradient(to right, 
+              #667eea, #764ba2);
+}
+
+/* Diagonal gradient */
+.diagonal {
+  background: linear-gradient(45deg, 
+              #f093fb, #f5576c);
+}
+
+/* Radial gradient */
+.radial {
+  background: radial-gradient(circle, 
+              #fff, #000);
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'colors',
+                title: 'Practice: Stylish Button',
+                exercise: 'Create a button class with: gradient background (two colors of your choice), white text, and padding.',
+                hint: 'Use background: linear-gradient() and color: white'
+            },
+
+            // === SECTION: BOX MODEL ===
+            {
+                type: 'section',
+                title: 'The Box Model',
+                subtitle: 'Understanding spacing and layout',
+                section: 'boxmodel'
+            },
+
+            // Box Model
+            {
+                type: 'explain',
+                section: 'boxmodel',
+                title: 'What is the Box Model?',
+                content: [
+                    'Every element is a <span class="highlight">rectangular box</span>',
+                    'Four layers: content → padding → border → margin',
+                    'Understanding this is <span class="highlight">essential</span> for layout'
+                ],
+                analogy: 'Think of a picture frame: the photo is content, the mat is padding, the frame is border, and the space on the wall is margin.',
+                instructorNote: 'This is often the most confusing concept for beginners. Draw diagrams and use browser DevTools to visualize.'
+            },
+
+            {
+                type: 'code',
+                section: 'boxmodel',
+                title: 'Box Model Properties',
+                code: `.box {
+  /* Content area */
+  width: 300px;
+  height: 200px;
+  
+  /* Padding (inside) */
+  padding: 20px;
+  
+  /* Border */
+  border: 2px solid #a78bfa;
+  
+  /* Margin (outside) */
+  margin: 30px;
+}`
+            },
+
+            // Padding
+            {
+                type: 'explain',
+                section: 'boxmodel',
+                title: 'Padding',
+                content: [
+                    'Space <span class="highlight">inside</span> the element',
+                    'Background color extends into padding',
+                    'Can be set per side: top, right, bottom, left'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'boxmodel',
+                title: 'Padding Syntax',
+                code: `/* All sides */
+padding: 20px;
+
+/* Vertical | Horizontal */
+padding: 10px 30px;
+
+/* Top | Horizontal | Bottom */
+padding: 10px 30px 20px;
+
+/* Top | Right | Bottom | Left */
+padding: 10px 20px 30px 40px;
+
+/* Individual sides */
+padding-top: 10px;
+padding-right: 20px;`
+            },
+
+            // Margin
+            {
+                type: 'explain',
+                section: 'boxmodel',
+                title: 'Margin',
+                content: [
+                    'Space <span class="highlight">outside</span> the element',
+                    'Transparent - shows background of parent',
+                    'Margins can <span class="highlight">collapse</span> vertically'
+                ],
+                instructorNote: 'Margin collapse is tricky: when two vertical margins meet, they combine into the larger one, not add together.'
+            },
+
+            {
+                type: 'code',
+                section: 'boxmodel',
+                title: 'Margin Syntax',
+                code: `/* Center an element */
+.container {
+  width: 960px;
+  margin: 0 auto;
+}
+
+/* Remove default margins */
+body {
+  margin: 0;
+}
+
+/* Negative margins overlap */
+.overlap {
+  margin-top: -20px;
+}`
+            },
+
+            // Border
+            {
+                type: 'explain',
+                section: 'boxmodel',
+                title: 'Borders',
+                content: [
+                    'The edge <span class="highlight">around</span> the element',
+                    'Requires: width, style, color',
+                    'Styles: solid, dashed, dotted, double, none'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'boxmodel',
+                title: 'Border Properties',
+                code: `/* Shorthand */
+border: 1px solid #333;
+
+/* Individual properties */
+border-width: 2px;
+border-style: dashed;
+border-color: #a78bfa;
+
+/* One side only */
+border-bottom: 3px solid navy;
+
+/* Rounded corners */
+border-radius: 8px;
+border-radius: 50%; /* circle */`
+            },
+
+            {
+                type: 'exercise',
+                section: 'boxmodel',
+                title: 'Practice: Card Component',
+                exercise: 'Create a "card" class with: light gray background, 20px padding, 1px solid border, 10px border-radius, and 15px bottom margin.',
+                hint: 'Combine background, padding, border, border-radius, and margin.'
+            },
+
+            // === SECTION: TYPOGRAPHY ===
+            {
+                type: 'section',
+                title: 'Typography',
+                subtitle: 'Styling text for readability',
+                section: 'typography'
+            },
+
+            // Text Properties
+            {
+                type: 'explain',
+                section: 'typography',
+                title: 'Text Properties',
+                content: [
+                    '<code>font-family</code>: choose typefaces',
+                    '<code>font-size</code>: text size (px, rem, em)',
+                    '<code>font-weight</code>: boldness (100-900)',
+                    '<code>line-height</code>: spacing between lines'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'typography',
+                title: 'Typography Basics',
+                code: `body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}`
+            },
+
+            // Text Alignment
+            {
+                type: 'explain',
+                section: 'typography',
+                title: 'Text Alignment & Decoration',
+                content: [
+                    '<code>text-align</code>: left, center, right, justify',
+                    '<code>text-decoration</code>: underline, none, line-through',
+                    '<code>text-transform</code>: uppercase, lowercase, capitalize',
+                    '<code>letter-spacing</code>: space between letters'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'typography',
+                title: 'Text Styling',
+                code: `h1 {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.deleted {
+  text-decoration: line-through;
+}`
+            },
+
+            // Google Fonts
+            {
+                type: 'explain',
+                section: 'typography',
+                title: 'Custom Fonts',
+                content: [
+                    'Use <span class="highlight">Google Fonts</span> for free web fonts',
+                    'Add &lt;link&gt; in HTML head',
+                    'Reference in CSS with font-family',
+                    'Always include fallback fonts'
+                ],
+                instructorNote: 'Remind students to include fallback fonts in case Google Fonts fails to load.'
+            },
+
+            {
+                type: 'code',
+                section: 'typography',
+                title: 'Using Google Fonts',
+                code: `/* In HTML <head> */
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+/* In CSS */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+}`
+            },
+
+            // === SECTION: LAYOUT BASICS ===
+            {
+                type: 'section',
+                title: 'Layout Basics',
+                subtitle: 'Positioning elements on the page',
+                section: 'layout'
+            },
+
+            // Display Property
+            {
+                type: 'explain',
+                section: 'layout',
+                title: 'Display Property',
+                content: [
+                    '<code>block</code>: full width, new line (div, p, h1)',
+                    '<code>inline</code>: only needed width (span, a)',
+                    '<code>inline-block</code>: inline but accepts width/height',
+                    '<code>none</code>: hides element completely'
+                ],
+                instructorNote: 'Understanding display is fundamental. Block elements break to new lines; inline elements flow within text.'
+            },
+
+            {
+                type: 'code',
+                section: 'layout',
+                title: 'Display Examples',
+                code: `/* Block element */
+div {
+  display: block;
+  width: 100%;
+}
+
+/* Inline element */
+span {
+  display: inline;
+}
+
+/* Hide element */
+.hidden {
+  display: none;
+}
+
+/* Navigation items */
+nav a {
+  display: inline-block;
+  padding: 10px 20px;
+}`
+            },
+
+            // Position
+            {
+                type: 'explain',
+                section: 'layout',
+                title: 'Position Property',
+                content: [
+                    '<code>static</code>: default, normal flow',
+                    '<code>relative</code>: offset from normal position',
+                    '<code>absolute</code>: positioned relative to nearest positioned ancestor',
+                    '<code>fixed</code>: positioned relative to viewport',
+                    '<code>sticky</code>: toggles between relative and fixed'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'layout',
+                title: 'Position Examples',
+                code: `/* Fixed header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Absolute inside relative */
+.card {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Sticky sidebar */
+.sidebar {
+  position: sticky;
+  top: 20px;
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'layout',
+                title: 'Practice: Fixed Navigation',
+                exercise: 'Create a fixed navigation bar that stays at the top of the page with: dark background, white text, and 20px padding.',
+                hint: 'Use position: fixed; top: 0; width: 100%'
+            },
+
+            // === SECTION: FLEXBOX ===
+            {
+                type: 'section',
+                title: 'Flexbox',
+                subtitle: 'Modern one-dimensional layouts',
+                section: 'flexbox'
+            },
+
+            // Flexbox Intro
+            {
+                type: 'explain',
+                section: 'flexbox',
+                title: 'What is Flexbox?',
+                content: [
+                    'A powerful layout mode for <span class="highlight">one-dimensional</span> layouts',
+                    'Easily align and distribute space',
+                    'Great for navigation, cards, centering',
+                    'Works on container and items'
+                ],
+                analogy: 'Flexbox is like a smart shelf that automatically adjusts item positions based on your rules.'
+            },
+
+            {
+                type: 'code',
+                section: 'flexbox',
+                title: 'Flex Container',
+                code: `.container {
+  display: flex;
+  
+  /* Main axis alignment */
+  justify-content: center; /* or flex-start, flex-end, space-between, space-around */
+  
+  /* Cross axis alignment */
+  align-items: center; /* or flex-start, flex-end, stretch */
+  
+  /* Direction */
+  flex-direction: row; /* or column */
+}`
+            },
+
+            {
+                type: 'code',
+                section: 'flexbox',
+                title: 'Flex Items',
+                code: `.item {
+  /* Grow to fill space */
+  flex-grow: 1;
+  
+  /* Shrink if needed */
+  flex-shrink: 0;
+  
+  /* Base size */
+  flex-basis: 200px;
+  
+  /* Shorthand: grow shrink basis */
+  flex: 1 0 200px;
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'flexbox',
+                title: 'Practice: Centered Content',
+                exercise: 'Create a container that perfectly centers its content both horizontally and vertically (assume the container has a fixed height of 400px).',
+                hint: 'Use display: flex with justify-content and align-items.'
+            },
+
+            // === SECTION: GRID ===
+            {
+                type: 'section',
+                title: 'CSS Grid',
+                subtitle: 'Two-dimensional layouts made easy',
+                section: 'grid'
+            },
+
+            // Grid Intro
+            {
+                type: 'explain',
+                section: 'grid',
+                title: 'What is CSS Grid?',
+                content: [
+                    'A layout system for <span class="highlight">two-dimensional</span> layouts',
+                    'Work with rows AND columns simultaneously',
+                    'Perfect for page layouts and galleries',
+                    'More control than Flexbox for complex layouts'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'grid',
+                title: 'Grid Container',
+                code: `.grid {
+  display: grid;
+  
+  /* Define columns */
+  grid-template-columns: 1fr 2fr 1fr;
+  
+  /* Or repeat */
+  grid-template-columns: repeat(3, 1fr);
+  
+  /* Gap between items */
+  gap: 20px;
+  
+  /* Rows */
+  grid-template-rows: 100px auto;
+}`
+            },
+
+            {
+                type: 'code',
+                section: 'grid',
+                title: 'Grid Items',
+                code: `.header {
+  grid-column: 1 / -1; /* full width */
+}
+
+.sidebar {
+  grid-row: 2 / 4; /* span 2 rows */
+}
+
+.main {
+  grid-column: 2;
+  grid-row: 2;
+}`
+            },
+
+            // === SECTION: RESPONSIVE ===
+            {
+                type: 'section',
+                title: 'Responsive Design',
+                subtitle: 'Building for all devices',
+                section: 'responsive'
+            },
+
+            // Media Queries
+            {
+                type: 'explain',
+                section: 'responsive',
+                title: 'Media Queries',
+                content: [
+                    'Apply CSS based on <span class="highlight">screen size</span>',
+                    'Mobile-first approach: start small, add for larger screens',
+                    'Common breakpoints: 768px (tablet), 1024px (desktop)',
+                    'Use relative units (rem, %, vw/vh)'
+                ],
+                instructorNote: 'Mobile-first is preferred because it forces you to prioritize content and performance.'
+            },
+
+            {
+                type: 'code',
+                section: 'responsive',
+                title: 'Media Query Syntax',
+                code: `/* Mobile-first base styles */
+.container {
+  width: 100%;
+  padding: 1rem;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+    margin: 0 auto;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    width: 960px;
+  }
+}`
+            },
+
+            {
+                type: 'code',
+                section: 'responsive',
+                title: 'Responsive Patterns',
+                code: `/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive typography */
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+/* Hide on mobile */
+.sidebar {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+  }
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'responsive',
+                title: 'Practice: Responsive Layout',
+                exercise: 'Create a card grid that shows 1 column on mobile, 2 columns on tablet (768px+), and 3 columns on desktop (1024px+).',
+                hint: 'Use CSS Grid with media queries to change grid-template-columns.'
+            },
+
+            // === SECTION: TRANSITIONS & ANIMATIONS ===
+            {
+                type: 'section',
+                title: 'Transitions & Animations',
+                subtitle: 'Bringing interfaces to life',
+                section: 'animations'
+            },
+
+            // Transitions
+            {
+                type: 'explain',
+                section: 'animations',
+                title: 'CSS Transitions',
+                content: [
+                    'Smooth changes between <span class="highlight">states</span>',
+                    'Triggered by hover, focus, class changes',
+                    'Properties: property, duration, timing-function, delay',
+                    'Great for micro-interactions'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'animations',
+                title: 'Transition Syntax',
+                code: `.button {
+  background: #3b82f6;
+  transform: scale(1);
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background: #2563eb;
+  transform: scale(1.05);
+}
+
+/* Individual properties */
+transition: transform 0.3s ease, 
+            background 0.2s linear;`
+            },
+
+            // Transforms
+            {
+                type: 'explain',
+                section: 'animations',
+                title: 'CSS Transforms',
+                content: [
+                    '<code>translate</code>: move elements',
+                    '<code>rotate</code>: spin elements',
+                    '<code>scale</code>: resize elements',
+                    '<code>skew</code>: distort elements',
+                    'Does not affect document flow'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'animations',
+                title: 'Transform Examples',
+                code: `/* Move */
+.card:hover {
+  transform: translateY(-10px);
+}
+
+/* Rotate */
+.icon {
+  transform: rotate(45deg);
+}
+
+/* Scale */
+.zoom:hover {
+  transform: scale(1.1);
+}
+
+/* Combine */
+.complex {
+  transform: translateX(50px) rotate(-5deg) scale(1.2);
+}`
+            },
+
+            // Animations
+            {
+                type: 'explain',
+                section: 'animations',
+                title: 'CSS Animations',
+                content: [
+                    'Create <span class="highlight">keyframe</span> sequences',
+                    'More control than transitions',
+                    'Can loop and run automatically',
+                    'Define @keyframes, then apply to elements'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'animations',
+                title: 'Animation Syntax',
+                code: `/* Define keyframes */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply animation */
+.element {
+  animation: fade-in 0.5s ease forwards;
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'animations',
+                title: 'Practice: Hover Card',
+                exercise: 'Create a card that smoothly lifts up and adds a shadow when hovered. Use transform, box-shadow, and transition.',
+                hint: 'transform: translateY(-5px) and box-shadow: 0 10px 20px rgba(0,0,0,0.2)'
+            },
+
+            // === FINAL SLIDE ===
+            {
+                type: 'final',
+                title: 'Congratulations!',
+                subtitle: 'You have learned the fundamentals of CSS',
+                content: [
+                    'You can style elements with selectors and properties',
+                    'You understand the box model and spacing',
+                    'You can create layouts with Flexbox and Grid',
+                    'You know how to make responsive designs',
+                    'You can add animations and transitions'
+                ]
+            },
+
+            {
+                type: 'challenge',
+                title: 'Final Challenge',
+                subtitle: 'Put it all together',
+                exercise: 'Style your HTML page from the previous course:\n- Add a Google Font\n- Create a color scheme with CSS variables\n- Style your navigation with Flexbox\n- Add hover effects on links\n- Make it responsive with media queries\n- Add a gradient background to the header',
+                hint: 'Use the cascade to your advantage - base styles first, then overrides!'
+            }
+        ];
+
+        // DOM elements
+        const container = document.getElementById('slidesContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+        const slideCounter = document.getElementById('slideCounter');
+
+        let currentSlide = 0;
+
+        // Render slides
+        function renderSlides() {
+            container.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide';
+                slideEl.setAttribute('role', 'group');
+                slideEl.setAttribute('aria-label', `Slide ${index + 1} of ${slides.length}`);
+
+                if (index === currentSlide) {
+                    slideEl.classList.add('active');
+                } else if (index < currentSlide) {
+                    slideEl.classList.add('prev');
+                }
+
+                slideEl.innerHTML = renderSlideContent(slide, index);
+                container.appendChild(slideEl);
+            });
+
+            updateNav();
+        }
+
+        function renderSlideContent(slide, index) {
+            switch (slide.type) {
+                case 'title':
+                    return `
+                        <div class="slide-content text-center">
+                            <div class="section-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            </div>
+                            <h1 class="section-title">${slide.title}</h1>
+                            <p class="section-subtitle">${slide.subtitle}</p>
+                            <p style="margin-top: 3rem; color: var(--muted);">Press <kbd>→</kbd> or click Next to begin</p>
+                        </div>
+                    `;
+
+                case 'section':
+                    return `
+                        <div class="slide-content text-center">
+                            <p class="slide-number">Section ${getSectionNumber(slide.section)}</p>
+                            <h1 class="section-title">${slide.title}</h1>
+                            <p class="section-subtitle">${slide.subtitle}</p>
+                        </div>
+                    `;
+
+                case 'explain':
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">Explain</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+                            <ul class="bullet-list">
+                                ${slide.content.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                            ${slide.analogy ? `
+                                <div class="analogy-box">
+                                    <p class="analogy-label">Real-world Analogy</p>
+                                    <p style="margin: 0; color: #c4b5fd;">${slide.analogy}</p>
+                                </div>
+                            ` : ''}
+                            ${slide.instructorNote ? `
+                                <div class="instructor-note">
+                                    <strong>Instructor Note:</strong> ${slide.instructorNote}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+
+                case 'code':
+                    const isHtml = slide.isHtml;
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">Code Example</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+                            <div class="code-block ${isHtml ? 'html' : ''}">
+                                <pre style="margin: 0;"><code>${isHtml ? highlightHTML(slide.code) : highlightCSS(slide.code)}</code></pre>
+                            </div>
+                        </div>
+                    `;
+
+                case 'exercise':
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">Practice</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+                            <div class="exercise-box">
+                                <p class="exercise-label">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                                    Hands-on Exercise
+                                </p>
+                                <p style="margin: 0; font-size: 1.1rem;">${slide.exercise}</p>
+                            </div>
+                            ${slide.hint ? `
+                                <p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">
+                                    <strong>Hint:</strong> ${slide.hint}
+                                </p>
+                            ` : ''}
+                        </div>
+                    `;
+
+                case 'final':
+                    return `
+                        <div class="slide-content text-center">
+                            <div class="section-icon" style="background: linear-gradient(135deg, #22d3ee, #34d399);">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <h1 class="section-title">${slide.title}</h1>
+                            <p class="section-subtitle" style="margin-bottom: 2rem;">${slide.subtitle}</p>
+                            <ul class="bullet-list" style="text-align: left; max-width: 500px; margin: 0 auto;">
+                                ${slide.content.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+
+                case 'challenge':
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">Final Challenge</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+                            <p style="color: var(--muted); margin-bottom: 1.5rem;">${slide.subtitle}</p>
+                            <div class="exercise-box" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-color: rgba(167, 139, 250, 0.3);">
+                                <p class="exercise-label" style="color: #a78bfa;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    Final Project
+                                </p>
+                                <p style="margin: 0; font-size: 1rem; white-space: pre-line;">${slide.exercise}</p>
+                            </div>
+                        </div>
+                    `;
+
+                default:
+                    return '';
+            }
+        }
+
+        function getSectionNumber(section) {
+            const sections = ['start', 'basics', 'colors', 'boxmodel', 'typography', 'layout', 'flexbox', 'grid', 'responsive', 'animations'];
+            const num = sections.indexOf(section);
+            return num > 0 ? num : '';
+        }
+
+        function highlightCSS(code) {
+            return code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
+                .replace(/([\w-]+)(\s*:)/g, '<span class="property">$1</span>$2')
+                .replace(/(:\s*)([^;{]+)(;)/g, '$1<span class="value">$2</span>$3')
+                .replace(/([\w-]+)(\s*\{)/g, '<span class="selector">$1</span>$2')
+                .replace(/(#[a-fA-F0-9]{3,8})/g, '<span class="unit">$1</span>');
+        }
+
+        function highlightHTML(code) {
+            return code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comment">$1</span>')
+                .replace(/(&lt;\/?)([\w-]+)/g, '$1<span class="selector">$2</span>')
+                .replace(/(\s)([\w-]+)(=)/g, '$1<span class="property">$2</span>$3')
+                .replace(/(".*?")/g, '<span class="value">$1</span>');
+        }
+
+        function updateNav() {
+            const total = slides.length;
+            const progress = ((currentSlide + 1) / total) * 100;
+
+            progressFill.style.width = `${progress}%`;
+            slideCounter.textContent = `${currentSlide + 1} / ${total}`;
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === total - 1;
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+
+            const allSlides = container.querySelectorAll('.slide');
+
+            allSlides.forEach((slide, i) => {
+                slide.classList.remove('active', 'prev');
+                if (i === index) {
+                    slide.classList.add('active');
+                } else if (i < index) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            currentSlide = index;
+            updateNav();
+        }
+
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+
+        // Event listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // Touch support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        container.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        }
+
+        // Initialize
+        renderSlides();
+    </script>
+</body>
+
+</html>
