@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML for Beginners - Interactive Course</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #0a0f1a;
+            --bg-card: #111827;
+            --fg: #f1f5f9;
+            --muted: #64748b;
+            --accent: #22d3ee;
+            --accent-warm: #fbbf24;
+            --border: #1e293b;
+            --code-bg: #1a1f2e;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        code,
+        pre,
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Animated background */
+        
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.15), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(251, 191, 36, 0.1), transparent), linear-gradient(180deg, var(--bg) 0%, #0d1424 100%);
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        /* Slide container */
+        
+        .slides-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide {
+                transition: opacity 0.3s ease;
+                transform: none !important;
+            }
+        }
+        
+        .slide-content {
+            max-width: 900px;
+            width: 100%;
+        }
+        /* Typography */
+        
+        .slide-number {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slide-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--fg) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        /* Content styles */
+        
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .bullet-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            line-height: 1.6;
+        }
+        
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 2px;
+            transform: rotate(45deg);
+        }
+        
+        .highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .highlight-warm {
+            color: var(--accent-warm);
+            font-weight: 600;
+        }
+        /* Code blocks */
+        
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: 'HTML';
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+        
+        .tag {
+            color: #f472b6;
+        }
+        
+        .attr {
+            color: #a78bfa;
+        }
+        
+        .value {
+            color: #34d399;
+        }
+        
+        .content {
+            color: var(--fg);
+        }
+        
+        .comment {
+            color: var(--muted);
+            font-style: italic;
+        }
+        /* Exercise boxes */
+        
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .exercise-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-warm);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+        /* Navigation */
+        
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to top, var(--bg), transparent);
+            padding: 2rem;
+        }
+        
+        .nav-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-warm));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--accent);
+            background: rgba(34, 211, 238, 0.1);
+        }
+        
+        .nav-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .nav-btn:disabled:hover {
+            border-color: var(--border);
+            background: var(--bg-card);
+        }
+        /* Slide counter */
+        
+        .slide-counter {
+            font-size: 0.875rem;
+            color: var(--muted);
+            min-width: 60px;
+            text-align: center;
+        }
+        /* Instructor notes */
+        
+        .instructor-note {
+            background: rgba(34, 211, 238, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 1rem 1.25rem;
+            margin-top: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        
+        .instructor-note strong {
+            color: var(--accent);
+        }
+        /* Analogy box */
+        
+        .analogy-box {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px dashed rgba(167, 139, 250, 0.4);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+        
+        .analogy-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        /* Section divider */
+        
+        .section-divider {
+            text-align: center;
+            padding: 1rem 0;
+        }
+        
+        .section-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-warm));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        /* Animations */
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide.active .slide-content>* {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .slide.active .slide-content>*:nth-child(1) {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(2) {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(3) {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(4) {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(5) {
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide.active .slide-content>* {
+                animation: none;
+                opacity: 1;
+            }
+        }
+        /* Keyboard hint */
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        kbd {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: inherit;
+            font-size: 0.7rem;
+        }
+        /* Responsive */
+        
+        @media (max-width: 640px) {
+            .slide {
+                padding: 1rem;
+            }
+            .slide-title {
+                font-size: 1.75rem;
+            }
+            .bullet-list li {
+                font-size: 1rem;
+                padding-left: 1.5rem;
+            }
+            .code-block {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+            .nav-inner {
+                flex-wrap: wrap;
+            }
+            .keyboard-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="slides-container" id="slidesContainer">
+        <!-- Slide data will be injected here -->
+    </div>
+
+    <div class="keyboard-hint">
+        <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to navigate
+    </div>
+
+    <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
+        <div class="nav-inner">
+            <button class="nav-btn" id="prevBtn" aria-label="Previous slide">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        Prev
+      </button>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Slide progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="slide-counter" id="slideCounter">1 / 1</span>
+            <button class="nav-btn" id="nextBtn" aria-label="Next slide">
+        Next
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+        </div>
+    </nav>
+
+    <script>
+        // Slide data
+        const slides = [
+            // === TITLE SLIDE ===
+            {
+                type: 'title',
+                title: 'HTML for Beginners',
+                subtitle: 'Learn to build web pages from scratch',
+                section: 'start'
+            },
+
+            // === SECTION: HTML BASICS ===
+            {
+                type: 'section',
+                title: 'HTML Basics',
+                subtitle: 'Understanding the foundation of web pages',
+                section: 'basics'
+            },
+
+            // What is HTML?
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'What is HTML?',
+                content: [
+                    'HTML is the language used to create <span class="highlight">web pages</span>',
+                    'It tells the browser what content to show',
+                    'HTML uses <span class="highlight">tags</span> to structure content'
+                ],
+                analogy: 'Think of HTML like the skeleton of a house. It gives structure, but needs CSS (paint/decor) and JavaScript (electricity) to be complete.',
+                instructorNote: 'Common mistake: Students often confuse HTML with a programming language. Clarify that HTML is a markup language - it describes structure, not logic.'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'Your First HTML Page',
+                code: `<!DOCTYPE html>
+<html>
+  <head>
+    <title>My First Page</title>
+  </head>
+  <body>
+    Hello World!
+  </body>
+</html>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'basics',
+                title: 'Practice: Create Your First Page',
+                exercise: 'Create an HTML file with the basic structure. Add your name between the body tags.',
+                hint: 'Save the file as "index.html" and open it in your browser.'
+            },
+
+            // HTML Tags
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'HTML Tags',
+                content: [
+                    'Tags are the building blocks of HTML',
+                    'Most tags have an <span class="highlight">opening</span> and <span class="highlight">closing</span> tag',
+                    'Tags tell the browser what each piece of content is'
+                ],
+                analogy: 'Tags are like labeled boxes. You put content inside, and the label tells everyone what is inside.'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'How Tags Work',
+                code: `<p>This is a paragraph.</p>
+<h1>This is a heading.</h1>
+<b>This text is bold.</b>
+
+<!-- Self-closing tags -->
+<img src="photo.jpg">
+<br>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'basics',
+                title: 'Practice: Match the Tags',
+                exercise: 'Write the correct closing tag for each opening tag: <code>&lt;p&gt;</code> <code>&lt;h2&gt;</code> <code>&lt;div&gt;</code>',
+                hint: 'Remember: closing tags have a forward slash: </tagname>'
+            },
+
+            // HTML Elements
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'HTML Elements',
+                content: [
+                    'An element = opening tag + content + closing tag',
+                    'Some elements have <span class="highlight">no content</span> (self-closing)',
+                    'Elements can be <span class="highlight">nested</span> inside other elements'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'Nested Elements',
+                code: `<body>
+  <h1>Welcome</h1>
+  <p>
+    This is <b>important</b> text.
+  </p>
+</body>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'basics',
+                title: 'Practice: Build a Paragraph',
+                exercise: 'Create a paragraph element that contains one bold word and one italic word.',
+                hint: 'Use <b> for bold and <i> for italic.'
+            },
+
+            // HTML Attributes
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'HTML Attributes',
+                content: [
+                    'Attributes add <span class="highlight">extra information</span> to elements',
+                    'They go in the <span class="highlight">opening tag</span>',
+                    'Format: <code>name="value"</code>'
+                ],
+                analogy: 'Attributes are like adjectives. Just as "red car" gives more info about the car, attributes give more info about HTML elements.',
+                instructorNote: 'Common mistake: Forgetting quotes around attribute values. Always use quotes!'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'Attributes in Action',
+                code: `<img src="cat.jpg" alt="A cute cat">
+<a href="https://google.com">Go to Google</a>
+<p id="intro">Welcome to my site!</p>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'basics',
+                title: 'Practice: Add Attributes',
+                exercise: 'Add an id attribute with value "main-title" to an h1 element.',
+                hint: 'The format is: id="main-title"'
+            },
+
+            // === SECTION: TEXT & HEADINGS ===
+            {
+                type: 'section',
+                title: 'Text & Headings',
+                subtitle: 'Organizing and styling your content',
+                section: 'text'
+            },
+
+            // Headings
+            {
+                type: 'explain',
+                section: 'text',
+                title: 'HTML Headings',
+                content: [
+                    'HTML has <span class="highlight">6 levels</span> of headings: h1 to h6',
+                    '<code>h1</code> is the largest and most important',
+                    'Use headings to create a <span class="highlight">hierarchy</span> of content'
+                ],
+                instructorNote: 'Stress that headings are not just about size - they define document structure for screen readers and SEO.'
+            },
+
+            {
+                type: 'code',
+                section: 'text',
+                title: 'Heading Levels',
+                code: `<h1>Main Title</h1>
+<h2>Section Title</h2>
+<h3>Subsection</h3>
+<h4>Sub-subsection</h4>
+<h5>Minor heading</h5>
+<h6>Smallest heading</h6>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'text',
+                title: 'Practice: Structure a Page',
+                exercise: 'Create a page about your favorite food. Use h1 for the main title and h2 for sections like "Why I Love It" and "Recipe".',
+                hint: 'Only use one h1 per page for best practices.'
+            },
+
+            // Paragraphs
+            {
+                type: 'explain',
+                section: 'text',
+                title: 'Paragraphs',
+                content: [
+                    'Use <code>p</code> tags for blocks of text',
+                    'Browsers add <span class="highlight">space</span> between paragraphs',
+                    'Each paragraph should contain one main idea'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'text',
+                title: 'Writing Paragraphs',
+                code: `<p>This is my first paragraph. It talks about HTML.</p>
+
+<p>This is my second paragraph. It talks about CSS.</p>
+
+<p>Notice how each paragraph has space around it.</p>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'text',
+                title: 'Practice: Write About Yourself',
+                exercise: 'Write 2-3 paragraphs about yourself. Use proper paragraph tags.',
+                hint: 'Keep each paragraph focused on one topic.'
+            },
+
+            // Formatting
+            {
+                type: 'explain',
+                section: 'text',
+                title: 'Text Formatting',
+                content: [
+                    '<code>b</code> makes text <b>bold</b>',
+                    '<code>i</code> makes text <i>italic</i>',
+                    '<code>u</code> makes text <u>underlined</u>',
+                    '<code>strong</code> and <code>em</code> add meaning, not just style'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'text',
+                title: 'Formatting Tags',
+                code: `<p>This is <b>bold</b> text.</p>
+<p>This is <i>italic</i> text.</p>
+<p>This is <u>underlined</u> text.</p>
+<p><strong>Important:</strong> Read carefully!</p>
+<p><em>Note:</em> This is emphasized.</p>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'text',
+                title: 'Practice: Format a Sentence',
+                exercise: 'Write a sentence where one word is bold, one is italic, and one is both.',
+                hint: 'You can nest tags: <b><i>text</i></b>'
+            },
+
+            // Comments
+            {
+                type: 'explain',
+                section: 'text',
+                title: 'HTML Comments',
+                content: [
+                    'Comments are <span class="highlight">not visible</span> on the page',
+                    'They help you leave notes in your code',
+                    'Great for organizing and explaining your work'
+                ],
+                analogy: 'Comments are like sticky notes for developers. Readers of your webpage never see them, but you and other developers can.'
+            },
+
+            {
+                type: 'code',
+                section: 'text',
+                title: 'Writing Comments',
+                code: `<!-- This is a comment. It won't show on the page. -->
+
+<p>Hello World!</p>
+
+<!-- TODO: Add more content here -->`
+            },
+
+            {
+                type: 'exercise',
+                section: 'text',
+                title: 'Practice: Add Comments',
+                exercise: 'Add comments to your previous exercise explaining what each section does.',
+                hint: 'Comment syntax: <!-- your note here -->'
+            },
+
+            // === SECTION: LINKS & IMAGES ===
+            {
+                type: 'section',
+                title: 'Links & Images',
+                subtitle: 'Connecting pages and adding visuals',
+                section: 'links'
+            },
+
+            // Links
+            {
+                type: 'explain',
+                section: 'links',
+                title: 'HTML Links',
+                content: [
+                    'Links let users <span class="highlight">navigate</span> between pages',
+                    'The <code>a</code> tag creates a link',
+                    'The <code>href</code> attribute specifies the destination'
+                ],
+                analogy: 'Links are like doors. The href attribute tells the browser which door to open and where it leads.'
+            },
+
+            {
+                type: 'code',
+                section: 'links',
+                title: 'Creating Links',
+                code: `<a href="https://google.com">Go to Google</a>
+
+<a href="about.html">About Us</a>
+
+<a href="contact.html">Contact Page</a>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'links',
+                title: 'Practice: Create Navigation',
+                exercise: 'Create 3 links: one to Google, one to Wikipedia, and one to your favorite website.',
+                hint: 'Remember to include https:// in external URLs.'
+            },
+
+            // Images
+            {
+                type: 'explain',
+                section: 'links',
+                title: 'HTML Images',
+                content: [
+                    'The <code>img</code> tag displays images',
+                    'It is <span class="highlight">self-closing</span> (no end tag)',
+                    'Always include the <code>alt</code> attribute for accessibility'
+                ],
+                instructorNote: 'Emphasize alt text. It helps visually impaired users understand images and displays if the image fails to load.'
+            },
+
+            {
+                type: 'code',
+                section: 'links',
+                title: 'Adding Images',
+                code: `<img src="photo.jpg" alt="A sunset over the ocean">
+
+<img src="logo.png" alt="Company Logo">
+
+<img src="https://example.com/cat.jpg" alt="A cute cat">`
+            },
+
+            {
+                type: 'exercise',
+                section: 'links',
+                title: 'Practice: Add an Image',
+                exercise: 'Find an image online and add it to your page. Write a descriptive alt text.',
+                hint: 'You can use the full URL or a local file path for the src attribute.'
+            },
+
+            // === SECTION: LISTS ===
+            {
+                type: 'section',
+                title: 'Lists & Tables',
+                subtitle: 'Organizing information clearly',
+                section: 'lists'
+            },
+
+            // Unordered Lists
+            {
+                type: 'explain',
+                section: 'lists',
+                title: 'Unordered Lists',
+                content: [
+                    'Unordered lists show items with <span class="highlight">bullet points</span>',
+                    'Use <code>ul</code> for the list container',
+                    'Use <code>li</code> for each list item'
+                ],
+                analogy: 'An unordered list is like a grocery list - the order does not matter.'
+            },
+
+            {
+                type: 'code',
+                section: 'lists',
+                title: 'Bullet List',
+                code: `<ul>
+  <li>Apples</li>
+  <li>Oranges</li>
+  <li>Bananas</li>
+</ul>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'lists',
+                title: 'Practice: Shopping List',
+                exercise: 'Create an unordered list of 5 things you want to learn.',
+                hint: 'Wrap all items inside <ul> tags, each item gets <li> tags.'
+            },
+
+            // Ordered Lists
+            {
+                type: 'explain',
+                section: 'lists',
+                title: 'Ordered Lists',
+                content: [
+                    'Ordered lists show items with <span class="highlight">numbers</span>',
+                    'Use <code>ol</code> instead of <code>ul</code>',
+                    'The browser automatically numbers the items'
+                ],
+                analogy: 'An ordered list is like a recipe - the order of steps matters.'
+            },
+
+            {
+                type: 'code',
+                section: 'lists',
+                title: 'Numbered List',
+                code: `<ol>
+  <li>Wake up</li>
+  <li>Brush teeth</li>
+  <li>Eat breakfast</li>
+  <li>Go to school</li>
+</ol>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'lists',
+                title: 'Practice: Morning Routine',
+                exercise: 'Create an ordered list of your morning routine (4-6 steps).',
+                hint: 'Use <ol> for ordered lists.'
+            },
+
+            // Tables
+            {
+                type: 'explain',
+                section: 'lists',
+                title: 'HTML Tables',
+                content: [
+                    'Tables organize data in <span class="highlight">rows and columns</span>',
+                    '<code>table</code> wraps the whole table',
+                    '<code>tr</code> = table row, <code>td</code> = table cell'
+                ],
+                instructorNote: 'Tables can be confusing at first. Draw a grid on the board and label tr, td, th to help visualize.'
+            },
+
+            {
+                type: 'code',
+                section: 'lists',
+                title: 'Creating Tables',
+                code: `<table>
+  <tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>City</th>
+  </tr>
+  <tr>
+    <td>Alice</td>
+    <td>25</td>
+    <td>New York</td>
+  </tr>
+  <tr>
+    <td>Bob</td>
+    <td>30</td>
+    <td>London</td>
+  </tr>
+</table>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'lists',
+                title: 'Practice: Create a Schedule',
+                exercise: 'Create a table showing your weekly class schedule with Day, Subject, and Time columns.',
+                hint: 'Use <th> for header cells and <td> for regular cells.'
+            },
+
+            // === SECTION: FORMS ===
+            {
+                type: 'section',
+                title: 'HTML Forms',
+                subtitle: 'Collecting user input',
+                section: 'forms'
+            },
+
+            // Form Basics
+            {
+                type: 'explain',
+                section: 'forms',
+                title: 'Form Basics',
+                content: [
+                    'Forms let users <span class="highlight">enter and submit data</span>',
+                    'The <code>form</code> element wraps all form controls',
+                    'Each input needs a <code>name</code> attribute'
+                ],
+                analogy: 'A form is like a paper questionnaire. Each input is a blank line where users write their answers.'
+            },
+
+            {
+                type: 'code',
+                section: 'forms',
+                title: 'Basic Form',
+                code: `<form>
+  <label for="username">Username:</label>
+  <input type="text" id="username" name="username">
+  
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email">
+  
+  <button type="submit">Submit</button>
+</form>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'forms',
+                title: 'Practice: Login Form',
+                exercise: 'Create a simple login form with username and password fields.',
+                hint: 'Use type="password" for the password field to hide characters.'
+            },
+
+            // Input Types
+            {
+                type: 'explain',
+                section: 'forms',
+                title: 'Input Types',
+                content: [
+                    'Inputs can be many types: text, password, email, number',
+                    '<code>type="checkbox"</code> for multiple choices',
+                    '<code>type="radio"</code> for single choice from options'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'forms',
+                title: 'Different Inputs',
+                code: `<input type="text" placeholder="Enter name">
+<input type="password" placeholder="Enter password">
+<input type="email" placeholder="Enter email">
+<input type="number" min="0" max="100">
+
+<label><input type="checkbox"> I agree</label>
+
+<label><input type="radio" name="gender"> Male</label>
+<label><input type="radio" name="gender"> Female</label>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'forms',
+                title: 'Practice: Survey Form',
+                exercise: 'Create a feedback form with: name (text), email, rating (1-5 number), and a checkbox for "Subscribe to newsletter".',
+                hint: 'Use appropriate input types for each field.'
+            },
+
+            // === SECTION: SEMANTIC HTML ===
+            {
+                type: 'section',
+                title: 'Semantic HTML',
+                subtitle: 'Writing meaningful code',
+                section: 'semantic'
+            },
+
+            // What is Semantic HTML
+            {
+                type: 'explain',
+                section: 'semantic',
+                title: 'What is Semantic HTML?',
+                content: [
+                    'Semantic elements describe their <span class="highlight">meaning</span> to browsers and developers',
+                    'Examples: <code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>',
+                    'Better for accessibility and SEO'
+                ],
+                analogy: 'Non-semantic HTML is like unmarked boxes. Semantic HTML labels each box: "header", "navigation", "content".',
+                instructorNote: 'Stress that semantic HTML helps screen readers understand page structure, making sites accessible to visually impaired users.'
+            },
+
+            {
+                type: 'code',
+                section: 'semantic',
+                title: 'Semantic Layout',
+                code: `<header>
+  <h1>My Website</h1>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">About</a>
+  </nav>
+</header>
+
+<main>
+  <article>
+    <h2>Welcome</h2>
+    <p>Content goes here...</p>
+  </article>
+</main>
+
+<footer>
+  <p>Copyright 2024</p>
+</footer>`
+            },
+
+            {
+                type: 'exercise',
+                section: 'semantic',
+                title: 'Practice: Semantic Page',
+                exercise: 'Rebuild your about-me page using semantic elements: header, nav, main, article, and footer.',
+                hint: 'Think about what each section of your page does, then choose the right semantic tag.'
+            },
+
+            // === FINAL SLIDE ===
+            {
+                type: 'final',
+                title: 'Congratulations!',
+                subtitle: 'You have learned the fundamentals of HTML',
+                content: [
+                    'You can now create structured web pages',
+                    'You understand tags, elements, and attributes',
+                    'You can add text, links, images, lists, tables, and forms',
+                    'You know the basics of semantic HTML'
+                ]
+            },
+
+            {
+                type: 'challenge',
+                title: 'Final Challenge',
+                subtitle: 'Put it all together',
+                exercise: 'Create a complete personal webpage with:\n- A header with navigation\n- A main section about yourself\n- An image of you or something you like\n- A list of your hobbies\n- A contact form\n- A footer with copyright',
+                hint: 'Use semantic HTML and proper structure. Take your time!'
+            }
+        ];
+
+        // DOM elements
+        const container = document.getElementById('slidesContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+        const slideCounter = document.getElementById('slideCounter');
+
+        console.log('DOM elements:', {
+            container,
+            prevBtn,
+            nextBtn,
+            progressFill,
+            slideCounter
+        });
+
+        let currentSlide = 0;
+
+        // Render slides
+        function renderSlides() {
+            container.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide';
+                slideEl.setAttribute('role', 'group');
+                slideEl.setAttribute('aria-label', `Slide ${index + 1} of ${slides.length}`);
+
+                if (index === currentSlide) {
+                    slideEl.classList.add('active');
+                } else if (index < currentSlide) {
+                    slideEl.classList.add('prev');
+                }
+
+                slideEl.innerHTML = renderSlideContent(slide, index);
+                container.appendChild(slideEl);
+            });
+
+            updateNav();
+        }
+
+        function renderSlideContent(slide, index) {
+            switch (slide.type) {
+                case 'title':
+                    return `
+            <div class="slide-content text-center">
+              <div class="section-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              </div>
+              <h1 class="section-title">${slide.title}</h1>
+              <p class="section-subtitle">${slide.subtitle}</p>
+              <p style="margin-top: 3rem; color: var(--muted);">Press <kbd>&rarr;</kbd> or click Next to begin</p>
+            </div>
+          `;
+
+                case 'section':
+                    return `
+            <div class="slide-content text-center">
+              <p class="slide-number">Section ${getSectionNumber(slide.section)}</p>
+              <h1 class="section-title">${slide.title}</h1>
+              <p class="section-subtitle">${slide.subtitle}</p>
+            </div>
+          `;
+
+                case 'explain':
+                    return `
+            <div class="slide-content">
+              <p class="slide-number">Explain</p>
+              <h2 class="slide-title">${slide.title}</h2>
+              <ul class="bullet-list">
+                ${slide.content.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+              ${slide.analogy ? `
+                <div class="analogy-box">
+                  <p class="analogy-label">Real-world Analogy</p>
+                  <p style="margin: 0; color: #c4b5fd;">${slide.analogy}</p>
+                </div>
+              ` : ''}
+              ${slide.instructorNote ? `
+                <div class="instructor-note">
+                  <strong>Instructor Note:</strong> ${slide.instructorNote}
+                </div>
+              ` : ''}
+            </div>
+          `;
+        
+        case 'code':
+          return `
+            <div class="slide-content">
+              <p class="slide-number">Code Example</p>
+              <h2 class="slide-title">${slide.title}</h2>
+              <div class="code-block">
+                <pre style="margin: 0;"><code>${highlightHTML(slide.code)}</code></pre>
+              </div>
+            </div>
+          `;
+        
+        case 'exercise':
+          return `
+            <div class="slide-content">
+              <p class="slide-number">Practice</p>
+              <h2 class="slide-title">${slide.title}</h2>
+              <div class="exercise-box">
+                <p class="exercise-label">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                  Hands-on Exercise
+                </p>
+                <p style="margin: 0; font-size: 1.1rem;">${slide.exercise}</p>
+              </div>
+              ${slide.hint ? `
+                <p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">
+                  <strong>Hint:</strong> ${slide.hint}
+                </p>
+              ` : ''}
+            </div>
+          `;
+        
+        case 'final':
+          return `
+            <div class="slide-content text-center">
+              <div class="section-icon" style="background: linear-gradient(135deg, #22d3ee, #34d399);">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              </div>
+              <h1 class="section-title">${slide.title}</h1>
+              <p class="section-subtitle" style="margin-bottom: 2rem;">${slide.subtitle}</p>
+              <ul class="bullet-list" style="text-align: left; max-width: 500px; margin: 0 auto;">
+                ${slide.content.map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        
+        case 'challenge':
+          return `
+            <div class="slide-content">
+              <p class="slide-number">Final Challenge</p>
+              <h2 class="slide-title">${slide.title}</h2>
+              <p style="color: var(--muted); margin-bottom: 1.5rem;">${slide.subtitle}</p>
+              <div class="exercise-box" style="background: linear-gradient(135deg, rgba(34, 211, 238, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-color: rgba(34, 211, 238, 0.3);">
+                <p class="exercise-label" style="color: var(--accent);">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                  Final Project
+                </p>
+                <p style="margin: 0; font-size: 1rem; white-space: pre-line;">${slide.exercise}</p>
+              </div>
+            </div>
+          `;
+        
+        default:
+          return '';
+      }
+    }
+
+    function getSectionNumber(section) {
+      const sections = ['start', 'basics', 'text', 'links', 'lists', 'forms', 'semantic'];
+      const num = sections.indexOf(section);
+      return num > 0 ? num : '';
+    }
+
+    function highlightHTML(code) {
+      return code
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comment">$1</span>')
+        .replace(/(&lt;\/?)([\w-]+)/g, '$1<span class="tag">$2</span>')
+        .replace(/(\s)([\w-]+)(=)/g, '$1<span class="attr">$2</span>$3')
+        .replace(/(".*?")/g, '<span class="value">$1</span>');
+    }
+
+    function updateNav() {
+      const total = slides.length;
+      const progress = ((currentSlide + 1) / total) * 100;
+      
+      progressFill.style.width = `${progress}%`;
+      slideCounter.textContent = `${currentSlide + 1} / ${total}`;
+      
+      prevBtn.disabled = currentSlide === 0;
+      nextBtn.disabled = currentSlide === total - 1;
+    }
+
+    function goToSlide(index) {
+      if (index < 0 || index >= slides.length) return;
+      
+      const allSlides = container.querySelectorAll('.slide');
+      
+      allSlides.forEach((slide, i) => {
+        slide.classList.remove('active', 'prev');
+        if (i === index) {
+          slide.classList.add('active');
+        } else if (i < index) {
+          slide.classList.add('prev');
+        }
+      });
+      
+      currentSlide = index;
+      updateNav();
+    }
+
+    function nextSlide() {
+      goToSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      goToSlide(currentSlide - 1);
+    }
+
+    // Event listeners
+    prevBtn.addEventListener('click', prevSlide);
+    nextBtn.addEventListener('click', nextSlide);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') {
+        e.preventDefault();
+        nextSlide();
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        prevSlide();
+      }
+    });
+
+    // Touch support
+    let touchStartX = 0;
+    let touchEndX = 0;
+
+    container.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+
+    container.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+      const diff = touchStartX - touchEndX;
+      if (Math.abs(diff) > 50) {
+        if (diff > 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+    }
+
+    // Initialize
+    renderSlides();
+    </script>
+</body>
+
+</html>
