@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaScript Complete Course - Interactive Tutorial</title>
+    <title>CSS for Beginners - Interactive Course</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,7 +69,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem 2rem 8rem;
+            padding: 2rem;
             opacity: 0;
             transform: translateX(100px);
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -96,29 +96,6 @@
         .slide-content {
             max-width: 900px;
             width: 100%;
-            max-height: calc(100vh - 12rem);
-            overflow-y: auto;
-            padding-right: 0.35rem;
-        }
-        
-        .slide-content::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        .slide-content::-webkit-scrollbar-track {
-            background: linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(30, 41, 59, 0.22));
-            border-radius: 999px;
-        }
-        
-        .slide-content::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, rgba(167, 139, 250, 0.9), rgba(251, 191, 36, 0.88));
-            border-radius: 999px;
-            border: 2px solid rgba(15, 23, 42, 0.55);
-            box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.18) inset;
-        }
-        
-        .slide-content::-webkit-scrollbar-thumb:hover {
-            background: linear-gradient(180deg, #a78bfa, #fbbf24);
         }
         
         .slide-number {
@@ -200,22 +177,8 @@
             position: relative;
         }
         
-        .code-block::-webkit-scrollbar {
-            height: 8px;
-        }
-        
-        .code-block::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.35);
-            border-radius: 999px;
-        }
-        
-        .code-block::-webkit-scrollbar-thumb {
-            background: linear-gradient(90deg, rgba(167, 139, 250, 0.92), rgba(251, 191, 36, 0.88));
-            border-radius: 999px;
-        }
-        
         .code-block::before {
-            content: 'JS';
+            content: 'CSS';
             position: absolute;
             top: 0.75rem;
             right: 1rem;
@@ -225,7 +188,7 @@
         }
         
         .code-block.html::before {
-            content: 'JS';
+            content: 'HTML';
         }
         
         .selector {
@@ -447,6 +410,44 @@
             gap: 0.5rem;
         }
         
+        .lang-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 120;
+            padding: 0.45rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .lang-ar .slide-content {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .lang-ar .bullet-list li {
+            padding-left: 0;
+            padding-right: 2rem;
+        }
+        
+        .lang-ar .bullet-list li::before {
+            left: auto;
+            right: 0;
+        }
+        
+        .lang-ar pre,
+        .lang-ar code,
+        .lang-ar .code-block {
+            direction: ltr;
+            text-align: left;
+        }
+        
         kbd {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -476,7 +477,7 @@
         
         @media (max-width: 640px) {
             .slide {
-                padding: 1rem 1rem 9.5rem;
+                padding: 1rem 1rem 8rem;
             }
             .slide-title {
                 font-size: 1.75rem;
@@ -484,37 +485,51 @@
             .section-title {
                 font-size: clamp(1.8rem, 8vw, 2.4rem);
             }
+            .section-subtitle {
+                font-size: 1rem;
+            }
             .bullet-list li {
                 font-size: 1rem;
                 padding-left: 1.5rem;
+                margin-bottom: 0.75rem;
             }
             .code-block {
                 font-size: 0.8rem;
                 padding: 1rem;
             }
+            .exercise-box {
+                padding: 1rem;
+            }
             .slide-content {
-                max-height: calc(100vh - 13.5rem);
+                max-height: calc(100vh - 11rem);
                 padding-right: 0.2rem;
             }
             .slide-content::-webkit-scrollbar {
                 width: 8px;
             }
+            .instructor-note {
+                font-size: 0.8rem;
+                padding: 0.75rem 1rem;
+            }
             .nav-inner {
                 flex-wrap: wrap;
+                padding: 1rem;
+            }
+            .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+            .slide-counter {
+                font-size: 0.75rem;
             }
             .keyboard-hint {
                 display: none;
             }
-        }
-        
-        @media (max-height: 760px) {
-            .slide {
-                justify-content: flex-start;
-                padding-top: 1.25rem;
-                padding-bottom: 9.5rem;
-            }
-            .slide-content {
-                max-height: calc(100vh - 11.5rem);
+            .lang-toggle {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.75rem;
+                top: 0.5rem;
+                right: 0.5rem;
             }
         }
     </style>
@@ -530,6 +545,8 @@
     <div class="keyboard-hint">
         <kbd>←</kbd> <kbd>→</kbd> to navigate
     </div>
+
+    <button id="langToggleBtn" class="lang-toggle" aria-label="Toggle Arabic language">AR</button>
 
     <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
         <div class="nav-inner">
@@ -550,495 +567,973 @@
 
     <script>
         // Slide data
-        const slides = [{
+        const slides = [
+            // === TITLE SLIDE ===
+            {
                 type: 'title',
-                title: 'JavaScript Complete Course',
-                subtitle: 'Beginner → Intermediate → Advanced',
+                title: 'CSS for Beginners',
+                subtitle: 'Master the art of styling web pages',
                 section: 'start'
-            }, {
+            },
+
+            // === SECTION: CSS BASICS ===
+            {
+                type: 'section',
+                title: 'CSS Basics',
+                subtitle: 'Understanding how to style elements',
+                section: 'basics'
+            },
+
+            // What is CSS?
+            {
                 type: 'explain',
-                section: 'overview',
-                title: 'Course Overview',
+                section: 'basics',
+                title: 'What is CSS?',
                 content: [
-                    'This course is split into <span class="highlight">3 levels</span>: Beginner, Intermediate, and Advanced',
-                    'Each topic includes: <span class="highlight">simple explanation + code example + mini exercise</span>',
-                    'You will build <span class="highlight">3 projects</span>: one at the end of each level',
-                    'Use <kbd>←</kbd> and <kbd>→</kbd> or the buttons below to navigate slides'
+                    'CSS stands for <span class="highlight">Cascading Style Sheets</span>',
+                    'It controls the <span class="highlight">visual presentation</span> of HTML',
+                    'CSS describes how elements should be displayed'
+                ],
+                analogy: 'If HTML is the skeleton of a house, CSS is the paint, wallpaper, and decorations that make it beautiful.',
+                instructorNote: 'Emphasize "Cascading" - styles can override each other based on specificity and order.'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'CSS Syntax',
+                code: `selector {
+  property: value;
+}
+
+/* Example */
+h1 {
+  color: blue;
+  font-size: 24px;
+}`
+            },
+
+            // Selectors
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'CSS Selectors',
+                content: [
+                    '<span class="highlight">Element</span> selector: targets HTML tags (p, h1, div)',
+                    '<span class="highlight">Class</span> selector: targets .classname (reusable)',
+                    '<span class="highlight">ID</span> selector: targets #idname (unique per page)'
+                ],
+                instructorNote: 'Best practice: Use classes for styling, IDs for JavaScript hooks and anchor links.'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'Types of Selectors',
+                code: `/* Element selector */
+p {
+  color: gray;
+}
+
+/* Class selector (most common) */
+.highlight {
+  background: yellow;
+}
+
+/* ID selector (use sparingly) */
+#header {
+  background: navy;
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'basics',
+                title: 'Practice: Selectors',
+                exercise: 'Write CSS to: make all paragraphs gray, create a class called "warning" with red text, and style an element with id="logo" to have a blue background.',
+                hint: 'Remember: element {} .class {} #id {}'
+            },
+
+            // How to add CSS
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'How to Add CSS',
+                content: [
+                    '<span class="highlight">External CSS</span>: Separate .css file (recommended)',
+                    '<span class="highlight">Internal CSS</span>: Inside &lt;style&gt; tag in &lt;head&gt;',
+                    '<span class="highlight">Inline CSS</span>: style attribute on elements (avoid)'
+                ],
+                analogy: 'External CSS is like a central wardrobe - change one file and your whole site updates. Inline is like painting clothes individually - hard to maintain.'
+            },
+
+            {
+                type: 'code',
+                section: 'basics',
+                title: 'Adding CSS to HTML',
+                code: `/* External CSS (in head) */
+<link rel="stylesheet" href="styles.css">
+
+/* Internal CSS (in head) */
+<style>
+  h1 { color: purple; }
+</style>
+
+/* Inline CSS (avoid) */
+<p style="color: red;">Text</p>`
+            },
+
+            // Comments
+            {
+                type: 'explain',
+                section: 'basics',
+                title: 'CSS Comments',
+                content: [
+                    'Comments help document your code',
+                    'They are <span class="highlight">ignored</span> by the browser',
+                    'Use them to organize sections and explain logic'
                 ]
             },
 
-            // ================= BEGINNER =================
             {
-                type: 'section',
-                title: 'Beginner',
-                subtitle: 'JavaScript Basics',
-                section: 'beginner'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Introduction to JavaScript',
-                explain: 'JavaScript is the language that makes websites interactive. HTML gives structure, CSS gives style, and JavaScript gives behavior.',
-                code: `console.log("Hello JavaScript!");`,
-                exercise: 'Open browser DevTools console and print your name with console.log().',
-                hint: 'Press F12 → Console tab.'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Where to Write JavaScript',
-                explain: 'You can write JS inside HTML script tags, in external .js files, or quickly in browser console.',
-                code: `<!-- Internal -->
-<script>
-  console.log("Internal JS");
-<\/script>
+                type: 'code',
+                section: 'basics',
+                title: 'Writing Comments',
+                code: `/* This is a single-line comment */
 
-<!-- External -->
-<script src="app.js"><\/script>`,
-                exercise: 'Create an app.js file and link it in HTML.',
-                hint: 'External JS is best for real projects.'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Output (console.log, alert, DOM)',
-                explain: 'Use console.log for debugging, alert for quick popups, and DOM methods to update page content.',
-                code: `console.log("Debug message");
-alert("Welcome!");
-document.getElementById("demo").textContent = "Updated by JS";`,
-                exercise: 'Make a paragraph text change when page loads.',
-                hint: 'Use document.getElementById(...).textContent = ...'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Syntax & Statements',
-                explain: 'JavaScript runs statements line by line. Use semicolons and proper braces for readable, error-free code.',
-                code: `let language = "JavaScript";
-if (language === "JavaScript") {
-  console.log("Correct syntax!");
-}`,
-                exercise: 'Write 3 valid JS statements that print your city, age, and favorite language.',
-                hint: 'Each statement can end with ;'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Variables (var, let, const)',
-                explain: 'Use const by default, let when value changes, and avoid var in modern code.',
-                code: `const country = "Morocco";
-let score = 0;
-score = 1;
-var oldWay = "legacy";`,
-                exercise: 'Create one const and one let, then update only the let variable.',
-                hint: 'const cannot be reassigned.'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Data Types',
-                explain: 'Main types: string, number, boolean, null, undefined, object, array.',
-                code: `const name = "Aya";      // string
-const age = 21;          // number
-const isStudent = true;  // boolean
-let job;                 // undefined`,
-                exercise: 'Create 4 variables with different data types and log typeof each.',
-                hint: 'Use typeof variableName'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Operators (arithmetic, comparison, logical)',
-                explain: 'Operators let you calculate, compare, and combine conditions.',
-                code: `const a = 10;
-const b = 3;
-console.log(a + b);      // arithmetic
-console.log(a > b);      // comparison
-console.log(a > 5 && b < 5); // logical`,
-                exercise: 'Check if a number is between 10 and 20 using logical operators.',
-                hint: 'Use && with two comparisons.'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Conditions (if, else, switch, ternary)',
-                explain: 'Conditions help your program make decisions based on values.',
-                code: `const age = 17;
-const status = age >= 18 ? "Adult" : "Minor";
+/*
+   This is a
+   multi-line comment
+*/
 
-switch (status) {
-  case "Adult":
-    console.log("Full access");
-    break;
-  default:
-    console.log("Limited access");
-}`,
-                exercise: 'Write if/else to check exam score (pass if >= 50).',
-                hint: 'if (score >= 50) ... else ...'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Loops (for, while, break, continue)',
-                explain: 'Loops repeat tasks. break stops loop, continue skips one iteration.',
-                code: `for (let i = 1; i <= 5; i++) {
-  if (i === 3) continue;
-  console.log(i);
-}
-
-let x = 0;
-while (x < 3) {
-  x++;
-  if (x === 2) break;
-}`,
-                exercise: 'Print numbers 1 to 10, but skip 5.',
-                hint: 'Use continue when i === 5'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Functions (declaration, parameters, return, arrow)',
-                explain: 'Functions are reusable blocks. They can accept parameters and return values.',
-                code: `function greet(name) {
-  return "Hello " + name;
-}
-
-const add = (a, b) => a + b;
-console.log(greet("Sam"));
-console.log(add(2, 3));`,
-                exercise: 'Create an arrow function multiply(a, b) that returns product.',
-                hint: 'const multiply = (a, b) => a * b;'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Arrays (push, map, filter)',
-                explain: 'Arrays store lists. push adds values, map transforms, filter selects values.',
-                code: `const nums = [1, 2, 3, 4];
-nums.push(5);
-const doubled = nums.map(n => n * 2);
-const evens = nums.filter(n => n % 2 === 0);`,
-                exercise: 'Create an array of ages and filter only ages >= 18.',
-                hint: 'ages.filter(age => age >= 18)'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Objects (properties, basic methods)',
-                explain: 'Objects group related data and behavior in one structure.',
-                code: `const user = {
-  name: "Lina",
-  age: 20,
-  greet() {
-    return "Hi, I am " + this.name;
-  }
-};
-console.log(user.greet());`,
-                exercise: 'Create an object for a book with title, author, and method summary().',
-                hint: 'Use this.title inside summary method.'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'Strings & Numbers (basics)',
-                explain: 'Strings have useful methods, and numbers can be formatted for display.',
-                code: `const text = "javascript";
-console.log(text.toUpperCase());
-
-const price = 19.987;
-console.log(price.toFixed(2)); // 19.99`,
-                exercise: 'Format your name to uppercase and print a number with 2 decimals.',
-                hint: 'Use toUpperCase() and toFixed(2).'
-            }, {
-                type: 'lesson',
-                section: 'beginner',
-                title: 'DOM Basics (selecting elements, events)',
-                explain: 'DOM lets JS read and update HTML elements, and react to user events.',
-                code: `const btn = document.getElementById("btn");
-const title = document.querySelector("h1");
-
-btn.addEventListener("click", () => {
-  title.textContent = "Clicked!";
-});`,
-                exercise: 'Add a button click event that changes paragraph text.',
-                hint: 'Use addEventListener("click", ...).'
-            }, {
-                type: 'challenge',
-                title: 'Beginner Project',
-                subtitle: 'Simple Interactive Page',
-                exercise: 'Build a profile card with a button that toggles dark/light style and updates text dynamically using DOM.',
-                hint: 'Use classList.toggle() and textContent.'
+/* Header Styles */
+header {
+  background: #333;
+}`
             },
 
-            // ================= INTERMEDIATE =================
+            // === SECTION: COLORS & BACKGROUNDS ===
             {
                 type: 'section',
-                title: 'Intermediate',
-                subtitle: 'Core JavaScript Concepts',
-                section: 'intermediate'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'Scope (global, local)',
-                explain: 'Scope controls where variables are accessible. let/const are block-scoped.',
-                code: `const globalVar = "I am global";
-function test() {
-  const localVar = "I am local";
-  console.log(globalVar);
-}
-// console.log(localVar); // Error`,
-                exercise: 'Create one global and one local variable, then test access.',
-                hint: 'Local variables only exist inside their function/block.'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'Hoisting',
-                explain: 'Function declarations are hoisted. let/const are hoisted but inaccessible before declaration (TDZ).',
-                code: `sayHi(); // works
-function sayHi() { console.log("Hi"); }
-
-// console.log(a); // Error with let
-let a = 10;`,
-                exercise: 'Test calling a function before it is declared.',
-                hint: 'Try with function declaration, then with const function expression.'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'this keyword (basic)',
-                explain: 'Inside object methods, this usually refers to the object itself.',
-                code: `const person = {
-  name: "Sara",
-  greet() {
-    console.log("Hi " + this.name);
-  }
-};
-person.greet();`,
-                exercise: 'Create object car with method info() that uses this.brand.',
-                hint: 'Use method shorthand: info() { ... }'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'Error handling (try/catch)',
-                explain: 'Use try/catch to prevent your app from crashing when errors happen.',
-                code: `try {
-  const data = JSON.parse("invalid json");
-} catch (error) {
-  console.log("Caught error:", error.message);
-}`,
-                exercise: 'Wrap risky code in try/catch and print custom error message.',
-                hint: 'error.message gives readable text.'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'ES6: Destructuring',
-                explain: 'Destructuring quickly extracts values from arrays and objects.',
-                code: `const user = { name: "Nora", age: 22 };
-const { name, age } = user;
-
-const nums = [10, 20, 30];
-const [first, second] = nums;`,
-                exercise: 'Destructure city and country from an object.',
-                hint: 'const { city, country } = obj;'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'ES6: Template literals',
-                explain: 'Template literals make string interpolation cleaner using backticks.',
-                code: `const name = "Yassine";
-const age = 24;
-const msg = \`My name is \${name} and I am \${age}.\`;
-console.log(msg);`,
-                exercise: 'Create a template literal with your name and favorite language.',
-                hint: 'Use backticks and ${...}.'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'ES6: Spread operator',
-                explain: 'Spread (...) copies/merges arrays and objects elegantly.',
-                code: `const a = [1, 2];
-const b = [3, 4];
-const merged = [...a, ...b];
-
-const base = { x: 1 };
-const full = { ...base, y: 2 };`,
-                exercise: 'Merge two arrays and one object using spread.',
-                hint: 'Use ... inside [] or {}'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'Advanced array methods (map, filter, reduce)',
-                explain: 'These methods are essential for transforming data in modern JS.',
-                code: `const nums = [1, 2, 3, 4, 5];
-const doubled = nums.map(n => n * 2);
-const evens = nums.filter(n => n % 2 === 0);
-const total = nums.reduce((sum, n) => sum + n, 0);`,
-                exercise: 'Get sum of squared even numbers from [1..10].',
-                hint: 'Chain filter → map → reduce.'
-            }, {
-                type: 'lesson',
-                section: 'intermediate',
-                title: 'Intro to JSON',
-                explain: 'JSON is a text format for data exchange. APIs often return JSON.',
-                code: `const user = { name: "Adam", age: 28 };
-const json = JSON.stringify(user);
-const back = JSON.parse(json);
-console.log(back.name);`,
-                exercise: 'Convert an object to JSON then back to object.',
-                hint: 'Use stringify then parse.'
-            }, {
-                type: 'challenge',
-                title: 'Intermediate Project',
-                subtitle: 'Dynamic Todo App',
-                exercise: 'Build a todo app with add/remove/complete features and save tasks in localStorage.',
-                hint: 'Use array methods and JSON.stringify for storage.'
+                title: 'Colors & Backgrounds',
+                subtitle: 'Bringing your pages to life',
+                section: 'colors'
             },
 
-            // ================= ADVANCED =================
+            // Colors
+            {
+                type: 'explain',
+                section: 'colors',
+                title: 'CSS Colors',
+                content: [
+                    '<span class="highlight">Named colors</span>: red, blue, coral, tomato',
+                    '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF',
+                    '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - includes transparency',
+                    '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - intuitive color model'
+                ],
+                instructorNote: 'RGBA and HSLA allow transparency with the alpha channel (0-1). Hex is most common in production.'
+            },
+
+            {
+                type: 'code',
+                section: 'colors',
+                title: 'Color Formats',
+                code: `/* Different ways to set red */
+color: red;
+color: #FF0000;
+color: #F00; /* shorthand */
+color: rgb(255, 0, 0);
+color: hsl(0, 100%, 50%);
+
+/* With transparency */
+color: rgba(255, 0, 0, 0.5);
+color: hsla(0, 100%, 50%, 0.5);`
+            },
+
+            // Backgrounds
+            {
+                type: 'explain',
+                section: 'colors',
+                title: 'Background Properties',
+                content: [
+                    '<code>background-color</code>: solid color fill',
+                    '<code>background-image</code>: use an image',
+                    '<code>background-size</code>: cover, contain, or specific size',
+                    '<code>background-position</code>: center, top, coordinates'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'colors',
+                title: 'Background Examples',
+                code: `.hero {
+  background-color: #1a1a2e;
+  background-image: url("hero.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Shorthand */
+.hero {
+  background: #1a1a2e url("hero.jpg") 
+              center/cover no-repeat;
+}`
+            },
+
+            // Gradients
+            {
+                type: 'explain',
+                section: 'colors',
+                title: 'CSS Gradients',
+                content: [
+                    'Create smooth <span class="highlight">color transitions</span>',
+                    '<code>linear-gradient</code>: straight line transition',
+                    '<code>radial-gradient</code>: circular transition',
+                    'Use multiple colors for complex effects'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'colors',
+                title: 'Gradient Examples',
+                code: `/* Linear gradient */
+.gradient {
+  background: linear-gradient(to right, 
+              #667eea, #764ba2);
+}
+
+/* Diagonal gradient */
+.diagonal {
+  background: linear-gradient(45deg, 
+              #f093fb, #f5576c);
+}
+
+/* Radial gradient */
+.radial {
+  background: radial-gradient(circle, 
+              #fff, #000);
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'colors',
+                title: 'Practice: Stylish Button',
+                exercise: 'Create a button class with: gradient background (two colors of your choice), white text, and padding.',
+                hint: 'Use background: linear-gradient() and color: white'
+            },
+
+            // === SECTION: BOX MODEL ===
             {
                 type: 'section',
-                title: 'Advanced',
-                subtitle: 'Asynchronous & Architecture',
-                section: 'advanced'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Callbacks',
-                explain: 'Callbacks are functions passed into other functions and executed later.',
-                code: `function processUser(name, callback) {
-  console.log("Processing " + name);
-  callback();
-}
-processUser("Omar", () => console.log("Done"));`,
-                exercise: 'Create a function that accepts callback and runs it after 1 second.',
-                hint: 'Use setTimeout(callback, 1000).'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Promises',
-                explain: 'Promises represent async results: pending, fulfilled, or rejected.',
-                code: `const p = new Promise((resolve, reject) => {
-  setTimeout(() => resolve("Success"), 1000);
-});
-
-p.then(msg => console.log(msg))
- .catch(err => console.error(err));`,
-                exercise: 'Create a promise that rejects when input is empty.',
-                hint: 'Use reject(new Error("..."))'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'async/await',
-                explain: 'async/await makes asynchronous code look like synchronous code.',
-                code: `async function loadData() {
-  const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
-  const data = await res.json();
-  console.log(data);
-}
-loadData();`,
-                exercise: 'Write async function to fetch one user and log their name.',
-                hint: 'await response.json()'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Fetch API (very important)',
-                explain: 'Fetch gets remote data from APIs and returns a Promise.',
-                code: `fetch("https://jsonplaceholder.typicode.com/posts/1")
-  .then(res => res.json())
-  .then(data => console.log(data.title));`,
-                exercise: 'Fetch 5 posts and show first title.',
-                hint: 'Use /posts endpoint and data[0].title'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Working with APIs (real examples)',
-                explain: 'Real projects consume public APIs for weather, users, maps, and more.',
-                code: `async function getGithubUser(username) {
-    const res = await fetch(\`https://api.github.com/users/\${username}\`);
-    const user = await res.json();
-    console.log(user.login, user.public_repos);
-}
-getGithubUser("octocat");`,
-                exercise: 'Fetch your GitHub profile data and log followers count.',
-                hint: 'Use api.github.com/users/<username>'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Classes & constructors',
-                explain: 'Classes define blueprints for creating objects with shared behavior.',
-                code: `class User {
-  constructor(name) {
-    this.name = name;
-  }
-  greet() {
-    return "Hi " + this.name;
-  }
-}
-
-const u = new User("Leila");
-console.log(u.greet());`,
-                exercise: 'Create Product class with constructor(name, price) and method label().',
-                hint: 'Use class + constructor + method.'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Modules (import/export)',
-                explain: 'Modules split code into reusable files and improve maintainability.',
-                code: `// math.js
-export const add = (a, b) => a + b;
-
-// main.js
-import { add } from "./math.js";
-console.log(add(2, 3));`,
-                exercise: 'Create one module exporting utility function and import it in another file.',
-                hint: 'Remember to use type="module" in script tag.'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Deep understanding of "this"',
-                explain: 'this depends on call-site: object method, function call, class method, or bound function.',
-                code: `function show() { console.log(this); }
-const obj = { name: "Rita", show };
-obj.show(); // this = obj
-
-const bound = show.bind(obj);
-bound(); // this = obj`,
-                exercise: 'Use bind() to force this inside a function.',
-                hint: 'const fixed = fn.bind(obj)'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Closures (simple explanation)',
-                explain: 'A closure is when a function remembers variables from its outer scope.',
-                code: `function makeCounter() {
-  let count = 0;
-  return function () {
-    count++;
-    return count;
-  };
-}
-
-const counter = makeCounter();
-console.log(counter()); // 1
-console.log(counter()); // 2`,
-                exercise: 'Create makeAdder(x) returning function(y) => x + y.',
-                hint: 'Inner function can access x from outer scope.'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'Event loop (conceptual)',
-                explain: 'JS is single-threaded. Event loop coordinates call stack, Web APIs, and callback queue.',
-                code: `console.log("A");
-setTimeout(() => console.log("B"), 0);
-Promise.resolve().then(() => console.log("C"));
-console.log("D");
-// Output: A, D, C, B`,
-                exercise: 'Predict output order for code using console.log + setTimeout + Promise.',
-                hint: 'Microtasks (Promise) run before macrotasks (setTimeout).'
-            }, {
-                type: 'challenge',
-                title: 'Advanced Project',
-                subtitle: 'API Data Explorer',
-                exercise: 'Build an API project that fetches data from a public API (e.g. JSONPlaceholder or GitHub), supports search, loading states, and error handling.',
-                hint: 'Use async/await + try/catch + dynamic DOM rendering.'
+                title: 'The Box Model',
+                subtitle: 'Understanding spacing and layout',
+                section: 'boxmodel'
             },
 
+            // Box Model
+            {
+                type: 'explain',
+                section: 'boxmodel',
+                title: 'What is the Box Model?',
+                content: [
+                    'Every element is a <span class="highlight">rectangular box</span>',
+                    'Four layers: content → padding → border → margin',
+                    'Understanding this is <span class="highlight">essential</span> for layout'
+                ],
+                analogy: 'Think of a picture frame: the photo is content, the mat is padding, the frame is border, and the space on the wall is margin.',
+                instructorNote: 'This is often the most confusing concept for beginners. Draw diagrams and use browser DevTools to visualize.'
+            },
+
+            {
+                type: 'code',
+                section: 'boxmodel',
+                title: 'Box Model Properties',
+                code: `.box {
+  /* Content area */
+  width: 300px;
+  height: 200px;
+  
+  /* Padding (inside) */
+  padding: 20px;
+  
+  /* Border */
+  border: 2px solid #a78bfa;
+  
+  /* Margin (outside) */
+  margin: 30px;
+}`
+            },
+
+            // Padding
+            {
+                type: 'explain',
+                section: 'boxmodel',
+                title: 'Padding',
+                content: [
+                    'Space <span class="highlight">inside</span> the element',
+                    'Background color extends into padding',
+                    'Can be set per side: top, right, bottom, left'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'boxmodel',
+                title: 'Padding Syntax',
+                code: `/* All sides */
+padding: 20px;
+
+/* Vertical | Horizontal */
+padding: 10px 30px;
+
+/* Top | Horizontal | Bottom */
+padding: 10px 30px 20px;
+
+/* Top | Right | Bottom | Left */
+padding: 10px 20px 30px 40px;
+
+/* Individual sides */
+padding-top: 10px;
+padding-right: 20px;`
+            },
+
+            // Margin
+            {
+                type: 'explain',
+                section: 'boxmodel',
+                title: 'Margin',
+                content: [
+                    'Space <span class="highlight">outside</span> the element',
+                    'Transparent - shows background of parent',
+                    'Margins can <span class="highlight">collapse</span> vertically'
+                ],
+                instructorNote: 'Margin collapse is tricky: when two vertical margins meet, they combine into the larger one, not add together.'
+            },
+
+            {
+                type: 'code',
+                section: 'boxmodel',
+                title: 'Margin Syntax',
+                code: `/* Center an element */
+.container {
+  width: 960px;
+  margin: 0 auto;
+}
+
+/* Remove default margins */
+body {
+  margin: 0;
+}
+
+/* Negative margins overlap */
+.overlap {
+  margin-top: -20px;
+}`
+            },
+
+            // Border
+            {
+                type: 'explain',
+                section: 'boxmodel',
+                title: 'Borders',
+                content: [
+                    'The edge <span class="highlight">around</span> the element',
+                    'Requires: width, style, color',
+                    'Styles: solid, dashed, dotted, double, none'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'boxmodel',
+                title: 'Border Properties',
+                code: `/* Shorthand */
+border: 1px solid #333;
+
+/* Individual properties */
+border-width: 2px;
+border-style: dashed;
+border-color: #a78bfa;
+
+/* One side only */
+border-bottom: 3px solid navy;
+
+/* Rounded corners */
+border-radius: 8px;
+border-radius: 50%; /* circle */`
+            },
+
+            {
+                type: 'exercise',
+                section: 'boxmodel',
+                title: 'Practice: Card Component',
+                exercise: 'Create a "card" class with: light gray background, 20px padding, 1px solid border, 10px border-radius, and 15px bottom margin.',
+                hint: 'Combine background, padding, border, border-radius, and margin.'
+            },
+
+            // === SECTION: TYPOGRAPHY ===
+            {
+                type: 'section',
+                title: 'Typography',
+                subtitle: 'Styling text for readability',
+                section: 'typography'
+            },
+
+            // Text Properties
+            {
+                type: 'explain',
+                section: 'typography',
+                title: 'Text Properties',
+                content: [
+                    '<code>font-family</code>: choose typefaces',
+                    '<code>font-size</code>: text size (px, rem, em)',
+                    '<code>font-weight</code>: boldness (100-900)',
+                    '<code>line-height</code>: spacing between lines'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'typography',
+                title: 'Typography Basics',
+                code: `body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+}
+
+h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}`
+            },
+
+            // Text Alignment
+            {
+                type: 'explain',
+                section: 'typography',
+                title: 'Text Alignment & Decoration',
+                content: [
+                    '<code>text-align</code>: left, center, right, justify',
+                    '<code>text-decoration</code>: underline, none, line-through',
+                    '<code>text-transform</code>: uppercase, lowercase, capitalize',
+                    '<code>letter-spacing</code>: space between letters'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'typography',
+                title: 'Text Styling',
+                code: `h1 {
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.deleted {
+  text-decoration: line-through;
+}`
+            },
+
+            // Google Fonts
+            {
+                type: 'explain',
+                section: 'typography',
+                title: 'Custom Fonts',
+                content: [
+                    'Use <span class="highlight">Google Fonts</span> for free web fonts',
+                    'Add &lt;link&gt; in HTML head',
+                    'Reference in CSS with font-family',
+                    'Always include fallback fonts'
+                ],
+                instructorNote: 'Remind students to include fallback fonts in case Google Fonts fails to load.'
+            },
+
+            {
+                type: 'code',
+                section: 'typography',
+                title: 'Using Google Fonts',
+                code: `/* In HTML <head> */
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+/* In CSS */
+body {
+  font-family: 'Roboto', Arial, sans-serif;
+}
+
+h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+}`
+            },
+
+            // === SECTION: LAYOUT BASICS ===
+            {
+                type: 'section',
+                title: 'Layout Basics',
+                subtitle: 'Positioning elements on the page',
+                section: 'layout'
+            },
+
+            // Display Property
+            {
+                type: 'explain',
+                section: 'layout',
+                title: 'Display Property',
+                content: [
+                    '<code>block</code>: full width, new line (div, p, h1)',
+                    '<code>inline</code>: only needed width (span, a)',
+                    '<code>inline-block</code>: inline but accepts width/height',
+                    '<code>none</code>: hides element completely'
+                ],
+                instructorNote: 'Understanding display is fundamental. Block elements break to new lines; inline elements flow within text.'
+            },
+
+            {
+                type: 'code',
+                section: 'layout',
+                title: 'Display Examples',
+                code: `/* Block element */
+div {
+  display: block;
+  width: 100%;
+}
+
+/* Inline element */
+span {
+  display: inline;
+}
+
+/* Hide element */
+.hidden {
+  display: none;
+}
+
+/* Navigation items */
+nav a {
+  display: inline-block;
+  padding: 10px 20px;
+}`
+            },
+
+            // Position
+            {
+                type: 'explain',
+                section: 'layout',
+                title: 'Position Property',
+                content: [
+                    '<code>static</code>: default, normal flow',
+                    '<code>relative</code>: offset from normal position',
+                    '<code>absolute</code>: positioned relative to nearest positioned ancestor',
+                    '<code>fixed</code>: positioned relative to viewport',
+                    '<code>sticky</code>: toggles between relative and fixed'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'layout',
+                title: 'Position Examples',
+                code: `/* Fixed header */
+header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Absolute inside relative */
+.card {
+  position: relative;
+}
+.badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* Sticky sidebar */
+.sidebar {
+  position: sticky;
+  top: 20px;
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'layout',
+                title: 'Practice: Fixed Navigation',
+                exercise: 'Create a fixed navigation bar that stays at the top of the page with: dark background, white text, and 20px padding.',
+                hint: 'Use position: fixed; top: 0; width: 100%'
+            },
+
+            // === SECTION: FLEXBOX ===
+            {
+                type: 'section',
+                title: 'Flexbox',
+                subtitle: 'Modern one-dimensional layouts',
+                section: 'flexbox'
+            },
+
+            // Flexbox Intro
+            {
+                type: 'explain',
+                section: 'flexbox',
+                title: 'What is Flexbox?',
+                content: [
+                    'A powerful layout mode for <span class="highlight">one-dimensional</span> layouts',
+                    'Easily align and distribute space',
+                    'Great for navigation, cards, centering',
+                    'Works on container and items'
+                ],
+                analogy: 'Flexbox is like a smart shelf that automatically adjusts item positions based on your rules.'
+            },
+
+            {
+                type: 'code',
+                section: 'flexbox',
+                title: 'Flex Container',
+                code: `.container {
+  display: flex;
+  
+  /* Main axis alignment */
+  justify-content: center; /* or flex-start, flex-end, space-between, space-around */
+  
+  /* Cross axis alignment */
+  align-items: center; /* or flex-start, flex-end, stretch */
+  
+  /* Direction */
+  flex-direction: row; /* or column */
+}`
+            },
+
+            {
+                type: 'code',
+                section: 'flexbox',
+                title: 'Flex Items',
+                code: `.item {
+  /* Grow to fill space */
+  flex-grow: 1;
+  
+  /* Shrink if needed */
+  flex-shrink: 0;
+  
+  /* Base size */
+  flex-basis: 200px;
+  
+  /* Shorthand: grow shrink basis */
+  flex: 1 0 200px;
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'flexbox',
+                title: 'Practice: Centered Content',
+                exercise: 'Create a container that perfectly centers its content both horizontally and vertically (assume the container has a fixed height of 400px).',
+                hint: 'Use display: flex with justify-content and align-items.'
+            },
+
+            // === SECTION: GRID ===
+            {
+                type: 'section',
+                title: 'CSS Grid',
+                subtitle: 'Two-dimensional layouts made easy',
+                section: 'grid'
+            },
+
+            // Grid Intro
+            {
+                type: 'explain',
+                section: 'grid',
+                title: 'What is CSS Grid?',
+                content: [
+                    'A layout system for <span class="highlight">two-dimensional</span> layouts',
+                    'Work with rows AND columns simultaneously',
+                    'Perfect for page layouts and galleries',
+                    'More control than Flexbox for complex layouts'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'grid',
+                title: 'Grid Container',
+                code: `.grid {
+  display: grid;
+  
+  /* Define columns */
+  grid-template-columns: 1fr 2fr 1fr;
+  
+  /* Or repeat */
+  grid-template-columns: repeat(3, 1fr);
+  
+  /* Gap between items */
+  gap: 20px;
+  
+  /* Rows */
+  grid-template-rows: 100px auto;
+}`
+            },
+
+            {
+                type: 'code',
+                section: 'grid',
+                title: 'Grid Items',
+                code: `.header {
+  grid-column: 1 / -1; /* full width */
+}
+
+.sidebar {
+  grid-row: 2 / 4; /* span 2 rows */
+}
+
+.main {
+  grid-column: 2;
+  grid-row: 2;
+}`
+            },
+
+            // === SECTION: RESPONSIVE ===
+            {
+                type: 'section',
+                title: 'Responsive Design',
+                subtitle: 'Building for all devices',
+                section: 'responsive'
+            },
+
+            // Media Queries
+            {
+                type: 'explain',
+                section: 'responsive',
+                title: 'Media Queries',
+                content: [
+                    'Apply CSS based on <span class="highlight">screen size</span>',
+                    'Mobile-first approach: start small, add for larger screens',
+                    'Common breakpoints: 768px (tablet), 1024px (desktop)',
+                    'Use relative units (rem, %, vw/vh)'
+                ],
+                instructorNote: 'Mobile-first is preferred because it forces you to prioritize content and performance.'
+            },
+
+            {
+                type: 'code',
+                section: 'responsive',
+                title: 'Media Query Syntax',
+                code: `/* Mobile-first base styles */
+.container {
+  width: 100%;
+  padding: 1rem;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+    margin: 0 auto;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .container {
+    width: 960px;
+  }
+}`
+            },
+
+            {
+                type: 'code',
+                section: 'responsive',
+                title: 'Responsive Patterns',
+                code: `/* Responsive images */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Responsive typography */
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+}
+
+/* Hide on mobile */
+.sidebar {
+  display: none;
+}
+@media (min-width: 1024px) {
+  .sidebar {
+    display: block;
+  }
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'responsive',
+                title: 'Practice: Responsive Layout',
+                exercise: 'Create a card grid that shows 1 column on mobile, 2 columns on tablet (768px+), and 3 columns on desktop (1024px+).',
+                hint: 'Use CSS Grid with media queries to change grid-template-columns.'
+            },
+
+            // === SECTION: TRANSITIONS & ANIMATIONS ===
+            {
+                type: 'section',
+                title: 'Transitions & Animations',
+                subtitle: 'Bringing interfaces to life',
+                section: 'animations'
+            },
+
+            // Transitions
+            {
+                type: 'explain',
+                section: 'animations',
+                title: 'CSS Transitions',
+                content: [
+                    'Smooth changes between <span class="highlight">states</span>',
+                    'Triggered by hover, focus, class changes',
+                    'Properties: property, duration, timing-function, delay',
+                    'Great for micro-interactions'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'animations',
+                title: 'Transition Syntax',
+                code: `.button {
+  background: #3b82f6;
+  transform: scale(1);
+  transition: all 0.3s ease;
+}
+
+.button:hover {
+  background: #2563eb;
+  transform: scale(1.05);
+}
+
+/* Individual properties */
+transition: transform 0.3s ease, 
+            background 0.2s linear;`
+            },
+
+            // Transforms
+            {
+                type: 'explain',
+                section: 'animations',
+                title: 'CSS Transforms',
+                content: [
+                    '<code>translate</code>: move elements',
+                    '<code>rotate</code>: spin elements',
+                    '<code>scale</code>: resize elements',
+                    '<code>skew</code>: distort elements',
+                    'Does not affect document flow'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'animations',
+                title: 'Transform Examples',
+                code: `/* Move */
+.card:hover {
+  transform: translateY(-10px);
+}
+
+/* Rotate */
+.icon {
+  transform: rotate(45deg);
+}
+
+/* Scale */
+.zoom:hover {
+  transform: scale(1.1);
+}
+
+/* Combine */
+.complex {
+  transform: translateX(50px) rotate(-5deg) scale(1.2);
+}`
+            },
+
+            // Animations
+            {
+                type: 'explain',
+                section: 'animations',
+                title: 'CSS Animations',
+                content: [
+                    'Create <span class="highlight">keyframe</span> sequences',
+                    'More control than transitions',
+                    'Can loop and run automatically',
+                    'Define @keyframes, then apply to elements'
+                ]
+            },
+
+            {
+                type: 'code',
+                section: 'animations',
+                title: 'Animation Syntax',
+                code: `/* Define keyframes */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply animation */
+.element {
+  animation: fade-in 0.5s ease forwards;
+}`
+            },
+
+            {
+                type: 'exercise',
+                section: 'animations',
+                title: 'Practice: Hover Card',
+                exercise: 'Create a card that smoothly lifts up and adds a shadow when hovered. Use transform, box-shadow, and transition.',
+                hint: 'transform: translateY(-5px) and box-shadow: 0 10px 20px rgba(0,0,0,0.2)'
+            },
+
+            // === FINAL SLIDE ===
             {
                 type: 'final',
-                title: 'Course Completed 🎉',
-                subtitle: 'You covered Beginner, Intermediate, and Advanced JavaScript',
+                title: 'Congratulations!',
+                subtitle: 'You have learned the fundamentals of CSS',
                 content: [
-                    'You learned core syntax, DOM, and modern ES6+',
-                    'You understand async JavaScript and API integration',
-                    'You practiced with 3 project ideas (one per level)',
-                    'Next step: build and deploy your own portfolio projects!'
+                    'You can style elements with selectors and properties',
+                    'You understand the box model and spacing',
+                    'You can create layouts with Flexbox and Grid',
+                    'You know how to make responsive designs',
+                    'You can add animations and transitions'
                 ]
+            },
+
+            {
+                type: 'challenge',
+                title: 'Final Challenge',
+                subtitle: 'Put it all together',
+                exercise: 'Style your HTML page from the previous course:\n- Add a Google Font\n- Create a color scheme with CSS variables\n- Style your navigation with Flexbox\n- Add hover effects on links\n- Make it responsive with media queries\n- Add a gradient background to the header',
+                hint: 'Use the cascade to your advantage - base styles first, then overrides!'
             }
         ];
 
@@ -1048,14 +1543,265 @@ console.log("D");
         const nextBtn = document.getElementById('nextBtn');
         const progressFill = document.getElementById('progressFill');
         const slideCounter = document.getElementById('slideCounter');
+        const langToggleBtn = document.getElementById('langToggleBtn');
 
         let currentSlide = 0;
+        let currentLang = 'en';
+
+        const uiText = {
+            en: {
+                section: 'Section',
+                explain: 'Explain',
+                codeExample: 'Code Example',
+                practice: 'Practice',
+                handsOn: 'Hands-on Exercise',
+                hint: 'Hint',
+                finalChallenge: 'Final Challenge',
+                finalProject: 'Final Project',
+                realAnalogy: 'Real-world Analogy',
+                instructorNote: 'Instructor Note',
+                startHint: 'Press <kbd>→</kbd> or click Next to begin'
+            },
+            ar: {
+                section: 'القسم',
+                explain: 'شرح',
+                codeExample: 'مثال كود',
+                practice: 'تطبيق',
+                handsOn: 'تمرين عملي',
+                hint: 'تلميح',
+                finalChallenge: 'التحدي النهائي',
+                finalProject: 'المشروع النهائي',
+                realAnalogy: 'تشبيه من الواقع',
+                instructorNote: 'ملاحظة المدرّس',
+                startHint: 'اضغط <kbd>→</kbd> أو انقر Next للبدء'
+            }
+        };
+
+        const arMap = {
+            'CSS for Beginners': 'CSS للمبتدئين',
+            'Master the art of styling web pages': 'أتقن فن تنسيق صفحات الويب',
+            'CSS Basics': 'أساسيات CSS',
+            'Understanding how to style elements': 'فهم كيفية تنسيق العناصر',
+            'What is CSS?': 'ما هي CSS؟',
+            'CSS Syntax': 'صياغة CSS',
+            'CSS Selectors': 'محددات CSS',
+            'Types of Selectors': 'أنواع المحددات',
+            'Practice: Selectors': 'تطبيق: المحددات',
+            'How to Add CSS': 'كيفية إضافة CSS',
+            'Adding CSS to HTML': 'إضافة CSS إلى HTML',
+            'CSS Comments': 'تعليقات CSS',
+            'Writing Comments': 'كتابة التعليقات',
+            'Colors & Backgrounds': 'الألوان والخلفيات',
+            'Bringing your pages to life': 'إضفاء الحياة على صفحاتك',
+            'CSS Colors': 'ألوان CSS',
+            'Color Formats': 'تنسيقات الألوان',
+            'Background Properties': 'خصائص الخلفية',
+            'Background Examples': 'أمثلة الخلفية',
+            'CSS Gradients': 'تدرجات CSS',
+            'Gradient Examples': 'أمثلة التدرجات',
+            'Practice: Stylish Button': 'تطبيق: زر أنيق',
+            'The Box Model': 'نموذج الصندوق',
+            'Understanding spacing and layout': 'فهم المسافات والتخطيط',
+            'What is the Box Model?': 'ما هو نموذج الصندوق؟',
+            'Box Model Properties': 'خصائص نموذج الصندوق',
+            'Padding': 'الحشو Padding',
+            'Padding Syntax': 'صياغة الحشو',
+            'Margin': 'الهامش Margin',
+            'Margin Syntax': 'صياغة الهامش',
+            'Borders': 'الحدود Borders',
+            'Border Properties': 'خصائص الحدود',
+            'Practice: Card Component': 'تطبيق: مكوّن البطاقة',
+            'Typography': 'الطباعة',
+            'Styling text for readability': 'تنسيق النص لتحسين القراءة',
+            'Text Properties': 'خصائص النص',
+            'Typography Basics': 'أساسيات الطباعة',
+            'Text Alignment & Decoration': 'محاذاة النص وزخرفته',
+            'Text Styling': 'تنسيق النص',
+            'Custom Fonts': 'الخطوط المخصصة',
+            'Using Google Fonts': 'استخدام Google Fonts',
+            'Layout Basics': 'أساسيات التخطيط',
+            'Positioning elements on the page': 'تموضع العناصر في الصفحة',
+            'Display Property': 'خاصية display',
+            'Display Examples': 'أمثلة display',
+            'Position Property': 'خاصية position',
+            'Position Examples': 'أمثلة position',
+            'Practice: Fixed Navigation': 'تطبيق: شريط تنقل ثابت',
+            'Flexbox': 'فليكس بوكس',
+            'Modern one-dimensional layouts': 'تخطيطات حديثة أحادية البعد',
+            'What is Flexbox?': 'ما هو Flexbox؟',
+            'Flex Container': 'حاوية Flex',
+            'Flex Items': 'عناصر Flex',
+            'Practice: Centered Content': 'تطبيق: محتوى في المنتصف',
+            'CSS Grid': 'شبكة CSS',
+            'Two-dimensional layouts made easy': 'تخطيطات ثنائية البعد بسهولة',
+            'What is CSS Grid?': 'ما هي CSS Grid؟',
+            'Grid Container': 'حاوية Grid',
+            'Grid Items': 'عناصر Grid',
+            'Responsive Design': 'التصميم المتجاوب',
+            'Building for all devices': 'التصميم لكل الأجهزة',
+            'Media Queries': 'استعلامات الوسائط',
+            'Media Query Syntax': 'صياغة Media Query',
+            'Responsive Patterns': 'أنماط التجاوب',
+            'Practice: Responsive Layout': 'تطبيق: تخطيط متجاوب',
+            'Transitions & Animations': 'الانتقالات والحركات',
+            'Bringing interfaces to life': 'إضفاء الحياة على الواجهات',
+            'CSS Transitions': 'انتقالات CSS',
+            'Transition Syntax': 'صياغة الانتقالات',
+            'CSS Transforms': 'تحويلات CSS',
+            'Transform Examples': 'أمثلة التحويلات',
+            'CSS Animations': 'حركات CSS',
+            'Animation Syntax': 'صياغة الحركات',
+            'Practice: Hover Card': 'تطبيق: بطاقة Hover',
+            'Congratulations!': 'مبروك!',
+            'You have learned the fundamentals of CSS': 'لقد تعلمت أساسيات CSS',
+            'Final Challenge': 'التحدي النهائي',
+            'Put it all together': 'طبّق كل ما تعلمته',
+
+            'CSS stands for <span class="highlight">Cascading Style Sheets</span>': 'CSS اختصار لـ <span class="highlight">Cascading Style Sheets</span>',
+            'It controls the <span class="highlight">visual presentation</span> of HTML': 'تتحكم في <span class="highlight">المظهر المرئي</span> لعناصر HTML',
+            'CSS describes how elements should be displayed': 'CSS تصف كيف يجب أن تظهر العناصر',
+            'If HTML is the skeleton of a house, CSS is the paint, wallpaper, and decorations that make it beautiful.': 'إذا كان HTML هو هيكل المنزل، فإن CSS هي الطلاء والزينة التي تجعله جميلًا.',
+            'Emphasize "Cascading" - styles can override each other based on specificity and order.': 'ركّز على معنى "Cascading" لأن الأنماط قد تتجاوز بعضها حسب التخصيص والترتيب.',
+            '<span class="highlight">Element</span> selector: targets HTML tags (p, h1, div)': 'محدد <span class="highlight">العنصر</span>: يستهدف وسوم HTML مثل p و h1 و div',
+            '<span class="highlight">Class</span> selector: targets .classname (reusable)': 'محدد <span class="highlight">class</span>: يستهدف .classname (قابل لإعادة الاستخدام)',
+            '<span class="highlight">ID</span> selector: targets #idname (unique per page)': 'محدد <span class="highlight">ID</span>: يستهدف #idname (فريد في الصفحة)',
+            'Best practice: Use classes for styling, IDs for JavaScript hooks and anchor links.': 'أفضل ممارسة: استخدم classes للتنسيق و IDs لروابط المرساة وتعامل JavaScript.',
+            'Write CSS to: make all paragraphs gray, create a class called "warning" with red text, and style an element with id="logo" to have a blue background.': 'اكتب CSS لـ: جعل كل الفقرات رمادية، وإنشاء class اسمها "warning" بنص أحمر، وتنسيق عنصر id="logo" بخلفية زرقاء.',
+            'Remember: element {} .class {} #id {}': 'تذكّر: element {} .class {} #id {}',
+            '<span class="highlight">External CSS</span>: Separate .css file (recommended)': '<span class="highlight">External CSS</span>: ملف .css منفصل (مستحسن)',
+            '<span class="highlight">Internal CSS</span>: Inside &lt;style&gt; tag in &lt;head&gt;': '<span class="highlight">Internal CSS</span>: داخل وسم &lt;style&gt; في &lt;head&gt;',
+            '<span class="highlight">Inline CSS</span>: style attribute on elements (avoid)': '<span class="highlight">Inline CSS</span>: خاصية style داخل العنصر (يفضّل تجنبه)',
+            'External CSS is like a central wardrobe - change one file and your whole site updates. Inline is like painting clothes individually - hard to maintain.': 'الـ External CSS مثل خزانة مركزية: تغيير ملف واحد يحدّث كل الموقع. أما Inline فهو مثل تعديل كل قطعة وحدها وصعب الصيانة.',
+            'Comments help document your code': 'التعليقات تساعد في توثيق الكود',
+            'They are <span class="highlight">ignored</span> by the browser': 'المتصفح <span class="highlight">يتجاهلها</span>',
+            'Use them to organize sections and explain logic': 'استخدمها لتنظيم الأقسام وشرح المنطق',
+            '<span class="highlight">Named colors</span>: red, blue, coral, tomato': '<span class="highlight">ألوان مسماة</span>: red, blue, coral, tomato',
+            '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF': '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF',
+            '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - includes transparency': '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - يدعم الشفافية',
+            '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - intuitive color model': '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - نموذج ألوان بديهي',
+            'RGBA and HSLA allow transparency with the alpha channel (0-1). Hex is most common in production.': 'RGBA و HSLA يسمحان بالشفافية عبر alpha (من 0 إلى 1). وHex هو الأكثر استخدامًا في المشاريع.',
+            '<code>background-color</code>: solid color fill': '<code>background-color</code>: تعبئة بلون ثابت',
+            '<code>background-image</code>: use an image': '<code>background-image</code>: استخدام صورة',
+            '<code>background-size</code>: cover, contain, or specific size': '<code>background-size</code>: cover أو contain أو حجم محدد',
+            '<code>background-position</code>: center, top, coordinates': '<code>background-position</code>: center أو top أو إحداثيات',
+            'Create smooth <span class="highlight">color transitions</span>': 'أنشئ <span class="highlight">انتقالات لونية</span> ناعمة',
+            '<code>linear-gradient</code>: straight line transition': '<code>linear-gradient</code>: انتقال بخط مستقيم',
+            '<code>radial-gradient</code>: circular transition': '<code>radial-gradient</code>: انتقال دائري',
+            'Use multiple colors for complex effects': 'استخدم عدة ألوان لمؤثرات أكثر',
+            'Create a button class with: gradient background (two colors of your choice), white text, and padding.': 'أنشئ class لزر يحتوي على: خلفية متدرجة (لونان من اختيارك) ونص أبيض وpadding.',
+            'Use background: linear-gradient() and color: white': 'استخدم background: linear-gradient() و color: white',
+            'Every element is a <span class="highlight">rectangular box</span>': 'كل عنصر هو <span class="highlight">صندوق مستطيل</span>',
+            'Four layers: content → padding → border → margin': 'أربع طبقات: المحتوى ← padding ← border ← margin',
+            'Understanding this is <span class="highlight">essential</span> for layout': 'فهم هذا <span class="highlight">أساسي</span> للتخطيط',
+            'Think of a picture frame: the photo is content, the mat is padding, the frame is border, and the space on the wall is margin.': 'تخيل إطار صورة: الصورة هي المحتوى، والحشوة padding، والإطار border، والمسافة حوله margin.',
+            'This is often the most confusing concept for beginners. Draw diagrams and use browser DevTools to visualize.': 'هذا غالبًا أكثر مفهوم يربك المبتدئين. ارسم مخططات واستخدم DevTools للتوضيح.',
+            'Space <span class="highlight">inside</span> the element': 'مساحة <span class="highlight">داخل</span> العنصر',
+            'Background color extends into padding': 'لون الخلفية يمتد داخل padding',
+            'Can be set per side: top, right, bottom, left': 'يمكن ضبطه لكل جهة: أعلى، يمين، أسفل، يسار',
+            'Space <span class="highlight">outside</span> the element': 'مساحة <span class="highlight">خارج</span> العنصر',
+            'Transparent - shows background of parent': 'شفاف ويُظهر خلفية العنصر الأب',
+            'Margins can <span class="highlight">collapse</span> vertically': 'الهوامش قد <span class="highlight">تنهار/تندمج</span> عموديًا',
+            'Margin collapse is tricky: when two vertical margins meet, they combine into the larger one, not add together.': 'اندماج الهوامش قد يكون صعبًا: عند التقاء هامشين عموديين يتم أخذ الأكبر وليس مجموعهما.',
+            'The edge <span class="highlight">around</span> the element': 'الحافة <span class="highlight">حول</span> العنصر',
+            'Requires: width, style, color': 'يتطلب: العرض، النمط، اللون',
+            'Styles: solid, dashed, dotted, double, none': 'أنماط مثل: solid, dashed, dotted, double, none',
+            'Create a "card" class with: light gray background, 20px padding, 1px solid border, 10px border-radius, and 15px bottom margin.': 'أنشئ class باسم "card" بخلفية رمادية فاتحة، وpadding 20px، وحد 1px solid، وborder-radius 10px، وmargin-bottom 15px.',
+            'Combine background, padding, border, border-radius, and margin.': 'اجمع بين background وpadding وborder وborder-radius وmargin.',
+            '<code>font-family</code>: choose typefaces': '<code>font-family</code>: اختيار الخطوط',
+            '<code>font-size</code>: text size (px, rem, em)': '<code>font-size</code>: حجم النص (px, rem, em)',
+            '<code>font-weight</code>: boldness (100-900)': '<code>font-weight</code>: سماكة الخط (100-900)',
+            '<code>line-height</code>: spacing between lines': '<code>line-height</code>: المسافة بين الأسطر',
+            '<code>text-align</code>: left, center, right, justify': '<code>text-align</code>: left, center, right, justify',
+            '<code>text-decoration</code>: underline, none, line-through': '<code>text-decoration</code>: underline, none, line-through',
+            '<code>text-transform</code>: uppercase, lowercase, capitalize': '<code>text-transform</code>: uppercase, lowercase, capitalize',
+            '<code>letter-spacing</code>: space between letters': '<code>letter-spacing</code>: المسافة بين الحروف',
+            'Use <span class="highlight">Google Fonts</span> for free web fonts': 'استخدم <span class="highlight">Google Fonts</span> للحصول على خطوط ويب مجانية',
+            'Add &lt;link&gt; in HTML head': 'أضف وسم &lt;link&gt; داخل head في HTML',
+            'Reference in CSS with font-family': 'استخدم الخط في CSS عبر font-family',
+            'Always include fallback fonts': 'ضع دائمًا خطوط بديلة',
+            'Remind students to include fallback fonts in case Google Fonts fails to load.': 'ذكّر الطلاب بوضع خطوط بديلة في حال لم يتم تحميل Google Fonts.',
+            '<code>block</code>: full width, new line (div, p, h1)': '<code>block</code>: عرض كامل وسطر جديد (div, p, h1)',
+            '<code>inline</code>: only needed width (span, a)': '<code>inline</code>: يأخذ العرض اللازم فقط (span, a)',
+            '<code>inline-block</code>: inline but accepts width/height': '<code>inline-block</code>: مثل inline لكنه يقبل width/height',
+            '<code>none</code>: hides element completely': '<code>none</code>: يخفي العنصر بالكامل',
+            'Understanding display is fundamental. Block elements break to new lines; inline elements flow within text.': 'فهم display أساسي. عناصر block تبدأ سطرًا جديدًا، بينما inline تسير داخل النص.',
+            '<code>static</code>: default, normal flow': '<code>static</code>: الوضع الافتراضي وتدفق طبيعي',
+            '<code>relative</code>: offset from normal position': '<code>relative</code>: إزاحة عن الموضع الطبيعي',
+            '<code>absolute</code>: positioned relative to nearest positioned ancestor': '<code>absolute</code>: يتموضع بالنسبة لأقرب أب متموضع',
+            '<code>fixed</code>: positioned relative to viewport': '<code>fixed</code>: يتموضع بالنسبة للشاشة',
+            '<code>sticky</code>: toggles between relative and fixed': '<code>sticky</code>: يتبدل بين relative وfixed',
+            'Create a fixed navigation bar that stays at the top of the page with: dark background, white text, and 20px padding.': 'أنشئ شريط تنقل ثابتًا أعلى الصفحة بخلفية داكنة ونص أبيض وpadding بقيمة 20px.',
+            'Use position: fixed; top: 0; width: 100%': 'استخدم position: fixed; top: 0; width: 100%',
+            'A powerful layout mode for <span class="highlight">one-dimensional</span> layouts': 'نمط تخطيط قوي لتخطيطات <span class="highlight">أحادية البعد</span>',
+            'Easily align and distribute space': 'محاذاة العناصر وتوزيع المسافات بسهولة',
+            'Great for navigation, cards, centering': 'ممتاز لشريط التنقل والبطاقات والتمركز',
+            'Works on container and items': 'يعمل على الحاوية والعناصر',
+            'Flexbox is like a smart shelf that automatically adjusts item positions based on your rules.': 'Flexbox مثل رف ذكي يضبط مواقع العناصر تلقائيًا حسب قواعدك.',
+            'Create a container that perfectly centers its content both horizontally and vertically (assume the container has a fixed height of 400px).': 'أنشئ حاوية تُوسّط المحتوى أفقيًا وعموديًا (افترض ارتفاعًا ثابتًا 400px).',
+            'Use display: flex with justify-content and align-items.': 'استخدم display: flex مع justify-content وalign-items.',
+            'A layout system for <span class="highlight">two-dimensional</span> layouts': 'نظام تخطيط لتخطيطات <span class="highlight">ثنائية البعد</span>',
+            'Work with rows AND columns simultaneously': 'يتعامل مع الصفوف والأعمدة معًا',
+            'Perfect for page layouts and galleries': 'مثالي لتخطيط الصفحات والمعارض',
+            'More control than Flexbox for complex layouts': 'تحكم أكبر من Flexbox في التخطيطات المعقدة',
+            'Apply CSS based on <span class="highlight">screen size</span>': 'طبّق CSS حسب <span class="highlight">حجم الشاشة</span>',
+            'Mobile-first approach: start small, add for larger screens': 'منهج Mobile-first: ابدأ بالشاشات الصغيرة ثم أضف للشاشات الأكبر',
+            'Common breakpoints: 768px (tablet), 1024px (desktop)': 'نقاط توقف شائعة: 768px (تابلت)، 1024px (سطح مكتب)',
+            'Use relative units (rem, %, vw/vh)': 'استخدم الوحدات النسبية (rem, %, vw/vh)',
+            'Mobile-first is preferred because it forces you to prioritize content and performance.': 'يفضّل Mobile-first لأنه يجبرك على ترتيب أولوية المحتوى والأداء.',
+            'Create a card grid that shows 1 column on mobile, 2 columns on tablet (768px+), and 3 columns on desktop (1024px+).': 'أنشئ شبكة بطاقات تعرض عمودًا واحدًا على الهاتف، وعمودين على التابلت (768px+)، و3 أعمدة على سطح المكتب (1024px+).',
+            'Use CSS Grid with media queries to change grid-template-columns.': 'استخدم CSS Grid مع media queries لتغيير grid-template-columns.',
+            'Smooth changes between <span class="highlight">states</span>': 'انتقالات سلسة بين <span class="highlight">الحالات</span>',
+            'Triggered by hover, focus, class changes': 'تعمل عند hover وfocus وتغيير class',
+            'Properties: property, duration, timing-function, delay': 'الخصائص: property وduration وtiming-function وdelay',
+            'Great for micro-interactions': 'ممتازة للتفاعلات الدقيقة',
+            '<code>translate</code>: move elements': '<code>translate</code>: تحريك العناصر',
+            '<code>rotate</code>: spin elements': '<code>rotate</code>: تدوير العناصر',
+            '<code>scale</code>: resize elements': '<code>scale</code>: تغيير حجم العناصر',
+            '<code>skew</code>: distort elements': '<code>skew</code>: إمالة/تشويه العناصر',
+            'Does not affect document flow': 'لا يؤثر على تدفق المستند',
+            'Create <span class="highlight">keyframe</span> sequences': 'أنشئ تسلسلات <span class="highlight">keyframe</span>',
+            'More control than transitions': 'تحكم أكبر من transitions',
+            'Can loop and run automatically': 'يمكن أن تتكرر وتعمل تلقائيًا',
+            'Define @keyframes, then apply to elements': 'عرّف @keyframes ثم طبّقها على العناصر',
+            'Create a card that smoothly lifts up and adds a shadow when hovered. Use transform, box-shadow, and transition.': 'أنشئ بطاقة ترتفع بسلاسة وتضيف ظلًا عند hover. استخدم transform وbox-shadow وtransition.',
+            'transform: translateY(-5px) and box-shadow: 0 10px 20px rgba(0,0,0,0.2)': 'transform: translateY(-5px) و box-shadow: 0 10px 20px rgba(0,0,0,0.2)',
+            'You can style elements with selectors and properties': 'يمكنك تنسيق العناصر باستخدام المحددات والخصائص',
+            'You understand the box model and spacing': 'أصبحت تفهم نموذج الصندوق والمسافات',
+            'You can create layouts with Flexbox and Grid': 'يمكنك إنشاء تخطيطات باستخدام Flexbox وGrid',
+            'You know how to make responsive designs': 'تعرف كيف تصنع تصميمات متجاوبة',
+            'You can add animations and transitions': 'يمكنك إضافة الحركات والانتقالات',
+            'Style your HTML page from the previous course:\n- Add a Google Font\n- Create a color scheme with CSS variables\n- Style your navigation with Flexbox\n- Add hover effects on links\n- Make it responsive with media queries\n- Add a gradient background to the header': 'نسّق صفحة HTML من الدورة السابقة:\n- أضف Google Font\n- أنشئ نظام ألوان باستخدام CSS variables\n- نسّق شريط التنقل بـ Flexbox\n- أضف تأثيرات hover للروابط\n- اجعلها متجاوبة باستخدام media queries\n- أضف خلفية متدرجة للهيدر',
+            'Use the cascade to your advantage - base styles first, then overrides!': 'استفد من الـ cascade: ابدأ بالأنماط الأساسية ثم أضف التعديلات!'
+        };
+
+        function t(text) {
+            if (currentLang !== 'ar') return text;
+            return arMap[text] || text;
+        }
+
+        function localizeSlide(slide) {
+            if (currentLang !== 'ar') return slide;
+            const out = {
+                ...slide
+            };
+
+            if (out.title) out.title = t(out.title);
+            if (out.subtitle) out.subtitle = t(out.subtitle);
+            if (out.analogy) out.analogy = t(out.analogy);
+            if (out.instructorNote) out.instructorNote = t(out.instructorNote);
+            if (out.exercise) out.exercise = t(out.exercise);
+            if (out.hint) out.hint = t(out.hint);
+            if (Array.isArray(out.content)) out.content = out.content.map(item => t(item));
+
+            return out;
+        }
 
         // Render slides
         function renderSlides() {
             container.innerHTML = '';
 
             slides.forEach((slide, index) => {
+                const localized = localizeSlide(slide);
                 const slideEl = document.createElement('div');
                 slideEl.className = 'slide';
                 slideEl.setAttribute('role', 'group');
@@ -1067,11 +1813,12 @@ console.log("D");
                     slideEl.classList.add('prev');
                 }
 
-                slideEl.innerHTML = renderSlideContent(slide, index);
+                slideEl.innerHTML = renderSlideContent(localized, index);
                 container.appendChild(slideEl);
             });
 
             updateNav();
+            document.body.classList.toggle('lang-ar', currentLang === 'ar');
         }
 
         function renderSlideContent(slide, index) {
@@ -1084,14 +1831,14 @@ console.log("D");
                             </div>
                             <h1 class="section-title">${slide.title}</h1>
                             <p class="section-subtitle">${slide.subtitle}</p>
-                            <p style="margin-top: 3rem; color: var(--muted);">Press <kbd>→</kbd> or click Next to begin</p>
+                            <p style="margin-top: 3rem; color: var(--muted);">${uiText[currentLang].startHint}</p>
                         </div>
                     `;
 
                 case 'section':
                     return `
                         <div class="slide-content text-center">
-                            <p class="slide-number">Section ${getSectionNumber(slide.section)}</p>
+                            <p class="slide-number">${uiText[currentLang].section} ${getSectionNumber(slide.section)}</p>
                             <h1 class="section-title">${slide.title}</h1>
                             <p class="section-subtitle">${slide.subtitle}</p>
                         </div>
@@ -1100,32 +1847,33 @@ console.log("D");
                 case 'explain':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Explain</p>
+                            <p class="slide-number">${uiText[currentLang].explain}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <ul class="bullet-list">
                                 ${slide.content.map(item => `<li>${item}</li>`).join('')}
                             </ul>
                             ${slide.analogy ? `
                                 <div class="analogy-box">
-                                    <p class="analogy-label">Real-world Analogy</p>
+                                    <p class="analogy-label">${uiText[currentLang].realAnalogy}</p>
                                     <p style="margin: 0; color: #c4b5fd;">${slide.analogy}</p>
                                 </div>
                             ` : ''}
                             ${slide.instructorNote ? `
                                 <div class="instructor-note">
-                                    <strong>Instructor Note:</strong> ${slide.instructorNote}
+                                    <strong>${uiText[currentLang].instructorNote}:</strong> ${slide.instructorNote}
                                 </div>
                             ` : ''}
                         </div>
                     `;
 
                 case 'code':
+                    const isHtml = slide.isHtml;
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Code Example</p>
+                            <p class="slide-number">${uiText[currentLang].codeExample}</p>
                             <h2 class="slide-title">${slide.title}</h2>
-                            <div class="code-block">
-                                <pre style="margin: 0;"><code>${highlightJS(slide.code)}</code></pre>
+                            <div class="code-block ${isHtml ? 'html' : ''}">
+                                <pre style="margin: 0;"><code>${isHtml ? highlightHTML(slide.code) : highlightCSS(slide.code)}</code></pre>
                             </div>
                         </div>
                     `;
@@ -1133,18 +1881,18 @@ console.log("D");
                 case 'exercise':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Practice</p>
+                            <p class="slide-number">${uiText[currentLang].practice}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <div class="exercise-box">
                                 <p class="exercise-label">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-                                    Hands-on Exercise
+                                    ${uiText[currentLang].handsOn}
                                 </p>
                                 <p style="margin: 0; font-size: 1.1rem;">${slide.exercise}</p>
                             </div>
                             ${slide.hint ? `
                                 <p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">
-                                    <strong>Hint:</strong> ${slide.hint}
+                                    <strong>${uiText[currentLang].hint}:</strong> ${slide.hint}
                                 </p>
                             ` : ''}
                         </div>
@@ -1167,39 +1915,16 @@ console.log("D");
                 case 'challenge':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Final Challenge</p>
+                            <p class="slide-number">${uiText[currentLang].finalChallenge}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <p style="color: var(--muted); margin-bottom: 1.5rem;">${slide.subtitle}</p>
                             <div class="exercise-box" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-color: rgba(167, 139, 250, 0.3);">
                                 <p class="exercise-label" style="color: #a78bfa;">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    Final Project
+                                    ${uiText[currentLang].finalProject}
                                 </p>
                                 <p style="margin: 0; font-size: 1rem; white-space: pre-line;">${slide.exercise}</p>
                             </div>
-                        </div>
-                    `;
-
-                case 'lesson':
-                    return `
-                        <div class="slide-content">
-                            <p class="slide-number">${slide.section.toUpperCase()} LESSON</p>
-                            <h2 class="slide-title">${slide.title}</h2>
-
-                            <div class="analogy-box" style="margin-bottom: 1.25rem;">
-                                <p class="analogy-label">Simple Explanation</p>
-                                <p style="margin: 0; color: #c4b5fd;">${slide.explain}</p>
-                            </div>
-
-                            <div class="code-block" style="margin-bottom: 1.25rem;">
-                                <pre style="margin: 0;"><code>${highlightJS(slide.code)}</code></pre>
-                            </div>
-
-                            <div class="exercise-box">
-                                <p class="exercise-label">Mini Exercise</p>
-                                <p style="margin: 0; font-size: 1rem;">${slide.exercise}</p>
-                            </div>
-                            ${slide.hint ? `<p style="margin-top: 0.8rem; color: var(--muted); font-size: 0.9rem;"><strong>Hint:</strong> ${slide.hint}</p>` : ''}
                         </div>
                     `;
 
@@ -1209,22 +1934,32 @@ console.log("D");
         }
 
         function getSectionNumber(section) {
-            const sections = ['start', 'overview', 'beginner', 'intermediate', 'advanced'];
+            const sections = ['start', 'basics', 'colors', 'boxmodel', 'typography', 'layout', 'flexbox', 'grid', 'responsive', 'animations'];
             const num = sections.indexOf(section);
             return num > 0 ? num : '';
         }
 
-        function highlightJS(code) {
+        function highlightCSS(code) {
             return code
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
-                .replace(/(\/\/[^\n]*)/g, '<span class="comment">$1</span>')
                 .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
-                .replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|true|false|null|undefined|new|this|class|extends|import|export|async|await)\b/g, '<span class="highlight">$1</span>')
-                .replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, '<span class="value">$1</span>')
-                .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="unit">$1</span>')
-                .replace(/\b(console|document|window|Math|Array|Object|String|Number|Boolean|Date|JSON|parseInt|parseFloat|isNaN|Math\.\w+|document\.\w+)\b/g, '<span class="selector">$1</span>');
+                .replace(/([\w-]+)(\s*:)/g, '<span class="property">$1</span>$2')
+                .replace(/(:\s*)([^;{]+)(;)/g, '$1<span class="value">$2</span>$3')
+                .replace(/([\w-]+)(\s*\{)/g, '<span class="selector">$1</span>$2')
+                .replace(/(#[a-fA-F0-9]{3,8})/g, '<span class="unit">$1</span>');
+        }
+
+        function highlightHTML(code) {
+            return code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comment">$1</span>')
+                .replace(/(&lt;\/?)([\w-]+)/g, '$1<span class="selector">$2</span>')
+                .replace(/(\s)([\w-]+)(=)/g, '$1<span class="property">$2</span>$3')
+                .replace(/(".*?")/g, '<span class="value">$1</span>');
         }
 
         function updateNav() {
@@ -1267,6 +2002,13 @@ console.log("D");
         // Event listeners
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
+
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            langToggleBtn.textContent = currentLang === 'en' ? 'AR' : 'EN';
+            renderSlides();
+            goToSlide(currentSlide);
+        });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {

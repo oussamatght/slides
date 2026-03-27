@@ -424,6 +424,44 @@
             gap: 0.5rem;
         }
         
+        .lang-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 120;
+            padding: 0.45rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .lang-ar .slide-content {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .lang-ar .bullet-list li {
+            padding-left: 0;
+            padding-right: 2rem;
+        }
+        
+        .lang-ar .bullet-list li::before {
+            left: auto;
+            right: 0;
+        }
+        
+        .lang-ar pre,
+        .lang-ar code,
+        .lang-ar .code-block {
+            direction: ltr;
+            text-align: left;
+        }
+        
         kbd {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -455,6 +493,12 @@
             .keyboard-hint {
                 display: none;
             }
+            .lang-toggle {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.75rem;
+                top: 0.5rem;
+                right: 0.5rem;
+            }
         }
     </style>
 </head>
@@ -470,6 +514,8 @@
     <div class="keyboard-hint">
         <kbd>&larr;</kbd> <kbd>&rarr;</kbd> to navigate
     </div>
+
+    <button id="langToggleBtn" class="lang-toggle" aria-label="Toggle Arabic language">AR</button>
 
     <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
         <div class="nav-inner">
@@ -1127,6 +1173,7 @@
         const nextBtn = document.getElementById('nextBtn');
         const progressFill = document.getElementById('progressFill');
         const slideCounter = document.getElementById('slideCounter');
+        const langToggleBtn = document.getElementById('langToggleBtn');
 
         console.log('DOM elements:', {
             container,
@@ -1137,12 +1184,237 @@
         });
 
         let currentSlide = 0;
+        let currentLang = 'en';
+
+        const uiText = {
+            en: {
+                section: 'Section',
+                explain: 'Explain',
+                codeExample: 'Code Example',
+                practice: 'Practice',
+                handsOn: 'Hands-on Exercise',
+                hint: 'Hint',
+                finalChallenge: 'Final Challenge',
+                finalProject: 'Final Project',
+                realAnalogy: 'Real-world Analogy',
+                instructorNote: 'Instructor Note',
+                startHint: 'Press <kbd>&rarr;</kbd> or click Next to begin'
+            },
+            ar: {
+                section: 'القسم',
+                explain: 'شرح',
+                codeExample: 'مثال كود',
+                practice: 'تطبيق',
+                handsOn: 'تمرين عملي',
+                hint: 'تلميح',
+                finalChallenge: 'التحدي النهائي',
+                finalProject: 'المشروع النهائي',
+                realAnalogy: 'تشبيه من الواقع',
+                instructorNote: 'ملاحظة المدرّس',
+                startHint: 'اضغط <kbd>&rarr;</kbd> أو انقر Next للبدء'
+            }
+        };
+
+        const arMap = {
+            'HTML for Beginners': 'HTML للمبتدئين',
+            'Learn to build web pages from scratch': 'تعلّم بناء صفحات الويب من الصفر',
+            'HTML Basics': 'أساسيات HTML',
+            'Understanding the foundation of web pages': 'فهم أساس صفحات الويب',
+            'What is HTML?': 'ما هو HTML؟',
+            'Your First HTML Page': 'أول صفحة HTML لك',
+            'Practice: Create Your First Page': 'تطبيق: أنشئ أول صفحة لك',
+            'HTML Tags': 'وسوم HTML',
+            'How Tags Work': 'كيف تعمل الوسوم',
+            'Practice: Match the Tags': 'تطبيق: طابق الوسوم',
+            'HTML Elements': 'عناصر HTML',
+            'Nested Elements': 'العناصر المتداخلة',
+            'Practice: Build a Paragraph': 'تطبيق: أنشئ فقرة',
+            'HTML Attributes': 'خصائص HTML',
+            'Attributes in Action': 'الخصائص عمليًا',
+            'Practice: Add Attributes': 'تطبيق: أضف خصائص',
+            'Text & Headings': 'النصوص والعناوين',
+            'Organizing and styling your content': 'تنظيم وتنسيق المحتوى',
+            'HTML Headings': 'عناوين HTML',
+            'Heading Levels': 'مستويات العناوين',
+            'Practice: Structure a Page': 'تطبيق: هيكل صفحة',
+            'Paragraphs': 'الفقرات',
+            'Writing Paragraphs': 'كتابة الفقرات',
+            'Practice: Write About Yourself': 'تطبيق: اكتب عن نفسك',
+            'Text Formatting': 'تنسيق النص',
+            'Formatting Tags': 'وسوم التنسيق',
+            'Practice: Format a Sentence': 'تطبيق: نسّق جملة',
+            'HTML Comments': 'تعليقات HTML',
+            'Writing Comments': 'كتابة التعليقات',
+            'Practice: Add Comments': 'تطبيق: أضف تعليقات',
+            'Links & Images': 'الروابط والصور',
+            'Connecting pages and adding visuals': 'ربط الصفحات وإضافة صور',
+            'HTML Links': 'روابط HTML',
+            'Creating Links': 'إنشاء الروابط',
+            'Practice: Create Navigation': 'تطبيق: أنشئ تنقّل',
+            'HTML Images': 'صور HTML',
+            'Adding Images': 'إضافة الصور',
+            'Practice: Add an Image': 'تطبيق: أضف صورة',
+            'Lists & Tables': 'القوائم والجداول',
+            'Organizing information clearly': 'تنظيم المعلومات بوضوح',
+            'Unordered Lists': 'القوائم غير المرتبة',
+            'Bullet List': 'قائمة نقطية',
+            'Practice: Shopping List': 'تطبيق: قائمة مشتريات',
+            'Ordered Lists': 'القوائم المرتبة',
+            'Numbered List': 'قائمة مرقمة',
+            'Practice: Morning Routine': 'تطبيق: روتين الصباح',
+            'HTML Tables': 'جداول HTML',
+            'Creating Tables': 'إنشاء الجداول',
+            'Practice: Create a Schedule': 'تطبيق: أنشئ جدولًا',
+            'HTML Forms': 'نماذج HTML',
+            'Collecting user input': 'جمع مدخلات المستخدم',
+            'Form Basics': 'أساسيات النماذج',
+            'Basic Form': 'نموذج أساسي',
+            'Practice: Login Form': 'تطبيق: نموذج تسجيل الدخول',
+            'Input Types': 'أنواع الحقول',
+            'Different Inputs': 'حقول مختلفة',
+            'Practice: Survey Form': 'تطبيق: نموذج استبيان',
+            'Semantic HTML': 'HTML الدلالي',
+            'Writing meaningful code': 'كتابة كود ذو معنى',
+            'What is Semantic HTML?': 'ما هو HTML الدلالي؟',
+            'Semantic Layout': 'تخطيط دلالي',
+            'Practice: Semantic Page': 'تطبيق: صفحة دلالية',
+            'Congratulations!': 'مبروك!',
+            'You have learned the fundamentals of HTML': 'لقد تعلمت أساسيات HTML',
+            'Final Challenge': 'التحدي النهائي',
+            'Put it all together': 'طبّق كل ما تعلمته',
+
+            'HTML is the language used to create <span class="highlight">web pages</span>': 'HTML هي اللغة المستخدمة لإنشاء <span class="highlight">صفحات الويب</span>',
+            'It tells the browser what content to show': 'تخبر المتصفح بالمحتوى الذي يجب عرضه',
+            'HTML uses <span class="highlight">tags</span> to structure content': 'تستخدم HTML <span class="highlight">الوسوم</span> لبناء هيكل المحتوى',
+            'Think of HTML like the skeleton of a house. It gives structure, but needs CSS (paint/decor) and JavaScript (electricity) to be complete.': 'تخيّل HTML كهيكل المنزل. يعطي البنية، لكنه يحتاج CSS (الديكور) وJavaScript (الحركة) ليكتمل.',
+            'Common mistake: Students often confuse HTML with a programming language. Clarify that HTML is a markup language - it describes structure, not logic.': 'خطأ شائع: يخلط الطلاب بين HTML ولغات البرمجة. وضّح أن HTML لغة توصيف لبنية الصفحة وليست منطقًا برمجيًا.',
+            'Create an HTML file with the basic structure. Add your name between the body tags.': 'أنشئ ملف HTML بالبنية الأساسية، وأضف اسمك بين وسمي body.',
+            'Save the file as "index.html" and open it in your browser.': 'احفظ الملف باسم "index.html" وافتحه في المتصفح.',
+            'Tags are the building blocks of HTML': 'الوسوم هي لبنات بناء HTML',
+            'Most tags have an <span class="highlight">opening</span> and <span class="highlight">closing</span> tag': 'معظم الوسوم لها وسم <span class="highlight">افتتاح</span> ووسم <span class="highlight">إغلاق</span>',
+            'Tags tell the browser what each piece of content is': 'الوسوم تخبر المتصفح بنوع كل جزء من المحتوى',
+            'Tags are like labeled boxes. You put content inside, and the label tells everyone what is inside.': 'الوسوم مثل صناديق معنونة: تضع المحتوى بداخلها والعنوان يوضح نوعه.',
+            'Write the correct closing tag for each opening tag: <code>&lt;p&gt;</code> <code>&lt;h2&gt;</code> <code>&lt;div&gt;</code>': 'اكتب وسم الإغلاق الصحيح لكل وسم افتتاح: <code>&lt;p&gt;</code> <code>&lt;h2&gt;</code> <code>&lt;div&gt;</code>',
+            'Remember: closing tags have a forward slash: </tagname>': 'تذكّر: وسم الإغلاق يحتوي على / بهذا الشكل: </tagname>',
+            'An element = opening tag + content + closing tag': 'العنصر = وسم افتتاح + محتوى + وسم إغلاق',
+            'Some elements have <span class="highlight">no content</span> (self-closing)': 'بعض العناصر <span class="highlight">بدون محتوى</span> (self-closing)',
+            'Elements can be <span class="highlight">nested</span> inside other elements': 'يمكن <span class="highlight">تداخل</span> العناصر داخل بعضها',
+            'Create a paragraph element that contains one bold word and one italic word.': 'أنشئ عنصر فقرة يحتوي كلمة بالخط العريض وكلمة بالمائل.',
+            'Use <b> for bold and <i> for italic.': 'استخدم <b> للعريض و<i> للمائل.',
+            'Attributes add <span class="highlight">extra information</span> to elements': 'الخصائص تضيف <span class="highlight">معلومات إضافية</span> للعناصر',
+            'They go in the <span class="highlight">opening tag</span>': 'تُكتب داخل <span class="highlight">وسم الافتتاح</span>',
+            'Format: <code>name="value"</code>': 'الصيغة: <code>name="value"</code>',
+            'Attributes are like adjectives. Just as "red car" gives more info about the car, attributes give more info about HTML elements.': 'الخصائص مثل الصفات؛ كما أن "سيارة حمراء" تضيف معنى، الخصائص تضيف معلومات للعناصر.',
+            'Common mistake: Forgetting quotes around attribute values. Always use quotes!': 'خطأ شائع: نسيان علامات الاقتباس حول قيمة الخاصية. استخدم الاقتباس دائمًا!',
+            'Add an id attribute with value "main-title" to an h1 element.': 'أضف خاصية id بالقيمة "main-title" إلى عنصر h1.',
+            'The format is: id="main-title"': 'الصيغة هي: id="main-title"',
+            'HTML has <span class="highlight">6 levels</span> of headings: h1 to h6': 'HTML يحتوي على <span class="highlight">6 مستويات</span> من العناوين: من h1 إلى h6',
+            '<code>h1</code> is the largest and most important': '<code>h1</code> هو الأكبر والأهم',
+            'Use headings to create a <span class="highlight">hierarchy</span> of content': 'استخدم العناوين لإنشاء <span class="highlight">تسلسل هرمي</span> للمحتوى',
+            'Stress that headings are not just about size - they define document structure for screen readers and SEO.': 'أكد أن العناوين ليست مجرد حجم، بل تحدد بنية المستند لقارئات الشاشة وSEO.',
+            'Create a page about your favorite food. Use h1 for the main title and h2 for sections like "Why I Love It" and "Recipe".': 'أنشئ صفحة عن طعامك المفضل. استخدم h1 للعنوان الرئيسي وh2 للأقسام مثل "لماذا أحبه" و"الوصفة".',
+            'Only use one h1 per page for best practices.': 'كأفضل ممارسة، استخدم h1 واحدًا فقط في الصفحة.',
+            'Use <code>p</code> tags for blocks of text': 'استخدم وسم <code>p</code> لكتل النص',
+            'Browsers add <span class="highlight">space</span> between paragraphs': 'المتصفحات تضيف <span class="highlight">مسافة</span> بين الفقرات',
+            'Each paragraph should contain one main idea': 'كل فقرة يجب أن تحتوي فكرة رئيسية واحدة',
+            'Write 2-3 paragraphs about yourself. Use proper paragraph tags.': 'اكتب 2-3 فقرات عن نفسك مع استخدام وسوم الفقرة بشكل صحيح.',
+            'Keep each paragraph focused on one topic.': 'اجعل كل فقرة مركزة على موضوع واحد.',
+            '<code>b</code> makes text <b>bold</b>': '<code>b</code> يجعل النص <b>عريضًا</b>',
+            '<code>i</code> makes text <i>italic</i>': '<code>i</code> يجعل النص <i>مائلًا</i>',
+            '<code>u</code> makes text <u>underlined</u>': '<code>u</code> يجعل النص <u>مسطرًا</u>',
+            '<code>strong</code> and <code>em</code> add meaning, not just style': 'وسما <code>strong</code> و<code>em</code> يضيفان معنى وليس مجرد شكل',
+            'Write a sentence where one word is bold, one is italic, and one is both.': 'اكتب جملة فيها كلمة عريضة وكلمة مائلة وكلمة تجمع الاثنين.',
+            'You can nest tags: <b><i>text</i></b>': 'يمكنك تداخل الوسوم: <b><i>text</i></b>',
+            'Comments are <span class="highlight">not visible</span> on the page': 'التعليقات <span class="highlight">لا تظهر</span> في الصفحة',
+            'They help you leave notes in your code': 'تساعدك على ترك ملاحظات داخل الكود',
+            'Great for organizing and explaining your work': 'ممتازة لتنظيم عملك وشرحه',
+            'Comments are like sticky notes for developers. Readers of your webpage never see them, but you and other developers can.': 'التعليقات مثل ملاحظات لاصقة للمطورين؛ الزائر لا يراها لكن أنت والمطورون ترونها.',
+            'Add comments to your previous exercise explaining what each section does.': 'أضف تعليقات لتمرينك السابق تشرح وظيفة كل قسم.',
+            'Comment syntax: <!-- your note here -->': 'صيغة التعليق: <!-- your note here -->',
+            'Links let users <span class="highlight">navigate</span> between pages': 'الروابط تُمكّن المستخدم من <span class="highlight">التنقل</span> بين الصفحات',
+            'The <code>a</code> tag creates a link': 'وسم <code>a</code> ينشئ رابطًا',
+            'The <code>href</code> attribute specifies the destination': 'الخاصية <code>href</code> تحدد الوجهة',
+            'Links are like doors. The href attribute tells the browser which door to open and where it leads.': 'الروابط مثل الأبواب؛ href يخبر المتصفح أي باب يفتح وإلى أين يقود.',
+            'Create 3 links: one to Google, one to Wikipedia, and one to your favorite website.': 'أنشئ 3 روابط: إلى Google وWikipedia وموقعك المفضل.',
+            'Remember to include https:// in external URLs.': 'تذكر إضافة https:// في الروابط الخارجية.',
+            'The <code>img</code> tag displays images': 'وسم <code>img</code> يعرض الصور',
+            'It is <span class="highlight">self-closing</span> (no end tag)': 'هو وسم <span class="highlight">ذاتي الإغلاق</span> (بدون وسم نهاية)',
+            'Always include the <code>alt</code> attribute for accessibility': 'ضع دائمًا خاصية <code>alt</code> لدعم الوصول',
+            'Emphasize alt text. It helps visually impaired users understand images and displays if the image fails to load.': 'أكد على نص alt؛ يساعد ضعاف البصر ويظهر عند فشل تحميل الصورة.',
+            'Find an image online and add it to your page. Write a descriptive alt text.': 'ابحث عن صورة عبر الإنترنت وأضفها لصفحتك مع نص alt وصفي.',
+            'You can use the full URL or a local file path for the src attribute.': 'يمكنك استخدام رابط كامل أو مسار ملف محلي في خاصية src.',
+            'Unordered lists show items with <span class="highlight">bullet points</span>': 'القوائم غير المرتبة تعرض العناصر بنقاط <span class="highlight">bullet</span>',
+            'Use <code>ul</code> for the list container': 'استخدم <code>ul</code> كحاوية للقائمة',
+            'Use <code>li</code> for each list item': 'استخدم <code>li</code> لكل عنصر في القائمة',
+            'An unordered list is like a grocery list - the order does not matter.': 'القائمة غير المرتبة مثل قائمة مشتريات، الترتيب غير مهم.',
+            'Create an unordered list of 5 things you want to learn.': 'أنشئ قائمة غير مرتبة من 5 أشياء تريد تعلمها.',
+            'Wrap all items inside <ul> tags, each item gets <li> tags.': 'ضع كل العناصر داخل <ul>، وكل عنصر داخل <li>.',
+            'Ordered lists show items with <span class="highlight">numbers</span>': 'القوائم المرتبة تعرض العناصر بأرقام <span class="highlight">numbered</span>',
+            'Use <code>ol</code> instead of <code>ul</code>': 'استخدم <code>ol</code> بدلًا من <code>ul</code>',
+            'The browser automatically numbers the items': 'المتصفح يرقم العناصر تلقائيًا',
+            'An ordered list is like a recipe - the order of steps matters.': 'القائمة المرتبة مثل الوصفة؛ ترتيب الخطوات مهم.',
+            'Create an ordered list of your morning routine (4-6 steps).': 'أنشئ قائمة مرتبة لروتين صباحك (4-6 خطوات).',
+            'Use <ol> for ordered lists.': 'استخدم <ol> للقوائم المرتبة.',
+            'Tables organize data in <span class="highlight">rows and columns</span>': 'الجداول تنظّم البيانات في <span class="highlight">صفوف وأعمدة</span>',
+            '<code>table</code> wraps the whole table': '<code>table</code> يحيط بالجدول كاملًا',
+            '<code>tr</code> = table row, <code>td</code> = table cell': '<code>tr</code> = صف جدول، <code>td</code> = خلية جدول',
+            'Tables can be confusing at first. Draw a grid on the board and label tr, td, th to help visualize.': 'قد تكون الجداول مربكة في البداية؛ ارسم شبكة ووضّح tr وtd وth.',
+            'Create a table showing your weekly class schedule with Day, Subject, and Time columns.': 'أنشئ جدولًا لجدول حصصك الأسبوعي بأعمدة اليوم والمادة والوقت.',
+            'Use <th> for header cells and <td> for regular cells.': 'استخدم <th> لخلايا العناوين و<td> للخلايا العادية.',
+            'Forms let users <span class="highlight">enter and submit data</span>': 'النماذج تسمح للمستخدم <span class="highlight">بإدخال وإرسال البيانات</span>',
+            'The <code>form</code> element wraps all form controls': 'عنصر <code>form</code> يحيط بكل عناصر النموذج',
+            'Each input needs a <code>name</code> attribute': 'كل حقل input يحتاج خاصية <code>name</code>',
+            'A form is like a paper questionnaire. Each input is a blank line where users write their answers.': 'النموذج مثل استبيان ورقي؛ كل input سطر يكتب فيه المستخدم إجابته.',
+            'Create a simple login form with username and password fields.': 'أنشئ نموذج تسجيل دخول بسيطًا بحقل اسم مستخدم وكلمة مرور.',
+            'Use type="password" for the password field to hide characters.': 'استخدم type="password" لإخفاء أحرف كلمة المرور.',
+            'Inputs can be many types: text, password, email, number': 'حقول الإدخال لها أنواع متعددة: text وpassword وemail وnumber',
+            '<code>type="checkbox"</code> for multiple choices': '<code>type="checkbox"</code> للاختيارات المتعددة',
+            '<code>type="radio"</code> for single choice from options': '<code>type="radio"</code> لاختيار واحد من عدة خيارات',
+            'Create a feedback form with: name (text), email, rating (1-5 number), and a checkbox for "Subscribe to newsletter".': 'أنشئ نموذج ملاحظات يحتوي على: الاسم (text)، البريد، التقييم (1-5)، وcheckbox للاشتراك بالنشرة.',
+            'Use appropriate input types for each field.': 'استخدم نوع input المناسب لكل حقل.',
+            'Semantic elements describe their <span class="highlight">meaning</span> to browsers and developers': 'العناصر الدلالية توضّح <span class="highlight">المعنى</span> للمتصفح والمطور',
+            'Examples: <code>header</code>, <code>nav</code>, <code>main</code>, <code>footer</code>': 'أمثلة: <code>header</code> و<code>nav</code> و<code>main</code> و<code>footer</code>',
+            'Better for accessibility and SEO': 'أفضل للوصول Accessibility ومحركات البحث SEO',
+            'Non-semantic HTML is like unmarked boxes. Semantic HTML labels each box: "header", "navigation", "content".': 'HTML غير الدلالي مثل صناديق بلا أسماء، بينما الدلالي يحدد كل جزء بوضوح.',
+            'Stress that semantic HTML helps screen readers understand page structure, making sites accessible to visually impaired users.': 'أكد أن HTML الدلالي يساعد قارئات الشاشة ويدعم المستخدمين ضعاف البصر.',
+            'Rebuild your about-me page using semantic elements: header, nav, main, article, and footer.': 'أعد بناء صفحة "عني" باستخدام عناصر دلالية: header وnav وmain وarticle وfooter.',
+            'Think about what each section of your page does, then choose the right semantic tag.': 'فكر في وظيفة كل قسم ثم اختر الوسم الدلالي المناسب.',
+            'You can now create structured web pages': 'أصبحت قادرًا على إنشاء صفحات ويب منظمة',
+            'You understand tags, elements, and attributes': 'أصبحت تفهم الوسوم والعناصر والخصائص',
+            'You can add text, links, images, lists, tables, and forms': 'يمكنك إضافة نصوص وروابط وصور وقوائم وجداول ونماذج',
+            'You know the basics of semantic HTML': 'تعرف أساسيات HTML الدلالي',
+            'Create a complete personal webpage with:\n- A header with navigation\n- A main section about yourself\n- An image of you or something you like\n- A list of your hobbies\n- A contact form\n- A footer with copyright': 'أنشئ صفحة شخصية كاملة تحتوي على:\n- ترويسة مع التنقل\n- قسم رئيسي عنك\n- صورة لك أو لشيء تحبه\n- قائمة هواياتك\n- نموذج تواصل\n- تذييل بحقوق النشر',
+            'Use semantic HTML and proper structure. Take your time!': 'استخدم HTML الدلالي وبنية صحيحة. خذ وقتك!'
+        };
+
+        function t(text) {
+            if (currentLang !== 'ar') return text;
+            return arMap[text] || text;
+        }
+
+        function localizeSlide(slide) {
+            if (currentLang !== 'ar') return slide;
+            const out = {
+                ...slide
+            };
+
+            if (out.title) out.title = t(out.title);
+            if (out.subtitle) out.subtitle = t(out.subtitle);
+            if (out.analogy) out.analogy = t(out.analogy);
+            if (out.instructorNote) out.instructorNote = t(out.instructorNote);
+            if (out.exercise) out.exercise = t(out.exercise);
+            if (out.hint) out.hint = t(out.hint);
+            if (Array.isArray(out.content)) out.content = out.content.map(item => t(item));
+
+            return out;
+        }
 
         // Render slides
         function renderSlides() {
             container.innerHTML = '';
 
             slides.forEach((slide, index) => {
+                const localized = localizeSlide(slide);
                 const slideEl = document.createElement('div');
                 slideEl.className = 'slide';
                 slideEl.setAttribute('role', 'group');
@@ -1154,11 +1426,12 @@
                     slideEl.classList.add('prev');
                 }
 
-                slideEl.innerHTML = renderSlideContent(slide, index);
+                slideEl.innerHTML = renderSlideContent(localized, index);
                 container.appendChild(slideEl);
             });
 
             updateNav();
+            document.body.classList.toggle('lang-ar', currentLang === 'ar');
         }
 
         function renderSlideContent(slide, index) {
@@ -1171,14 +1444,14 @@
               </div>
               <h1 class="section-title">${slide.title}</h1>
               <p class="section-subtitle">${slide.subtitle}</p>
-              <p style="margin-top: 3rem; color: var(--muted);">Press <kbd>&rarr;</kbd> or click Next to begin</p>
+                            <p style="margin-top: 3rem; color: var(--muted);">${uiText[currentLang].startHint}</p>
             </div>
           `;
 
                 case 'section':
                     return `
             <div class="slide-content text-center">
-              <p class="slide-number">Section ${getSectionNumber(slide.section)}</p>
+                            <p class="slide-number">${uiText[currentLang].section} ${getSectionNumber(slide.section)}</p>
               <h1 class="section-title">${slide.title}</h1>
               <p class="section-subtitle">${slide.subtitle}</p>
             </div>
@@ -1187,20 +1460,20 @@
                 case 'explain':
                     return `
             <div class="slide-content">
-              <p class="slide-number">Explain</p>
+              <p class="slide-number">${uiText[currentLang].explain}</p>
               <h2 class="slide-title">${slide.title}</h2>
               <ul class="bullet-list">
                 ${slide.content.map(item => `<li>${item}</li>`).join('')}
               </ul>
               ${slide.analogy ? `
                 <div class="analogy-box">
-                  <p class="analogy-label">Real-world Analogy</p>
+                                    <p class="analogy-label">${uiText[currentLang].realAnalogy}</p>
                   <p style="margin: 0; color: #c4b5fd;">${slide.analogy}</p>
                 </div>
               ` : ''}
               ${slide.instructorNote ? `
                 <div class="instructor-note">
-                  <strong>Instructor Note:</strong> ${slide.instructorNote}
+                                    <strong>${uiText[currentLang].instructorNote}:</strong> ${slide.instructorNote}
                 </div>
               ` : ''}
             </div>
@@ -1209,7 +1482,7 @@
         case 'code':
           return `
             <div class="slide-content">
-              <p class="slide-number">Code Example</p>
+              <p class="slide-number">${uiText[currentLang].codeExample}</p>
               <h2 class="slide-title">${slide.title}</h2>
               <div class="code-block">
                 <pre style="margin: 0;"><code>${highlightHTML(slide.code)}</code></pre>
@@ -1220,18 +1493,18 @@
         case 'exercise':
           return `
             <div class="slide-content">
-              <p class="slide-number">Practice</p>
+              <p class="slide-number">${uiText[currentLang].practice}</p>
               <h2 class="slide-title">${slide.title}</h2>
               <div class="exercise-box">
                 <p class="exercise-label">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-                  Hands-on Exercise
+                                    ${uiText[currentLang].handsOn}
                 </p>
                 <p style="margin: 0; font-size: 1.1rem;">${slide.exercise}</p>
               </div>
               ${slide.hint ? `
                 <p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">
-                  <strong>Hint:</strong> ${slide.hint}
+                                    <strong>${uiText[currentLang].hint}:</strong> ${slide.hint}
                 </p>
               ` : ''}
             </div>
@@ -1254,13 +1527,13 @@
         case 'challenge':
           return `
             <div class="slide-content">
-              <p class="slide-number">Final Challenge</p>
+              <p class="slide-number">${uiText[currentLang].finalChallenge}</p>
               <h2 class="slide-title">${slide.title}</h2>
               <p style="color: var(--muted); margin-bottom: 1.5rem;">${slide.subtitle}</p>
               <div class="exercise-box" style="background: linear-gradient(135deg, rgba(34, 211, 238, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-color: rgba(34, 211, 238, 0.3);">
                 <p class="exercise-label" style="color: var(--accent);">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                  Final Project
+                                    ${uiText[currentLang].finalProject}
                 </p>
                 <p style="margin: 0; font-size: 1rem; white-space: pre-line;">${slide.exercise}</p>
               </div>
@@ -1329,6 +1602,13 @@
     // Event listeners
     prevBtn.addEventListener('click', prevSlide);
     nextBtn.addEventListener('click', nextSlide);
+
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            langToggleBtn.textContent = currentLang === 'en' ? 'AR' : 'EN';
+            renderSlides();
+            goToSlide(currentSlide);
+        });
 
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight' || e.key === ' ') {
