@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Complete Course - Interactive Tutorial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #0a0f1a;
+            --bg-card: #111827;
+            --fg: #f1f5f9;
+            --muted: #64748b;
+            --accent: #22d3ee;
+            --accent-warm: #fbbf24;
+            --border: #1e293b;
+            --code-bg: #1a1f2e;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        code,
+        pre,
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.15), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(251, 191, 36, 0.1), transparent), linear-gradient(180deg, var(--bg) 0%, #0d1424 100%);
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        
+        .slides-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide {
+                transition: opacity 0.3s ease;
+                transform: none !important;
+            }
+        }
+        
+        .slide-content {
+            max-width: 900px;
+            width: 100%;
+        }
+        
+        .slide-number {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slide-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--fg) 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .bullet-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            line-height: 1.6;
+        }
+        
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 8px;
+            height: 8px;
+            background: #a78bfa;
+            border-radius: 2px;
+            transform: rotate(45deg);
+        }
+        
+        .highlight {
+            color: #a78bfa;
+            font-weight: 600;
+        }
+        
+        .highlight-warm {
+            color: var(--accent-warm);
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: 'JS';
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+        
+        .code-block.html::before {
+            content: 'JS';
+        }
+        
+        .selector {
+            color: #f472b6;
+        }
+        
+        .property {
+            color: #22d3ee;
+        }
+        
+        .value {
+            color: #34d399;
+        }
+        
+        .comment {
+            color: var(--muted);
+            font-style: italic;
+        }
+        
+        .unit {
+            color: #fbbf24;
+        }
+        
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .exercise-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-warm);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+        
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to top, var(--bg), transparent);
+            padding: 2rem;
+        }
+        
+        .nav-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a78bfa, var(--accent-warm));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn:hover {
+            border-color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
+        }
+        
+        .nav-btn:focus-visible {
+            outline: 2px solid #a78bfa;
+            outline-offset: 2px;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .nav-btn:disabled:hover {
+            border-color: var(--border);
+            background: var(--bg-card);
+        }
+        
+        .slide-counter {
+            font-size: 0.875rem;
+            color: var(--muted);
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .instructor-note {
+            background: rgba(34, 211, 238, 0.1);
+            border-left: 3px solid var(--accent);
+            padding: 1rem 1.25rem;
+            margin-top: 1.5rem;
+            border-radius: 0 8px 8px 0;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+        
+        .instructor-note strong {
+            color: var(--accent);
+        }
+        
+        .analogy-box {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px dashed rgba(167, 139, 250, 0.4);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+        
+        .analogy-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #a78bfa, var(--accent-warm));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide.active .slide-content>* {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .slide.active .slide-content>*:nth-child(1) {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(2) {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(3) {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(4) {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(5) {
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide.active .slide-content>* {
+                animation: none;
+                opacity: 1;
+            }
+        }
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        kbd {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: inherit;
+            font-size: 0.7rem;
+        }
+        
+        .demo-box {
+            background: var(--bg-card);
+            border: 2px solid #a78bfa;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+        
+        .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            vertical-align: middle;
+            margin-right: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        @media (max-width: 640px) {
+            .slide {
+                padding: 1rem;
+            }
+            .slide-title {
+                font-size: 1.75rem;
+            }
+            .bullet-list li {
+                font-size: 1rem;
+                padding-left: 1.5rem;
+            }
+            .code-block {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+            .nav-inner {
+                flex-wrap: wrap;
+            }
+            .keyboard-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="slides-container" id="slidesContainer">
+    </div>
+
+    <div class="keyboard-hint">
+        <kbd>←</kbd> <kbd>→</kbd> to navigate
+    </div>
+
+    <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
+        <div class="nav-inner">
+            <button class="nav-btn" id="prevBtn" aria-label="Previous slide">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                Prev
+            </button>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Slide progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="slide-counter" id="slideCounter">1 / 1</span>
+            <button class="nav-btn" id="nextBtn" aria-label="Next slide">
+                Next
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // Slide data
+        const slides = [{
+                type: 'title',
+                title: 'JavaScript Complete Course',
+                subtitle: 'Beginner → Intermediate → Advanced',
+                section: 'start'
+            }, {
+                type: 'explain',
+                section: 'overview',
+                title: 'Course Overview',
+                content: [
+                    'This course is split into <span class="highlight">3 levels</span>: Beginner, Intermediate, and Advanced',
+                    'Each topic includes: <span class="highlight">simple explanation + code example + mini exercise</span>',
+                    'You will build <span class="highlight">3 projects</span>: one at the end of each level',
+                    'Use <kbd>←</kbd> and <kbd>→</kbd> or the buttons below to navigate slides'
+                ]
+            },
+
+            // ================= BEGINNER =================
+            {
+                type: 'section',
+                title: 'Beginner',
+                subtitle: 'JavaScript Basics',
+                section: 'beginner'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Introduction to JavaScript',
+                explain: 'JavaScript is the language that makes websites interactive. HTML gives structure, CSS gives style, and JavaScript gives behavior.',
+                code: `console.log("Hello JavaScript!");`,
+                exercise: 'Open browser DevTools console and print your name with console.log().',
+                hint: 'Press F12 → Console tab.'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Where to Write JavaScript',
+                explain: 'You can write JS inside HTML script tags, in external .js files, or quickly in browser console.',
+                code: `<!-- Internal -->
+<script>
+  console.log("Internal JS");
+<\/script>
+
+<!-- External -->
+<script src="app.js"><\/script>`,
+                exercise: 'Create an app.js file and link it in HTML.',
+                hint: 'External JS is best for real projects.'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Output (console.log, alert, DOM)',
+                explain: 'Use console.log for debugging, alert for quick popups, and DOM methods to update page content.',
+                code: `console.log("Debug message");
+alert("Welcome!");
+document.getElementById("demo").textContent = "Updated by JS";`,
+                exercise: 'Make a paragraph text change when page loads.',
+                hint: 'Use document.getElementById(...).textContent = ...'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Syntax & Statements',
+                explain: 'JavaScript runs statements line by line. Use semicolons and proper braces for readable, error-free code.',
+                code: `let language = "JavaScript";
+if (language === "JavaScript") {
+  console.log("Correct syntax!");
+}`,
+                exercise: 'Write 3 valid JS statements that print your city, age, and favorite language.',
+                hint: 'Each statement can end with ;'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Variables (var, let, const)',
+                explain: 'Use const by default, let when value changes, and avoid var in modern code.',
+                code: `const country = "Morocco";
+let score = 0;
+score = 1;
+var oldWay = "legacy";`,
+                exercise: 'Create one const and one let, then update only the let variable.',
+                hint: 'const cannot be reassigned.'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Data Types',
+                explain: 'Main types: string, number, boolean, null, undefined, object, array.',
+                code: `const name = "Aya";      // string
+const age = 21;          // number
+const isStudent = true;  // boolean
+let job;                 // undefined`,
+                exercise: 'Create 4 variables with different data types and log typeof each.',
+                hint: 'Use typeof variableName'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Operators (arithmetic, comparison, logical)',
+                explain: 'Operators let you calculate, compare, and combine conditions.',
+                code: `const a = 10;
+const b = 3;
+console.log(a + b);      // arithmetic
+console.log(a > b);      // comparison
+console.log(a > 5 && b < 5); // logical`,
+                exercise: 'Check if a number is between 10 and 20 using logical operators.',
+                hint: 'Use && with two comparisons.'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Conditions (if, else, switch, ternary)',
+                explain: 'Conditions help your program make decisions based on values.',
+                code: `const age = 17;
+const status = age >= 18 ? "Adult" : "Minor";
+
+switch (status) {
+  case "Adult":
+    console.log("Full access");
+    break;
+  default:
+    console.log("Limited access");
+}`,
+                exercise: 'Write if/else to check exam score (pass if >= 50).',
+                hint: 'if (score >= 50) ... else ...'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Loops (for, while, break, continue)',
+                explain: 'Loops repeat tasks. break stops loop, continue skips one iteration.',
+                code: `for (let i = 1; i <= 5; i++) {
+  if (i === 3) continue;
+  console.log(i);
+}
+
+let x = 0;
+while (x < 3) {
+  x++;
+  if (x === 2) break;
+}`,
+                exercise: 'Print numbers 1 to 10, but skip 5.',
+                hint: 'Use continue when i === 5'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Functions (declaration, parameters, return, arrow)',
+                explain: 'Functions are reusable blocks. They can accept parameters and return values.',
+                code: `function greet(name) {
+  return "Hello " + name;
+}
+
+const add = (a, b) => a + b;
+console.log(greet("Sam"));
+console.log(add(2, 3));`,
+                exercise: 'Create an arrow function multiply(a, b) that returns product.',
+                hint: 'const multiply = (a, b) => a * b;'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Arrays (push, map, filter)',
+                explain: 'Arrays store lists. push adds values, map transforms, filter selects values.',
+                code: `const nums = [1, 2, 3, 4];
+nums.push(5);
+const doubled = nums.map(n => n * 2);
+const evens = nums.filter(n => n % 2 === 0);`,
+                exercise: 'Create an array of ages and filter only ages >= 18.',
+                hint: 'ages.filter(age => age >= 18)'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Objects (properties, basic methods)',
+                explain: 'Objects group related data and behavior in one structure.',
+                code: `const user = {
+  name: "Lina",
+  age: 20,
+  greet() {
+    return "Hi, I am " + this.name;
+  }
+};
+console.log(user.greet());`,
+                exercise: 'Create an object for a book with title, author, and method summary().',
+                hint: 'Use this.title inside summary method.'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'Strings & Numbers (basics)',
+                explain: 'Strings have useful methods, and numbers can be formatted for display.',
+                code: `const text = "javascript";
+console.log(text.toUpperCase());
+
+const price = 19.987;
+console.log(price.toFixed(2)); // 19.99`,
+                exercise: 'Format your name to uppercase and print a number with 2 decimals.',
+                hint: 'Use toUpperCase() and toFixed(2).'
+            }, {
+                type: 'lesson',
+                section: 'beginner',
+                title: 'DOM Basics (selecting elements, events)',
+                explain: 'DOM lets JS read and update HTML elements, and react to user events.',
+                code: `const btn = document.getElementById("btn");
+const title = document.querySelector("h1");
+
+btn.addEventListener("click", () => {
+  title.textContent = "Clicked!";
+});`,
+                exercise: 'Add a button click event that changes paragraph text.',
+                hint: 'Use addEventListener("click", ...).'
+            }, {
+                type: 'challenge',
+                title: 'Beginner Project',
+                subtitle: 'Simple Interactive Page',
+                exercise: 'Build a profile card with a button that toggles dark/light style and updates text dynamically using DOM.',
+                hint: 'Use classList.toggle() and textContent.'
+            },
+
+            // ================= INTERMEDIATE =================
+            {
+                type: 'section',
+                title: 'Intermediate',
+                subtitle: 'Core JavaScript Concepts',
+                section: 'intermediate'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'Scope (global, local)',
+                explain: 'Scope controls where variables are accessible. let/const are block-scoped.',
+                code: `const globalVar = "I am global";
+function test() {
+  const localVar = "I am local";
+  console.log(globalVar);
+}
+// console.log(localVar); // Error`,
+                exercise: 'Create one global and one local variable, then test access.',
+                hint: 'Local variables only exist inside their function/block.'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'Hoisting',
+                explain: 'Function declarations are hoisted. let/const are hoisted but inaccessible before declaration (TDZ).',
+                code: `sayHi(); // works
+function sayHi() { console.log("Hi"); }
+
+// console.log(a); // Error with let
+let a = 10;`,
+                exercise: 'Test calling a function before it is declared.',
+                hint: 'Try with function declaration, then with const function expression.'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'this keyword (basic)',
+                explain: 'Inside object methods, this usually refers to the object itself.',
+                code: `const person = {
+  name: "Sara",
+  greet() {
+    console.log("Hi " + this.name);
+  }
+};
+person.greet();`,
+                exercise: 'Create object car with method info() that uses this.brand.',
+                hint: 'Use method shorthand: info() { ... }'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'Error handling (try/catch)',
+                explain: 'Use try/catch to prevent your app from crashing when errors happen.',
+                code: `try {
+  const data = JSON.parse("invalid json");
+} catch (error) {
+  console.log("Caught error:", error.message);
+}`,
+                exercise: 'Wrap risky code in try/catch and print custom error message.',
+                hint: 'error.message gives readable text.'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'ES6: Destructuring',
+                explain: 'Destructuring quickly extracts values from arrays and objects.',
+                code: `const user = { name: "Nora", age: 22 };
+const { name, age } = user;
+
+const nums = [10, 20, 30];
+const [first, second] = nums;`,
+                exercise: 'Destructure city and country from an object.',
+                hint: 'const { city, country } = obj;'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'ES6: Template literals',
+                explain: 'Template literals make string interpolation cleaner using backticks.',
+                code: `const name = "Yassine";
+const age = 24;
+const msg = \`My name is \${name} and I am \${age}.\`;
+console.log(msg);`,
+                exercise: 'Create a template literal with your name and favorite language.',
+                hint: 'Use backticks and ${...}.'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'ES6: Spread operator',
+                explain: 'Spread (...) copies/merges arrays and objects elegantly.',
+                code: `const a = [1, 2];
+const b = [3, 4];
+const merged = [...a, ...b];
+
+const base = { x: 1 };
+const full = { ...base, y: 2 };`,
+                exercise: 'Merge two arrays and one object using spread.',
+                hint: 'Use ... inside [] or {}'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'Advanced array methods (map, filter, reduce)',
+                explain: 'These methods are essential for transforming data in modern JS.',
+                code: `const nums = [1, 2, 3, 4, 5];
+const doubled = nums.map(n => n * 2);
+const evens = nums.filter(n => n % 2 === 0);
+const total = nums.reduce((sum, n) => sum + n, 0);`,
+                exercise: 'Get sum of squared even numbers from [1..10].',
+                hint: 'Chain filter → map → reduce.'
+            }, {
+                type: 'lesson',
+                section: 'intermediate',
+                title: 'Intro to JSON',
+                explain: 'JSON is a text format for data exchange. APIs often return JSON.',
+                code: `const user = { name: "Adam", age: 28 };
+const json = JSON.stringify(user);
+const back = JSON.parse(json);
+console.log(back.name);`,
+                exercise: 'Convert an object to JSON then back to object.',
+                hint: 'Use stringify then parse.'
+            }, {
+                type: 'challenge',
+                title: 'Intermediate Project',
+                subtitle: 'Dynamic Todo App',
+                exercise: 'Build a todo app with add/remove/complete features and save tasks in localStorage.',
+                hint: 'Use array methods and JSON.stringify for storage.'
+            },
+
+            // ================= ADVANCED =================
+            {
+                type: 'section',
+                title: 'Advanced',
+                subtitle: 'Asynchronous & Architecture',
+                section: 'advanced'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Callbacks',
+                explain: 'Callbacks are functions passed into other functions and executed later.',
+                code: `function processUser(name, callback) {
+  console.log("Processing " + name);
+  callback();
+}
+processUser("Omar", () => console.log("Done"));`,
+                exercise: 'Create a function that accepts callback and runs it after 1 second.',
+                hint: 'Use setTimeout(callback, 1000).'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Promises',
+                explain: 'Promises represent async results: pending, fulfilled, or rejected.',
+                code: `const p = new Promise((resolve, reject) => {
+  setTimeout(() => resolve("Success"), 1000);
+});
+
+p.then(msg => console.log(msg))
+ .catch(err => console.error(err));`,
+                exercise: 'Create a promise that rejects when input is empty.',
+                hint: 'Use reject(new Error("..."))'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'async/await',
+                explain: 'async/await makes asynchronous code look like synchronous code.',
+                code: `async function loadData() {
+  const res = await fetch("https://jsonplaceholder.typicode.com/todos/1");
+  const data = await res.json();
+  console.log(data);
+}
+loadData();`,
+                exercise: 'Write async function to fetch one user and log their name.',
+                hint: 'await response.json()'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Fetch API (very important)',
+                explain: 'Fetch gets remote data from APIs and returns a Promise.',
+                code: `fetch("https://jsonplaceholder.typicode.com/posts/1")
+  .then(res => res.json())
+  .then(data => console.log(data.title));`,
+                exercise: 'Fetch 5 posts and show first title.',
+                hint: 'Use /posts endpoint and data[0].title'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Working with APIs (real examples)',
+                explain: 'Real projects consume public APIs for weather, users, maps, and more.',
+                code: `async function getGithubUser(username) {
+    const res = await fetch(\`https://api.github.com/users/\${username}\`);
+    const user = await res.json();
+    console.log(user.login, user.public_repos);
+}
+getGithubUser("octocat");`,
+                exercise: 'Fetch your GitHub profile data and log followers count.',
+                hint: 'Use api.github.com/users/<username>'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Classes & constructors',
+                explain: 'Classes define blueprints for creating objects with shared behavior.',
+                code: `class User {
+  constructor(name) {
+    this.name = name;
+  }
+  greet() {
+    return "Hi " + this.name;
+  }
+}
+
+const u = new User("Leila");
+console.log(u.greet());`,
+                exercise: 'Create Product class with constructor(name, price) and method label().',
+                hint: 'Use class + constructor + method.'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Modules (import/export)',
+                explain: 'Modules split code into reusable files and improve maintainability.',
+                code: `// math.js
+export const add = (a, b) => a + b;
+
+// main.js
+import { add } from "./math.js";
+console.log(add(2, 3));`,
+                exercise: 'Create one module exporting utility function and import it in another file.',
+                hint: 'Remember to use type="module" in script tag.'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Deep understanding of "this"',
+                explain: 'this depends on call-site: object method, function call, class method, or bound function.',
+                code: `function show() { console.log(this); }
+const obj = { name: "Rita", show };
+obj.show(); // this = obj
+
+const bound = show.bind(obj);
+bound(); // this = obj`,
+                exercise: 'Use bind() to force this inside a function.',
+                hint: 'const fixed = fn.bind(obj)'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Closures (simple explanation)',
+                explain: 'A closure is when a function remembers variables from its outer scope.',
+                code: `function makeCounter() {
+  let count = 0;
+  return function () {
+    count++;
+    return count;
+  };
+}
+
+const counter = makeCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2`,
+                exercise: 'Create makeAdder(x) returning function(y) => x + y.',
+                hint: 'Inner function can access x from outer scope.'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'Event loop (conceptual)',
+                explain: 'JS is single-threaded. Event loop coordinates call stack, Web APIs, and callback queue.',
+                code: `console.log("A");
+setTimeout(() => console.log("B"), 0);
+Promise.resolve().then(() => console.log("C"));
+console.log("D");
+// Output: A, D, C, B`,
+                exercise: 'Predict output order for code using console.log + setTimeout + Promise.',
+                hint: 'Microtasks (Promise) run before macrotasks (setTimeout).'
+            }, {
+                type: 'challenge',
+                title: 'Advanced Project',
+                subtitle: 'API Data Explorer',
+                exercise: 'Build an API project that fetches data from a public API (e.g. JSONPlaceholder or GitHub), supports search, loading states, and error handling.',
+                hint: 'Use async/await + try/catch + dynamic DOM rendering.'
+            },
+
+            {
+                type: 'final',
+                title: 'Course Completed 🎉',
+                subtitle: 'You covered Beginner, Intermediate, and Advanced JavaScript',
+                content: [
+                    'You learned core syntax, DOM, and modern ES6+',
+                    'You understand async JavaScript and API integration',
+                    'You practiced with 3 project ideas (one per level)',
+                    'Next step: build and deploy your own portfolio projects!'
+                ]
+            }
+        ];
+
+        // DOM elements
+        const container = document.getElementById('slidesContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+        const slideCounter = document.getElementById('slideCounter');
+
+        let currentSlide = 0;
+
+        // Render slides
+        function renderSlides() {
+            container.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide';
+                slideEl.setAttribute('role', 'group');
+                slideEl.setAttribute('aria-label', `Slide ${index + 1} of ${slides.length}`);
+
+                if (index === currentSlide) {
+                    slideEl.classList.add('active');
+                } else if (index < currentSlide) {
+                    slideEl.classList.add('prev');
+                }
+
+                slideEl.innerHTML = renderSlideContent(slide, index);
+                container.appendChild(slideEl);
+            });
+
+            updateNav();
+        }
+
+        function renderSlideContent(slide, index) {
+            switch (slide.type) {
+                case 'title':
+                    return `
+                        <div class="slide-content text-center">
+                            <div class="section-icon">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+                            </div>
+                            <h1 class="section-title">${slide.title}</h1>
+                            <p class="section-subtitle">${slide.subtitle}</p>
+                            <p style="margin-top: 3rem; color: var(--muted);">Press <kbd>→</kbd> or click Next to begin</p>
+                        </div>
+                    `;
+
+                case 'section':
+                    return `
+                        <div class="slide-content text-center">
+                            <p class="slide-number">Section ${getSectionNumber(slide.section)}</p>
+                            <h1 class="section-title">${slide.title}</h1>
+                            <p class="section-subtitle">${slide.subtitle}</p>
+                        </div>
+                    `;
+
+                case 'explain':
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">Explain</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+                            <ul class="bullet-list">
+                                ${slide.content.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                            ${slide.analogy ? `
+                                <div class="analogy-box">
+                                    <p class="analogy-label">Real-world Analogy</p>
+                                    <p style="margin: 0; color: #c4b5fd;">${slide.analogy}</p>
+                                </div>
+                            ` : ''}
+                            ${slide.instructorNote ? `
+                                <div class="instructor-note">
+                                    <strong>Instructor Note:</strong> ${slide.instructorNote}
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+
+                case 'code':
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">Code Example</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+                            <div class="code-block">
+                                <pre style="margin: 0;"><code>${highlightJS(slide.code)}</code></pre>
+                            </div>
+                        </div>
+                    `;
+
+                case 'exercise':
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">Practice</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+                            <div class="exercise-box">
+                                <p class="exercise-label">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                                    Hands-on Exercise
+                                </p>
+                                <p style="margin: 0; font-size: 1.1rem;">${slide.exercise}</p>
+                            </div>
+                            ${slide.hint ? `
+                                <p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">
+                                    <strong>Hint:</strong> ${slide.hint}
+                                </p>
+                            ` : ''}
+                        </div>
+                    `;
+
+                case 'final':
+                    return `
+                        <div class="slide-content text-center">
+                            <div class="section-icon" style="background: linear-gradient(135deg, #22d3ee, #34d399);">
+                                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <h1 class="section-title">${slide.title}</h1>
+                            <p class="section-subtitle" style="margin-bottom: 2rem;">${slide.subtitle}</p>
+                            <ul class="bullet-list" style="text-align: left; max-width: 500px; margin: 0 auto;">
+                                ${slide.content.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+
+                case 'challenge':
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">Final Challenge</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+                            <p style="color: var(--muted); margin-bottom: 1.5rem;">${slide.subtitle}</p>
+                            <div class="exercise-box" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-color: rgba(167, 139, 250, 0.3);">
+                                <p class="exercise-label" style="color: #a78bfa;">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    Final Project
+                                </p>
+                                <p style="margin: 0; font-size: 1rem; white-space: pre-line;">${slide.exercise}</p>
+                            </div>
+                        </div>
+                    `;
+
+                case 'lesson':
+                    return `
+                        <div class="slide-content">
+                            <p class="slide-number">${slide.section.toUpperCase()} LESSON</p>
+                            <h2 class="slide-title">${slide.title}</h2>
+
+                            <div class="analogy-box" style="margin-bottom: 1.25rem;">
+                                <p class="analogy-label">Simple Explanation</p>
+                                <p style="margin: 0; color: #c4b5fd;">${slide.explain}</p>
+                            </div>
+
+                            <div class="code-block" style="margin-bottom: 1.25rem;">
+                                <pre style="margin: 0;"><code>${highlightJS(slide.code)}</code></pre>
+                            </div>
+
+                            <div class="exercise-box">
+                                <p class="exercise-label">Mini Exercise</p>
+                                <p style="margin: 0; font-size: 1rem;">${slide.exercise}</p>
+                            </div>
+                            ${slide.hint ? `<p style="margin-top: 0.8rem; color: var(--muted); font-size: 0.9rem;"><strong>Hint:</strong> ${slide.hint}</p>` : ''}
+                        </div>
+                    `;
+
+                default:
+                    return '';
+            }
+        }
+
+        function getSectionNumber(section) {
+            const sections = ['start', 'overview', 'beginner', 'intermediate', 'advanced'];
+            const num = sections.indexOf(section);
+            return num > 0 ? num : '';
+        }
+
+        function highlightJS(code) {
+            return code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/(\/\/[^\n]*)/g, '<span class="comment">$1</span>')
+                .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
+                .replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|true|false|null|undefined|new|this|class|extends|import|export|async|await)\b/g, '<span class="highlight">$1</span>')
+                .replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, '<span class="value">$1</span>')
+                .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="unit">$1</span>')
+                .replace(/\b(console|document|window|Math|Array|Object|String|Number|Boolean|Date|JSON|parseInt|parseFloat|isNaN|Math\.\w+|document\.\w+)\b/g, '<span class="selector">$1</span>');
+        }
+
+        function updateNav() {
+            const total = slides.length;
+            const progress = ((currentSlide + 1) / total) * 100;
+
+            progressFill.style.width = `${progress}%`;
+            slideCounter.textContent = `${currentSlide + 1} / ${total}`;
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === total - 1;
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= slides.length) return;
+
+            const allSlides = container.querySelectorAll('.slide');
+
+            allSlides.forEach((slide, i) => {
+                slide.classList.remove('active', 'prev');
+                if (i === index) {
+                    slide.classList.add('active');
+                } else if (i < index) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            currentSlide = index;
+            updateNav();
+        }
+
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            goToSlide(currentSlide - 1);
+        }
+
+        // Event listeners
+        prevBtn.addEventListener('click', prevSlide);
+        nextBtn.addEventListener('click', nextSlide);
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            }
+        });
+
+        // Touch support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        container.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        container.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const diff = touchStartX - touchEndX;
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        }
+
+        // Initialize
+        renderSlides();
+    </script>
+</body>
+
+</html>
