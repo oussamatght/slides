@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Internet Basics for Beginners — Interactive Slides</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #070d1d;
+            --bg-card: #0f172a;
+            --bg-card-2: #111b34;
+            --fg: #eef2ff;
+            --muted: #94a3b8;
+            --accent: #60a5fa;
+            --accent-2: #22d3ee;
+            --accent-3: #a78bfa;
+            --border: #1e293b;
+            --code-bg: #0b1220;
+            --ok: #34d399;
+            --warn: #fbbf24;
+            --danger: #fb7185;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            color: var(--fg);
+            background: radial-gradient(ellipse 70% 45% at 50% -20%, rgba(96, 165, 250, .16), transparent), radial-gradient(ellipse 65% 40% at 100% 110%, rgba(167, 139, 250, .14), transparent), linear-gradient(180deg, var(--bg), #0a1329 100%);
+            font-family: 'Space Grotesk', sans-serif;
+            overflow: hidden;
+        }
+        
+        code,
+        pre,
+        .code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background-image: linear-gradient(rgba(96, 165, 250, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(96, 165, 250, 0.045) 1px, transparent 1px);
+            background-size: 56px 56px;
+        }
+        
+        .slides-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(84px);
+            transition: opacity .45s ease, transform .45s ease;
+            padding: 1.5rem 1.5rem 8rem;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateX(0);
+        }
+        
+        .slide.prev {
+            transform: translateX(-84px);
+        }
+        
+        .slide-content {
+            width: min(980px, 100%);
+            max-height: calc(100vh - 11rem);
+            overflow-y: auto;
+            padding-right: .35rem;
+        }
+        
+        .slide-content::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .slide-content::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, .25);
+            border-radius: 999px;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb {
+            border-radius: 999px;
+            border: 2px solid rgba(15, 23, 42, .55);
+            background: linear-gradient(180deg, rgba(96, 165, 250, .95), rgba(34, 211, 238, .9));
+        }
+        
+        .slide-number {
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: .18em;
+            font-size: .74rem;
+            margin-bottom: .6rem;
+        }
+        
+        .section-title {
+            margin: 0;
+            font-size: clamp(2rem, 5vw, 4rem);
+            line-height: 1.06;
+            font-weight: 700;
+        }
+        
+        .section-subtitle {
+            margin-top: .9rem;
+            color: var(--muted);
+            font-size: clamp(1rem, 2.2vw, 1.25rem);
+        }
+        
+        .slide-title {
+            margin: 0 0 1rem;
+            font-size: clamp(1.6rem, 4vw, 2.7rem);
+            line-height: 1.08;
+            font-weight: 700;
+            background: linear-gradient(135deg, #f8fbff, #a5b4fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .card {
+            background: linear-gradient(180deg, rgba(17, 27, 52, .85), rgba(15, 23, 42, .88));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 1.1rem 1.2rem;
+            box-shadow: 0 10px 40px rgba(2, 8, 23, .35);
+        }
+        
+        .bullet-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: .7rem;
+        }
+        
+        .bullet-list li {
+            position: relative;
+            padding-left: 1.55rem;
+            line-height: 1.55;
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+        }
+        
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: .64em;
+            width: 9px;
+            height: 9px;
+            transform: rotate(45deg);
+            border-radius: 2px;
+            background: linear-gradient(135deg, var(--accent-3), var(--accent));
+        }
+        
+        .highlight {
+            color: #93c5fd;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            margin-top: 1rem;
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow-x: auto;
+            padding: 1rem 1rem 1.05rem;
+            font-size: .92rem;
+            line-height: 1.68;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: 'EXAMPLE';
+            position: absolute;
+            top: .7rem;
+            right: .95rem;
+            color: var(--muted);
+            font-size: .7rem;
+            letter-spacing: .1em;
+        }
+        
+        .exercise-box {
+            margin-top: 1rem;
+            border: 1px solid rgba(251, 191, 36, .36);
+            background: linear-gradient(135deg, rgba(251, 191, 36, .1), rgba(96, 165, 250, .08));
+            border-radius: 12px;
+            padding: 1rem 1.1rem;
+        }
+        
+        .exercise-label {
+            font-size: .73rem;
+            text-transform: uppercase;
+            letter-spacing: .1em;
+            color: var(--warn);
+            font-weight: 700;
+            margin-bottom: .4rem;
+            display: inline-block;
+        }
+        
+        .two-col {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: 1.05fr .95fr;
+        }
+        
+        .image-card {
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: #0a1020;
+        }
+        
+        .image-card img {
+            display: block;
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+        }
+        
+        .image-caption {
+            padding: .6rem .8rem;
+            font-size: .82rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+        }
+        
+        .mini-grid {
+            display: grid;
+            gap: .8rem;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            margin-top: .8rem;
+        }
+        
+        .mini-card {
+            background: rgba(15, 23, 42, .66);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: .85rem .9rem;
+            font-size: .95rem;
+            line-height: 1.5;
+        }
+        
+        .kbd-hint {
+            position: fixed;
+            right: 1.9rem;
+            bottom: 6.1rem;
+            color: var(--muted);
+            font-size: .78rem;
+            display: flex;
+            align-items: center;
+            gap: .45rem;
+            z-index: 15;
+        }
+        
+        .top-controls {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 30;
+            display: flex;
+            gap: .6rem;
+            align-items: center;
+            background: rgba(7, 13, 29, .72);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: .45rem;
+            -webkit-backdrop-filter: blur(6px);
+            backdrop-filter: blur(6px);
+        }
+        
+        .top-controls select,
+        .top-controls button {
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--fg);
+            border-radius: 10px;
+            height: 38px;
+            padding: 0 .75rem;
+            font-family: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .top-controls select {
+            min-width: 185px;
+        }
+        
+        .top-controls button:hover,
+        .top-controls select:hover {
+            border-color: #4f46e5;
+            background: #121d39;
+        }
+        
+        kbd {
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            border-radius: 6px;
+            padding: .18rem .45rem;
+            font-size: .74rem;
+        }
+        
+        .nav-bar {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 20;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(7, 13, 29, .98), rgba(7, 13, 29, .35));
+        }
+        
+        .nav-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .nav-btn {
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--fg);
+            border-radius: 12px;
+            padding: .75rem 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s ease;
+            min-width: 120px;
+        }
+        
+        .nav-btn:hover {
+            border-color: #4f46e5;
+            background: #121d39;
+        }
+        
+        .nav-btn:disabled {
+            opacity: .38;
+            cursor: not-allowed;
+        }
+        
+        .progress-bar {
+            height: 5px;
+            border-radius: 999px;
+            background: #1e293b;
+            overflow: hidden;
+            flex: 1;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #a78bfa, #60a5fa, #fbbf24);
+            transition: width .3s ease;
+        }
+        
+        .slide-counter {
+            min-width: 62px;
+            text-align: center;
+            color: var(--muted);
+            font-size: .95rem;
+        }
+        
+        .toc {
+            display: grid;
+            gap: .65rem;
+            margin-top: 1rem;
+        }
+        
+        .toc li {
+            list-style: none;
+            color: #cbd5e1;
+            border: 1px solid var(--border);
+            background: rgba(15, 23, 42, .72);
+            border-radius: 10px;
+            padding: .6rem .75rem;
+            font-size: .95rem;
+        }
+        
+        .emoji {
+            font-size: 1.2em;
+            margin-right: .35rem;
+        }
+        
+        .lang-ar .slide-content {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .lang-ar .bullet-list li {
+            padding-left: 0;
+            padding-right: 1.55rem;
+        }
+        
+        .lang-ar .bullet-list li::before {
+            left: auto;
+            right: 0;
+        }
+        
+        .lang-ar .code-block,
+        .lang-ar pre,
+        .lang-ar code {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        .lang-ar .emoji {
+            margin-right: 0;
+            margin-left: .35rem;
+        }
+        
+        @media (max-width: 860px) {
+            .two-col {
+                grid-template-columns: 1fr;
+            }
+            .image-card img {
+                height: 220px;
+            }
+        }
+        
+        @media (max-width: 640px) {
+            .slide {
+                padding: 1rem 1rem 9.2rem;
+            }
+            .slide-content {
+                max-height: calc(100vh - 13.2rem);
+                padding-right: .2rem;
+            }
+            .section-title {
+                font-size: clamp(1.6rem, 8vw, 2.2rem);
+            }
+            .slide-title {
+                font-size: clamp(1.35rem, 6.5vw, 1.9rem);
+            }
+            .mini-grid {
+                grid-template-columns: 1fr;
+            }
+            .kbd-hint {
+                display: none;
+            }
+            .top-controls {
+                left: .7rem;
+                right: .7rem;
+                top: .7rem;
+                justify-content: space-between;
+            }
+            .top-controls select {
+                min-width: 0;
+                width: 100%;
+            }
+            .top-controls button {
+                white-space: nowrap;
+            }
+            .nav-inner {
+                flex-wrap: wrap;
+            }
+            .nav-btn {
+                min-width: unset;
+            }
+        }
+        
+        @media (max-height: 760px) {
+            .slide {
+                justify-content: flex-start;
+                padding-top: 1rem;
+            }
+            .slide-content {
+                max-height: calc(100vh - 11rem);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-overlay"></div>
+    <div class="slides-container" id="slidesContainer"></div>
+
+    <div class="top-controls" aria-label="Quick controls">
+        <select id="topicJump" aria-label="Jump to topic"></select>
+        <button id="langToggleBtn" aria-label="Toggle language">AR</button>
+    </div>
+
+    <div class="kbd-hint">
+        <kbd>←</kbd><kbd>→</kbd> to navigate
+    </div>
+
+    <nav class="nav-bar" aria-label="Slide navigation">
+        <div class="nav-inner">
+            <button id="prevBtn" class="nav-btn" aria-label="Previous slide">← Prev</button>
+            <div class="progress-bar" role="progressbar" aria-label="Slide progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="slideCounter" class="slide-counter">1 / 1</span>
+            <button id="nextBtn" class="nav-btn" aria-label="Next slide">Next →</button>
+        </div>
+    </nav>
+
+    <script>
+        const slides = [{
+                type: 'title',
+                title: 'Internet Basics for Beginners',
+                subtitle: 'How the Web works — in simple words, with examples and visuals',
+                section: 'start'
+            }, {
+                type: 'overview',
+                title: 'What you will learn',
+                points: [
+                    'What the <span class="highlight">Internet</span> is and how it works',
+                    'What the <span class="highlight">Web</span> is (and how it is different)',
+                    'HTTP, browser, DNS, domain name, hosting — step by step',
+                    'Real-life examples + visuals to make things easy'
+                ]
+            },
+
+            {
+                type: 'section',
+                title: 'Part 1',
+                subtitle: 'What is the Internet?',
+                section: 'internet'
+            }, {
+                type: 'explain-image',
+                title: 'What is the Internet?',
+                text: 'The Internet is a giant global network that connects millions of devices (phones, laptops, servers). Devices talk to each other by sending data packets.',
+                bullets: [
+                    'Think of it like a huge road system for data',
+                    'Devices have addresses (IP addresses)',
+                    'Routers help data find the right path'
+                ],
+                image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+                caption: 'A connected digital network (concept image).'
+            }, {
+                type: 'code',
+                title: 'Simple analogy',
+                code: `Internet = roads
+Data packets = cars
+Routers = traffic police
+IP address = home address`,
+                exercise: 'Explain to a friend: “Why does data need an address?”'
+            },
+
+            {
+                type: 'section',
+                title: 'Part 2',
+                subtitle: 'What is the Web?',
+                section: 'web'
+            }, {
+                type: 'explain',
+                title: 'Internet vs Web (important)',
+                points: [
+                    '<span class="highlight">Internet</span> = infrastructure (network of networks)',
+                    '<span class="highlight">Web</span> = websites and pages on top of the internet',
+                    'You can use Internet without Web (e.g., email, games, file transfer)'
+                ],
+                note: 'The Web is a service that uses the Internet.'
+            }, {
+                type: 'explain-image',
+                title: 'How a web page appears',
+                text: 'A website is usually built with HTML, CSS, and JavaScript. Your browser downloads these files and renders (draws) the page on your screen.',
+                bullets: [
+                    'HTML = structure',
+                    'CSS = style',
+                    'JavaScript = behavior'
+                ],
+                image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80',
+                caption: 'Front-end files turned into visible UI by the browser.'
+            },
+
+            {
+                type: 'section',
+                title: 'Part 3',
+                subtitle: 'Browser, HTTP, and Request Flow',
+                section: 'browser-http'
+            }, {
+                type: 'flow',
+                title: 'What happens when you open a website?',
+                steps: [
+                    '1) You type a URL in the browser',
+                    '2) Browser asks DNS for IP address',
+                    '3) Browser sends HTTP request to server',
+                    '4) Server sends HTTP response (HTML/CSS/JS)',
+                    '5) Browser renders the page'
+                ],
+                image: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?auto=format&fit=crop&w=1200&q=80',
+                caption: 'From URL to rendered page — the request/response cycle.'
+            }, {
+                type: 'code',
+                title: 'HTTP in one minute',
+                code: `Request example:
+GET /about HTTP/1.1
+Host: example.com
+
+Response example:
+HTTP/1.1 200 OK
+Content-Type: text/html`,
+                exercise: 'What does status code 404 mean?'
+            },
+
+            {
+                type: 'section',
+                title: 'Part 4',
+                subtitle: 'Domain Name, DNS, and Hosting',
+                section: 'dns-hosting'
+            }, {
+                type: 'explain',
+                title: 'Domain Name',
+                points: [
+                    'A domain is the human-friendly name of a site',
+                    'Example: <span class="highlight">google.com</span>',
+                    'Behind every domain there is an IP address'
+                ],
+                note: 'Domain = contact name, IP = phone number.'
+            }, {
+                type: 'explain',
+                title: 'DNS (Domain Name System)',
+                points: [
+                    'DNS translates domain names into IP addresses',
+                    'Without DNS, you would memorize numbers like 142.250.74.14',
+                    'DNS is like the internet phonebook'
+                ],
+                note: 'Browser asks DNS first before connecting.'
+            }, {
+                type: 'explain-image',
+                title: 'Hosting',
+                text: 'Hosting means storing your website files on a server that is always online. When visitors open your domain, the host serves those files.',
+                bullets: [
+                    'Shared hosting = cheaper, shared resources',
+                    'VPS/cloud hosting = more control',
+                    'Static hosting = great for HTML/CSS/JS projects'
+                ],
+                image: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1200&q=80',
+                caption: 'Data center servers are the “homes” of websites.'
+            },
+
+            {
+                type: 'section',
+                title: 'Part 5',
+                subtitle: 'How Browsers Work',
+                section: 'browser'
+            }, {
+                type: 'flow',
+                title: 'Inside the browser (simplified)',
+                steps: [
+                    'Download HTML, CSS, JS files',
+                    'Parse HTML → build DOM tree',
+                    'Parse CSS → build CSSOM tree',
+                    'Combine both → render tree',
+                    'Paint pixels on screen'
+                ],
+                image: 'https://images.unsplash.com/photo-1526378800651-c32d170fe6f8?auto=format&fit=crop&w=1200&q=80',
+                caption: 'Browsers transform code into visible interfaces.'
+            }, {
+                type: 'explain',
+                title: 'Why pages can be slow',
+                points: [
+                    'Huge images and videos',
+                    'Too many scripts',
+                    'Slow server response',
+                    'No caching'
+                ],
+                note: 'Good web performance = fast + smooth + lightweight.'
+            },
+
+            {
+                type: 'section',
+                title: 'Part 6',
+                subtitle: 'Real-world examples',
+                section: 'examples'
+            }, {
+                type: 'example-grid',
+                title: 'Examples you use every day',
+                items: [
+                    '<span class="emoji">🛒</span><strong>E-commerce:</strong> Browser requests product pages and images from server.',
+                    '<span class="emoji">💬</span><strong>Messaging:</strong> App sends HTTP/WebSocket data between users.',
+                    '<span class="emoji">🎬</span><strong>Streaming:</strong> Content is delivered in chunks over the internet.',
+                    '<span class="emoji">🗺️</span><strong>Maps:</strong> Browser fetches map tiles and location data from APIs.'
+                ]
+            }, {
+                type: 'code',
+                title: 'Mini practical example',
+                code: `// Browser asks server for data
+fetch('https://jsonplaceholder.typicode.com/posts/1')
+  .then(res => res.json())
+  .then(data => console.log(data.title));`,
+                exercise: 'In this code, who is the client and who is the server?'
+            },
+
+            {
+                type: 'section',
+                title: 'Recap',
+                subtitle: 'Big picture',
+                section: 'recap'
+            }, {
+                type: 'overview',
+                title: 'Recap in 7 lines',
+                points: [
+                    'Internet = global network of connected devices',
+                    'Web = websites running on top of internet',
+                    'Browser opens URL and sends HTTP request',
+                    'DNS converts domain name to IP address',
+                    'Hosting server stores and serves website files',
+                    'Browser renders HTML/CSS/JS into UI',
+                    'That is how the modern web works 🎉'
+                ]
+            }, {
+                type: 'challenge',
+                title: 'Final Beginner Challenge',
+                subtitle: 'Explain the full flow in your own words',
+                exercise: 'Using 6 simple steps, explain what happens when you type a website URL and press Enter.',
+                hint: 'Include: URL → DNS → HTTP request → server response → browser render.'
+            }, {
+                type: 'final',
+                title: 'Great job! 🚀',
+                subtitle: 'You now understand Internet + Web fundamentals',
+                content: [
+                    'You can explain Internet vs Web clearly',
+                    'You understand browser, HTTP, DNS, hosting, and domain names',
+                    'You can describe how websites load from URL to screen'
+                ]
+            }
+        ];
+
+        const container = document.getElementById('slidesContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+        const slideCounter = document.getElementById('slideCounter');
+        const topicJump = document.getElementById('topicJump');
+        const langToggleBtn = document.getElementById('langToggleBtn');
+
+        let currentSlide = 0;
+        let currentLang = 'en';
+
+        const uiLabels = {
+            en: {
+                welcome: 'WELCOME',
+                section: 'Section',
+                overview: 'Overview',
+                concept: 'Concept',
+                withVisual: 'With visual',
+                how: 'How it works',
+                examples: 'Examples',
+                exampleExercise: 'Example + Exercise',
+                tryThis: 'Try this',
+                finalChallenge: 'Final Challenge',
+                yourTask: 'Your task',
+                hint: 'Hint',
+                finish: 'Finish',
+                jumpDefault: 'Jump to topic…',
+                prev: '← Prev',
+                next: 'Next →'
+            },
+            ar: {
+                welcome: 'مرحبًا',
+                section: 'القسم',
+                overview: 'نظرة عامة',
+                concept: 'مفهوم',
+                withVisual: 'مع صورة',
+                how: 'كيف يعمل',
+                examples: 'أمثلة',
+                exampleExercise: 'مثال + تمرين',
+                tryThis: 'جرّب هذا',
+                finalChallenge: 'التحدي النهائي',
+                yourTask: 'مهمتك',
+                hint: 'تلميح',
+                finish: 'النهاية',
+                jumpDefault: 'الانتقال إلى موضوع…',
+                prev: '← السابق',
+                next: 'التالي →'
+            }
+        };
+
+        const arByTitle = {
+            'Internet Basics for Beginners': {
+                title: 'أساسيات الإنترنت للمبتدئين',
+                subtitle: 'كيف يعمل الويب بكلمات بسيطة مع أمثلة وصور'
+            },
+            'What you will learn': {
+                title: 'ماذا ستتعلّم',
+                points: [
+                    'ما هو <span class="highlight">الإنترنت</span> وكيف يعمل',
+                    'ما هو <span class="highlight">الويب</span> وما الفرق بينه وبين الإنترنت',
+                    'HTTP والمتصفح وDNS واسم النطاق والاستضافة — خطوة بخطوة',
+                    'أمثلة واقعية + صور لتسهيل الفهم'
+                ]
+            },
+            'Part 1': {
+                title: 'الجزء 1',
+                subtitle: 'ما هو الإنترنت؟'
+            },
+            'What is the Internet?': {
+                title: 'ما هو الإنترنت؟',
+                text: 'الإنترنت شبكة عالمية ضخمة تربط ملايين الأجهزة (هاتف، حاسوب، خوادم). تتواصل الأجهزة عبر إرسال حزم البيانات.',
+                bullets: ['تخيّله كشبكة طرق كبيرة للبيانات', 'لكل جهاز عنوان (IP)', 'الموجّهات تساعد البيانات على إيجاد الطريق الصحيح'],
+                caption: 'تصور لشبكة رقمية مترابطة.'
+            },
+            'Simple analogy': {
+                title: 'تشبيه بسيط',
+                exercise: 'اشرح لصديقك: لماذا تحتاج البيانات إلى عنوان؟'
+            },
+            'Part 2': {
+                title: 'الجزء 2',
+                subtitle: 'ما هو الويب؟'
+            },
+            'Internet vs Web (important)': {
+                title: 'الفرق بين الإنترنت والويب (مهم)',
+                points: [
+                    '<span class="highlight">الإنترنت</span> = البنية التحتية (شبكة الشبكات)',
+                    '<span class="highlight">الويب</span> = المواقع والصفحات فوق الإنترنت',
+                    'يمكن استخدام الإنترنت بدون الويب (مثل البريد الإلكتروني)'
+                ],
+                note: 'الويب خدمة تعمل فوق الإنترنت.'
+            },
+            'How a web page appears': {
+                title: 'كيف تظهر صفحة الويب',
+                text: 'غالبًا ما يُبنى الموقع بـ HTML وCSS وJavaScript. المتصفح يحمّل هذه الملفات ثم يرسم الصفحة على الشاشة.',
+                bullets: ['HTML = الهيكل', 'CSS = الشكل', 'JavaScript = التفاعل'],
+                caption: 'المتصفح يحول الملفات إلى واجهة مرئية.'
+            },
+            'Part 3': {
+                title: 'الجزء 3',
+                subtitle: 'المتصفح وHTTP وتدفق الطلب'
+            },
+            'What happens when you open a website?': {
+                title: 'ماذا يحدث عند فتح موقع؟',
+                steps: ['1) تكتب الرابط في المتصفح', '2) المتصفح يسأل DNS عن عنوان IP', '3) المتصفح يرسل طلب HTTP', '4) الخادم يرسل الاستجابة', '5) المتصفح يعرض الصفحة'],
+                caption: 'من الرابط إلى الصفحة المعروضة.'
+            },
+            'HTTP in one minute': {
+                title: 'HTTP في دقيقة واحدة',
+                exercise: 'ماذا يعني كود الحالة 404؟'
+            },
+            'Part 4': {
+                title: 'الجزء 4',
+                subtitle: 'اسم النطاق وDNS والاستضافة'
+            },
+            'Domain Name': {
+                title: 'اسم النطاق (Domain Name)',
+                points: ['اسم سهل للموقع', 'مثال: <span class="highlight">google.com</span>', 'خلف كل نطاق يوجد عنوان IP'],
+                note: 'النطاق مثل اسم جهة الاتصال، وIP مثل رقم الهاتف.'
+            },
+            'DNS (Domain Name System)': {
+                title: 'DNS (نظام أسماء النطاقات)',
+                points: ['DNS يترجم أسماء النطاقات إلى IP', 'بدونه ستتذكر أرقامًا طويلة', 'DNS مثل دفتر أرقام الإنترنت'],
+                note: 'المتصفح يستعلم DNS أولًا قبل الاتصال.'
+            },
+            'Hosting': {
+                title: 'الاستضافة (Hosting)',
+                text: 'الاستضافة تعني تخزين ملفات موقعك على خادم يعمل دائمًا. عند فتح النطاق، يقوم الخادم بإرسال الملفات للزائر.',
+                bullets: ['استضافة مشتركة = أرخص', 'VPS/Cloud = تحكم أكثر', 'استضافة ثابتة ممتازة لمشاريع HTML/CSS/JS'],
+                caption: 'الخوادم هي منزل ملفات الموقع.'
+            },
+            'Part 5': {
+                title: 'الجزء 5',
+                subtitle: 'كيف يعمل المتصفح'
+            },
+            'Inside the browser (simplified)': {
+                title: 'داخل المتصفح (بشكل مبسّط)',
+                steps: ['تحميل ملفات HTML/CSS/JS', 'تحليل HTML وبناء DOM', 'تحليل CSS وبناء CSSOM', 'دمجهما في Render Tree', 'رسم العناصر على الشاشة'],
+                caption: 'المتصفح يحوّل الكود إلى واجهة.'
+            },
+            'Why pages can be slow': {
+                title: 'لماذا تكون الصفحات بطيئة؟',
+                points: ['صور وفيديوهات كبيرة', 'عدد كبير من السكربتات', 'استجابة خادم بطيئة', 'عدم وجود تخزين مؤقت'],
+                note: 'الأداء الجيد = سرعة + سلاسة + حجم خفيف.'
+            },
+            'Part 6': {
+                title: 'الجزء 6',
+                subtitle: 'أمثلة من الواقع'
+            },
+            'Examples you use every day': {
+                title: 'أمثلة تستخدمها يوميًا',
+                items: [
+                    '<span class="emoji">🛒</span><strong>التجارة الإلكترونية:</strong> المتصفح يطلب صفحات المنتجات والصور من الخادم.',
+                    '<span class="emoji">💬</span><strong>المراسلة:</strong> التطبيق يرسل البيانات بين المستخدمين.',
+                    '<span class="emoji">🎬</span><strong>البث:</strong> المحتوى يصل على أجزاء عبر الإنترنت.',
+                    '<span class="emoji">🗺️</span><strong>الخرائط:</strong> المتصفح يجلب بيانات الخرائط من API.'
+                ]
+            },
+            'Mini practical example': {
+                title: 'مثال عملي صغير',
+                exercise: 'في هذا الكود، من هو العميل ومن هو الخادم؟'
+            },
+            'Recap': {
+                title: 'مراجعة',
+                subtitle: 'الصورة الكبيرة'
+            },
+            'Recap in 7 lines': {
+                title: 'الخلاصة في 7 نقاط',
+                points: ['الإنترنت شبكة عالمية للأجهزة', 'الويب مواقع تعمل فوق الإنترنت', 'المتصفح يفتح الرابط ويرسل HTTP', 'DNS يحول النطاق إلى IP', 'الاستضافة تحفظ ملفات الموقع', 'المتصفح يعرض HTML/CSS/JS', 'هكذا يعمل الويب الحديث 🎉']
+            },
+            'Final Beginner Challenge': {
+                title: 'تحدي المبتدئ النهائي',
+                subtitle: 'اشرح التدفق كاملًا بأسلوبك',
+                exercise: 'باستخدام 6 خطوات بسيطة، اشرح ماذا يحدث عند كتابة رابط موقع والضغط على Enter.',
+                hint: 'ضمّن: URL → DNS → HTTP request → server response → browser render.'
+            },
+            'Great job! 🚀': {
+                title: 'عمل رائع! 🚀',
+                subtitle: 'أصبحت تفهم أساسيات الإنترنت والويب',
+                content: ['تستطيع شرح الفرق بين الإنترنت والويب', 'تفهم HTTP وDNS والنطاق والاستضافة والمتصفح', 'تستطيع وصف رحلة تحميل الصفحة من الرابط إلى الشاشة']
+            }
+        };
+
+        const tocTargets = [{
+            key: 'http',
+            labelEn: 'HTTP',
+            labelAr: 'HTTP',
+            title: 'HTTP in one minute'
+        }, {
+            key: 'dns',
+            labelEn: 'DNS',
+            labelAr: 'DNS',
+            title: 'DNS (Domain Name System)'
+        }, {
+            key: 'hosting',
+            labelEn: 'Hosting',
+            labelAr: 'الاستضافة',
+            title: 'Hosting'
+        }, {
+            key: 'domain',
+            labelEn: 'Domain Name',
+            labelAr: 'اسم النطاق',
+            title: 'Domain Name'
+        }, {
+            key: 'browser',
+            labelEn: 'Browser',
+            labelAr: 'المتصفح',
+            title: 'Inside the browser (simplified)'
+        }, {
+            key: 'flow',
+            labelEn: 'How Web Flow Works',
+            labelAr: 'تدفق عمل الويب',
+            title: 'What happens when you open a website?'
+        }];
+
+        function localizeSlide(slide) {
+            if (currentLang === 'en') return slide;
+            const ar = arByTitle[slide.title];
+            if (!ar) return slide;
+            return {...slide,
+                ...ar
+            };
+        }
+
+        function ui(key) {
+            return uiLabels[currentLang][key] || key;
+        }
+
+        function renderTopicJump() {
+            topicJump.innerHTML = '';
+            const placeholder = document.createElement('option');
+            placeholder.textContent = ui('jumpDefault');
+            placeholder.value = '';
+            placeholder.selected = true;
+            topicJump.appendChild(placeholder);
+
+            tocTargets.forEach(item => {
+                const index = slides.findIndex(s => s.title === item.title);
+                if (index !== -1) {
+                    const opt = document.createElement('option');
+                    opt.value = String(index);
+                    opt.textContent = currentLang === 'ar' ? item.labelAr : item.labelEn;
+                    topicJump.appendChild(opt);
+                }
+            });
+        }
+
+        function renderSlides() {
+            container.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                const localized = localizeSlide(slide);
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide';
+                slideEl.setAttribute('role', 'group');
+                slideEl.setAttribute('aria-label', `Slide ${index + 1} of ${slides.length}`);
+
+                if (index === currentSlide) slideEl.classList.add('active');
+                else if (index < currentSlide) slideEl.classList.add('prev');
+
+                slideEl.innerHTML = renderSlideContent(localized);
+                container.appendChild(slideEl);
+            });
+
+            updateNav();
+            renderTopicJump();
+            prevBtn.textContent = ui('prev');
+            nextBtn.textContent = ui('next');
+            document.body.classList.toggle('lang-ar', currentLang === 'ar');
+        }
+
+        function renderSlideContent(slide) {
+            switch (slide.type) {
+                case 'title':
+                    return `
+						<div class="slide-content" style="text-align:center;">
+                            <p class="slide-number">${ui('welcome')}</p>
+							<h1 class="section-title">${slide.title}</h1>
+							<p class="section-subtitle">${slide.subtitle}</p>
+						</div>
+					`;
+
+                case 'section':
+                    return `
+						<div class="slide-content" style="text-align:center;">
+                            <p class="slide-number">${ui('section')} ${sectionNumber(slide.section)}</p>
+							<h2 class="section-title">${slide.title}</h2>
+							<p class="section-subtitle">${slide.subtitle}</p>
+						</div>
+					`;
+
+                case 'overview':
+                    return `
+						<div class="slide-content">
+                            <p class="slide-number">${ui('overview')}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<div class="card">
+								<ul class="bullet-list">
+									${slide.points.map(p => `<li>${p}</li>`).join('')}
+								</ul>
+							</div>
+						</div>
+					`;
+
+				case 'explain':
+					return `
+						<div class="slide-content">
+                            <p class="slide-number">${ui('concept')}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<div class="card">
+								<ul class="bullet-list">
+									${slide.points.map(p => `<li>${p}</li>`).join('')}
+								</ul>
+							</div>
+							${slide.note ? `<div class="exercise-box"><span class="exercise-label">Remember</span><p style="margin:.2rem 0 0;">${slide.note}</p></div>` : ''}
+						</div>
+					`;
+
+				case 'explain-image':
+					return `
+						<div class="slide-content">
+                            <p class="slide-number">${ui('withVisual')}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<div class="two-col">
+								<div class="card">
+									<p style="margin:0 0 .8rem; line-height:1.65; color:#dbeafe;">${slide.text}</p>
+									<ul class="bullet-list">
+										${slide.bullets.map(b => `<li>${b}</li>`).join('')}
+									</ul>
+								</div>
+								<figure class="image-card" style="margin:0;">
+									<img src="${slide.image}" alt="${slide.title} illustration" loading="lazy" />
+									<figcaption class="image-caption">${slide.caption}</figcaption>
+								</figure>
+							</div>
+						</div>
+					`;
+
+				case 'flow':
+					return `
+						<div class="slide-content">
+                            <p class="slide-number">${ui('how')}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<div class="two-col">
+								<div class="card">
+									<ul class="bullet-list">
+										${slide.steps.map(s => `<li>${s}</li>`).join('')}
+									</ul>
+								</div>
+								<figure class="image-card" style="margin:0;">
+									<img src="${slide.image}" alt="${slide.title} flow visual" loading="lazy" />
+									<figcaption class="image-caption">${slide.caption}</figcaption>
+								</figure>
+							</div>
+						</div>
+					`;
+
+				case 'example-grid':
+					return `
+						<div class="slide-content">
+                            <p class="slide-number">${ui('examples')}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<div class="mini-grid">
+								${slide.items.map(i => `<div class="mini-card">${i}</div>`).join('')}
+							</div>
+						</div>
+					`;
+
+				case 'code':
+					return `
+						<div class="slide-content">
+                            <p class="slide-number">${ui('exampleExercise')}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<div class="code-block"><pre style="margin:0;"><code>${escapeHtml(slide.code)}</code></pre></div>
+							<div class="exercise-box">
+                                <span class="exercise-label">${ui('tryThis')}</span>
+								<p style="margin:.2rem 0 0; line-height:1.6;">${slide.exercise}</p>
+							</div>
+						</div>
+					`;
+
+				case 'challenge':
+					return `
+						<div class="slide-content">
+                            <p class="slide-number">${ui('finalChallenge')}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<p style="color:var(--muted); margin-top:-.25rem;">${slide.subtitle}</p>
+							<div class="exercise-box" style="margin-top:1rem;">
+                                <span class="exercise-label">${ui('yourTask')}</span>
+								<p style="margin:.2rem 0 0; line-height:1.65; white-space:pre-line;">${slide.exercise}</p>
+							</div>
+                            ${slide.hint ? `<p style="margin-top:.7rem; color:var(--muted); font-size:.95rem;"><strong>${ui('hint')}:</strong> ${slide.hint}</p>` : ''}
+						</div>
+					`;
+
+				case 'final':
+					return `
+						<div class="slide-content" style="text-align:center;">
+                            <p class="slide-number">${ui('finish')}</p>
+							<h2 class="section-title">${slide.title}</h2>
+							<p class="section-subtitle" style="margin-bottom:1rem;">${slide.subtitle}</p>
+							<div class="card" style="text-align:left; max-width:760px; margin:0 auto;">
+								<ul class="bullet-list">
+									${slide.content.map(c => `<li>${c}</li>`).join('')}
+								</ul>
+							</div>
+						</div>
+					`;
+
+				default:
+					return '';
+			}
+		}
+
+		function sectionNumber(section) {
+			const order = ['start', 'internet', 'web', 'browser-http', 'dns-hosting', 'browser', 'examples', 'recap'];
+			const i = order.indexOf(section);
+			return i > 0 ? i : '';
+		}
+
+		function escapeHtml(str) {
+			return str
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;');
+		}
+
+		function updateNav() {
+			const total = slides.length;
+			const progress = ((currentSlide + 1) / total) * 100;
+			progressFill.style.width = `${progress}%`;
+			slideCounter.textContent = `${currentSlide + 1} / ${total}`;
+			prevBtn.disabled = currentSlide === 0;
+			nextBtn.disabled = currentSlide === total - 1;
+		}
+
+		function goToSlide(index) {
+			if (index < 0 || index >= slides.length) return;
+
+			container.querySelectorAll('.slide').forEach((s, i) => {
+				s.classList.remove('active', 'prev');
+				if (i === index) s.classList.add('active');
+				else if (i < index) s.classList.add('prev');
+			});
+
+			currentSlide = index;
+			updateNav();
+		}
+
+		function nextSlide() {
+			goToSlide(currentSlide + 1);
+		}
+
+		function prevSlide() {
+			goToSlide(currentSlide - 1);
+		}
+
+		prevBtn.addEventListener('click', prevSlide);
+		nextBtn.addEventListener('click', nextSlide);
+
+        topicJump.addEventListener('change', (e) => {
+            const value = e.target.value;
+            if (value === '') return;
+            goToSlide(Number(value));
+            topicJump.selectedIndex = 0;
+        });
+
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            langToggleBtn.textContent = currentLang === 'en' ? 'AR' : 'EN';
+            renderSlides();
+            goToSlide(currentSlide);
+        });
+
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowRight' || e.key === ' ') {
+				e.preventDefault();
+				nextSlide();
+			} else if (e.key === 'ArrowLeft') {
+				e.preventDefault();
+				prevSlide();
+			}
+		});
+
+		let touchStartX = 0;
+		let touchEndX = 0;
+
+		container.addEventListener('touchstart', (e) => {
+			touchStartX = e.changedTouches[0].screenX;
+		}, { passive: true });
+
+		container.addEventListener('touchend', (e) => {
+			touchEndX = e.changedTouches[0].screenX;
+			const diff = touchStartX - touchEndX;
+			if (Math.abs(diff) > 55) {
+				if (diff > 0) nextSlide();
+				else prevSlide();
+			}
+		}, { passive: true });
+
+        renderSlides();
+    </script>
+</body>
+
+</html>
