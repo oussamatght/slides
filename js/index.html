@@ -69,7 +69,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 2rem 2rem 8rem;
             opacity: 0;
             transform: translateX(100px);
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -96,6 +96,29 @@
         .slide-content {
             max-width: 900px;
             width: 100%;
+            max-height: calc(100vh - 12rem);
+            overflow-y: auto;
+            padding-right: 0.35rem;
+        }
+        
+        .slide-content::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .slide-content::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(30, 41, 59, 0.22));
+            border-radius: 999px;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(167, 139, 250, 0.9), rgba(251, 191, 36, 0.88));
+            border-radius: 999px;
+            border: 2px solid rgba(15, 23, 42, 0.55);
+            box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.18) inset;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #a78bfa, #fbbf24);
         }
         
         .slide-number {
@@ -175,6 +198,20 @@
             font-size: 0.95rem;
             line-height: 1.7;
             position: relative;
+        }
+        
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.35);
+            border-radius: 999px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, rgba(167, 139, 250, 0.92), rgba(251, 191, 36, 0.88));
+            border-radius: 999px;
         }
         
         .code-block::before {
@@ -439,10 +476,13 @@
         
         @media (max-width: 640px) {
             .slide {
-                padding: 1rem;
+                padding: 1rem 1rem 9.5rem;
             }
             .slide-title {
                 font-size: 1.75rem;
+            }
+            .section-title {
+                font-size: clamp(1.8rem, 8vw, 2.4rem);
             }
             .bullet-list li {
                 font-size: 1rem;
@@ -452,11 +492,29 @@
                 font-size: 0.8rem;
                 padding: 1rem;
             }
+            .slide-content {
+                max-height: calc(100vh - 13.5rem);
+                padding-right: 0.2rem;
+            }
+            .slide-content::-webkit-scrollbar {
+                width: 8px;
+            }
             .nav-inner {
                 flex-wrap: wrap;
             }
             .keyboard-hint {
                 display: none;
+            }
+        }
+        
+        @media (max-height: 760px) {
+            .slide {
+                justify-content: flex-start;
+                padding-top: 1.25rem;
+                padding-bottom: 9.5rem;
+            }
+            .slide-content {
+                max-height: calc(100vh - 11.5rem);
             }
         }
     </style>
