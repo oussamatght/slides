@@ -447,6 +447,44 @@
             gap: 0.5rem;
         }
         
+        .lang-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 120;
+            padding: 0.45rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .lang-ar .slide-content {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .lang-ar .bullet-list li {
+            padding-left: 0;
+            padding-right: 2rem;
+        }
+        
+        .lang-ar .bullet-list li::before {
+            left: auto;
+            right: 0;
+        }
+        
+        .lang-ar pre,
+        .lang-ar code,
+        .lang-ar .code-block {
+            direction: ltr;
+            text-align: left;
+        }
+        
         kbd {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -555,6 +593,8 @@
     <div class="keyboard-hint">
         <kbd>←</kbd> <kbd>→</kbd> to navigate
     </div>
+
+    <button id="langToggleBtn" class="lang-toggle" aria-label="Toggle Arabic language">AR</button>
 
     <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
         <div class="nav-inner">
@@ -1073,14 +1113,244 @@ console.log("D");
         const nextBtn = document.getElementById('nextBtn');
         const progressFill = document.getElementById('progressFill');
         const slideCounter = document.getElementById('slideCounter');
+        const langToggleBtn = document.getElementById('langToggleBtn');
 
         let currentSlide = 0;
+        let currentLang = 'en';
+
+        const uiText = {
+            en: {
+                section: 'Section',
+                explain: 'Explain',
+                codeExample: 'Code Example',
+                practice: 'Practice',
+                handsOn: 'Hands-on Exercise',
+                hint: 'Hint',
+                finalChallenge: 'Final Challenge',
+                finalProject: 'Final Project',
+                realAnalogy: 'Real-world Analogy',
+                instructorNote: 'Instructor Note',
+                lesson: 'Lesson',
+                simpleExplanation: 'Simple Explanation',
+                miniExercise: 'Mini Exercise',
+                startHint: 'Press <kbd>→</kbd> or click Next to begin'
+            },
+            ar: {
+                section: 'القسم',
+                explain: 'شرح',
+                codeExample: 'مثال كود',
+                practice: 'تطبيق',
+                handsOn: 'تمرين عملي',
+                hint: 'تلميح',
+                finalChallenge: 'التحدي النهائي',
+                finalProject: 'المشروع النهائي',
+                realAnalogy: 'تشبيه من الواقع',
+                instructorNote: 'ملاحظة المدرّس',
+                lesson: 'درس',
+                simpleExplanation: 'شرح مبسط',
+                miniExercise: 'تمرين صغير',
+                startHint: 'اضغط <kbd>→</kbd> أو انقر Next للبدء'
+            }
+        };
+
+        const arMap = {
+            'JavaScript Complete Course': 'الدورة الكاملة في JavaScript',
+            'Beginner → Intermediate → Advanced': 'مبتدئ ← متوسط ← متقدم',
+            'Course Overview': 'نظرة عامة على الدورة',
+            'Beginner': 'مبتدئ',
+            'JavaScript Basics': 'أساسيات JavaScript',
+            'Introduction to JavaScript': 'مقدمة إلى JavaScript',
+            'Where to Write JavaScript': 'أين نكتب JavaScript',
+            'Output (console.log, alert, DOM)': 'الإخراج (console.log و alert و DOM)',
+            'Syntax & Statements': 'الصياغة والتعليمات',
+            'Variables (var, let, const)': 'المتغيرات (var و let و const)',
+            'Data Types': 'أنواع البيانات',
+            'Operators (arithmetic, comparison, logical)': 'المعاملات (حسابية ومقارنة ومنطقية)',
+            'Conditions (if, else, switch, ternary)': 'الشروط (if و else و switch و ternary)',
+            'Loops (for, while, break, continue)': 'الحلقات (for و while و break و continue)',
+            'Functions (declaration, parameters, return, arrow)': 'الدوال (تعريف، معاملات، return، arrow)',
+            'Arrays (push, map, filter)': 'المصفوفات (push و map و filter)',
+            'Objects (properties, basic methods)': 'الكائنات (الخصائص والطرق الأساسية)',
+            'Strings & Numbers (basics)': 'السلاسل النصية والأرقام (الأساسيات)',
+            'DOM Basics (selecting elements, events)': 'أساسيات DOM (تحديد العناصر والأحداث)',
+            'Beginner Project': 'مشروع المبتدئين',
+            'Simple Interactive Page': 'صفحة تفاعلية بسيطة',
+            'Intermediate': 'متوسط',
+            'Core JavaScript Concepts': 'مفاهيم JavaScript الأساسية',
+            'Scope (global, local)': 'النطاق (عام ومحلي)',
+            'Hoisting': 'الرفع Hoisting',
+            'this keyword (basic)': 'الكلمة this (أساسيات)',
+            'Error handling (try/catch)': 'معالجة الأخطاء (try/catch)',
+            'ES6: Destructuring': 'ES6: التفكيك Destructuring',
+            'ES6: Template literals': 'ES6: القوالب النصية Template literals',
+            'ES6: Spread operator': 'ES6: عامل الانتشار Spread',
+            'Advanced array methods (map, filter, reduce)': 'دوال المصفوفات المتقدمة (map, filter, reduce)',
+            'Intro to JSON': 'مقدمة إلى JSON',
+            'Intermediate Project': 'مشروع المستوى المتوسط',
+            'Dynamic Todo App': 'تطبيق مهام ديناميكي',
+            'Advanced': 'متقدم',
+            'Asynchronous & Architecture': 'البرمجة غير المتزامنة والبنية',
+            'Callbacks': 'الدوال الراجعة Callbacks',
+            'Promises': 'الوعود Promises',
+            'async/await': 'async/await',
+            'Fetch API (very important)': 'واجهة Fetch API (مهم جدًا)',
+            'Working with APIs (real examples)': 'التعامل مع API (أمثلة حقيقية)',
+            'Classes & constructors': 'الكلاسات والمنشئات',
+            'Modules (import/export)': 'الوحدات Modules (import/export)',
+            'Deep understanding of "this"': 'فهم عميق لـ "this"',
+            'Closures (simple explanation)': 'الإغلاقات Closures (شرح مبسط)',
+            'Event loop (conceptual)': 'حلقة الأحداث Event Loop (مفهومي)',
+            'Advanced Project': 'مشروع متقدم',
+            'API Data Explorer': 'مستكشف بيانات API',
+            'Course Completed 🎉': 'اكتملت الدورة 🎉',
+            'You covered Beginner, Intermediate, and Advanced JavaScript': 'أنهيت مستويات JavaScript: مبتدئ، متوسط، متقدم',
+
+            'This course is split into <span class="highlight">3 levels</span>: Beginner, Intermediate, and Advanced': 'تنقسم هذه الدورة إلى <span class="highlight">3 مستويات</span>: مبتدئ، متوسط، متقدم',
+            'Each topic includes: <span class="highlight">simple explanation + code example + mini exercise</span>': 'كل موضوع يتضمن: <span class="highlight">شرح مبسط + مثال كود + تمرين صغير</span>',
+            'You will build <span class="highlight">3 projects</span>: one at the end of each level': 'ستبني <span class="highlight">3 مشاريع</span>: مشروعًا في نهاية كل مستوى',
+            'Use <kbd>←</kbd> and <kbd>→</kbd> or the buttons below to navigate slides': 'استخدم <kbd>←</kbd> و<kbd>→</kbd> أو الأزرار بالأسفل للتنقل بين الشرائح',
+
+            'JavaScript is the language that makes websites interactive. HTML gives structure, CSS gives style, and JavaScript gives behavior.': 'JavaScript هي اللغة التي تجعل المواقع تفاعلية. HTML للبنية، CSS للتنسيق، وJavaScript للسلوك.',
+            'You can write JS inside HTML script tags, in external .js files, or quickly in browser console.': 'يمكنك كتابة JavaScript داخل وسوم script في HTML أو في ملفات .js خارجية أو مباشرة في Console المتصفح.',
+            'Use console.log for debugging, alert for quick popups, and DOM methods to update page content.': 'استخدم console.log للتتبع، وalert للتنبيهات السريعة، وDOM لتحديث محتوى الصفحة.',
+            'JavaScript runs statements line by line. Use semicolons and proper braces for readable, error-free code.': 'تشغّل JavaScript التعليمات سطرًا بسطر. استخدم الفواصل المنقوطة والأقواس بشكل صحيح لكتابة كود واضح.',
+            'Use const by default, let when value changes, and avoid var in modern code.': 'استخدم const افتراضيًا، وlet عند تغير القيمة، وتجنب var في الكود الحديث.',
+            'Main types: string, number, boolean, null, undefined, object, array.': 'الأنواع الرئيسية: string وnumber وboolean وnull وundefined وobject وarray.',
+            'Operators let you calculate, compare, and combine conditions.': 'المعاملات تسمح لك بالحساب والمقارنة ودمج الشروط.',
+            'Conditions help your program make decisions based on values.': 'الشروط تساعد برنامجك على اتخاذ قرارات حسب القيم.',
+            'Loops repeat tasks. break stops loop, continue skips one iteration.': 'الحلقات تكرر المهام. break توقف الحلقة وcontinue تتخطى دورة واحدة.',
+            'Functions are reusable blocks of code. Arrow functions are shorter syntax.': 'الدوال كتل كود قابلة لإعادة الاستخدام. ودوال السهم صياغتها أقصر.',
+            'Arrays store ordered lists. Use array methods to transform and search data.': 'المصفوفات تخزن قوائم مرتبة. استخدم دوالها لتحويل البيانات والبحث فيها.',
+            'Objects store key-value data, useful for real entities (user, product, order).': 'الكائنات تخزن بيانات على شكل مفتاح/قيمة، وهي مفيدة لتمثيل كيانات حقيقية.',
+            'Strings and numbers have built-in methods for common operations.': 'السلاسل النصية والأرقام لديها دوال مدمجة لعمليات شائعة.',
+            'DOM lets JavaScript read and change HTML/CSS in real time.': 'DOM يسمح لـ JavaScript بقراءة وتغيير HTML/CSS بشكل مباشر.',
+            'Scope defines where variables can be accessed. let/const are block-scoped.': 'النطاق يحدد أين يمكن الوصول للمتغيرات. let/const نطاقهما داخل الكتلة.',
+            'Hoisting moves declarations to top (conceptually). let/const exist in TDZ before declaration.': 'الرفع Hoisting يقدّم التصريحات للأعلى (مفهوميًا). قبل التصريح بـ let/const تكون في TDZ.',
+            'this refers to the execution context. In object methods, it usually points to the object.': 'this تشير إلى سياق التنفيذ. داخل دوال الكائن غالبًا تشير إلى الكائن نفسه.',
+            'Use try/catch to handle runtime errors gracefully and keep app alive.': 'استخدم try/catch لمعالجة أخطاء التشغيل دون توقف التطبيق.',
+            'Destructuring extracts values from arrays/objects into variables.': 'التفكيك Destructuring يستخرج قيمًا من المصفوفات/الكائنات إلى متغيرات.',
+            'Template literals use backticks for interpolation and multiline strings.': 'Template literals تستخدم backticks لدمج المتغيرات وكتابة نص متعدد الأسطر.',
+            'Spread (...) expands arrays/objects. Very useful for cloning and merging.': 'عامل الانتشار (...) يوسّع المصفوفات/الكائنات ومفيد جدًا للنسخ والدمج.',
+            'map transforms, filter selects, reduce accumulates values.': 'map للتحويل، filter للتصفية، reduce للتجميع.',
+            'JSON is text format used for data exchange between client and server.': 'JSON صيغة نصية لتبادل البيانات بين العميل والخادم.',
+            'Callbacks are functions passed to other functions and called later.': 'Callbacks هي دوال نمررها لدوال أخرى ليتم استدعاؤها لاحقًا.',
+            'Promises represent async results: pending, fulfilled, or rejected.': 'Promises تمثل نتيجة غير متزامنة: انتظار أو نجاح أو فشل.',
+            'async/await makes asynchronous code look like synchronous code.': 'async/await تجعل الكود غير المتزامن يبدو كأنه متزامن.',
+            'Fetch gets data from APIs over HTTP; usually returns JSON.': 'Fetch تجلب البيانات من API عبر HTTP وغالبًا تكون بصيغة JSON.',
+            'Most modern apps consume APIs for dynamic data.': 'معظم التطبيقات الحديثة تعتمد على API لبيانات ديناميكية.',
+            'Classes are blueprints for creating objects with shared behavior.': 'الكلاسات هي قوالب لإنشاء كائنات بسلوك مشترك.',
+            'Modules split code into reusable files and improve maintainability.': 'الوحدات Modules تقسّم الكود إلى ملفات قابلة لإعادة الاستخدام وتحسن الصيانة.',
+            'this depends on call-site: object method, function call, class method, or bound function.': 'قيمة this تعتمد على طريقة الاستدعاء: دالة كائن أو عادية أو method أو دالة مربوطة.',
+            'A closure is when a function remembers variables from its outer scope.': 'Closure هي عندما تتذكر الدالة متغيرات من النطاق الخارجي.',
+            'JS is single-threaded. Event loop coordinates call stack, Web APIs, and callback queue.': 'JavaScript أحادية الخيط. Event Loop تنسق بين Call Stack وWeb APIs وطابور الاستدعاءات.',
+
+            'Open browser DevTools console and print your name with console.log().': 'افتح Console في DevTools واطبع اسمك باستخدام console.log().',
+            'Press F12 → Console tab.': 'اضغط F12 ثم افتح تبويب Console.',
+            'Create an app.js file and link it in HTML.': 'أنشئ ملف app.js واربطه في HTML.',
+            'External JS is best for real projects.': 'ملفات JavaScript الخارجية هي الأفضل في المشاريع الحقيقية.',
+            'Make a paragraph text change when page loads.': 'اجعل نص فقرة يتغير عند تحميل الصفحة.',
+            'Use document.getElementById(...).textContent = ...': 'استخدم document.getElementById(...).textContent = ...',
+            'Write 3 valid JS statements that print your city, age, and favorite language.': 'اكتب 3 تعليمات JS صحيحة تطبع مدينتك وعمرك ولغتك المفضلة.',
+            'Each statement can end with ;': 'يمكن أن تنتهي كل تعليمة بـ ;',
+            'Create one const and one let, then update only the let variable.': 'أنشئ const وlet ثم عدّل متغير let فقط.',
+            'const cannot be reassigned.': 'لا يمكن إعادة إسناد const.',
+            'Create 4 variables with different data types and log typeof each.': 'أنشئ 4 متغيرات بأنواع بيانات مختلفة واطبع typeof لكل واحد.',
+            'Use typeof variableName': 'استخدم typeof variableName',
+            'Check if a number is between 10 and 20 using logical operators.': 'تحقق إن كان الرقم بين 10 و20 باستخدام المعاملات المنطقية.',
+            'Use && with two comparisons.': 'استخدم && مع شرطين للمقارنة.',
+            'Write if/else to check exam score (pass if >= 50).': 'اكتب if/else لفحص درجة اختبار (نجاح إذا كانت >= 50).',
+            'if (score >= 50) ... else ...': 'if (score >= 50) ... else ...',
+            'Print numbers 1..20 but skip 7 and stop at 15.': 'اطبع الأرقام من 1 إلى 20 مع تخطي 7 والتوقف عند 15.',
+            'Use continue for skip, break for stop.': 'استخدم continue للتخطي وbreak للإيقاف.',
+            'Create function greet(name) returning "Hello name".': 'أنشئ دالة greet(name) ترجع "Hello name".',
+            'Try both normal and arrow function.': 'جرّب الدالة العادية ودالة السهم.',
+            'Create array of 5 numbers and return only even numbers.': 'أنشئ مصفوفة من 5 أرقام وأرجع الأرقام الزوجية فقط.',
+            'Use filter(n => n % 2 === 0)': 'استخدم filter(n => n % 2 === 0)',
+            'Create user object with name, age, city and log one property.': 'أنشئ كائن user يحتوي name وage وcity واطبع خاصية واحدة.',
+            'Access via object.property': 'استخدم الوصول بهذه الصيغة: object.property',
+            'Take full name string and print uppercase + length.': 'خذ سلسلة اسم كامل واطبعها بحروف كبيرة مع الطول.',
+            'Use .toUpperCase() and .length': 'استخدم .toUpperCase() و .length',
+            'Create button that changes background color on click.': 'أنشئ زرًا يغيّر لون الخلفية عند النقر.',
+            'Use addEventListener("click", ...)': 'استخدم addEventListener("click", ...)',
+            'Build a page with: heading, button, and paragraph. On button click, update paragraph text and background color.': 'ابنِ صفحة فيها عنوان وزر وفقرة. عند الضغط على الزر يتغير نص الفقرة ولون الخلفية.',
+            'Combine DOM selection + event listener + style/text updates.': 'اجمع بين تحديد عناصر DOM ومعالجة الأحداث وتحديث النص/التنسيق.',
+            'Create two variables with same name in different scopes and log both.': 'أنشئ متغيرين بنفس الاسم في نطاقين مختلفين واطبع الاثنين.',
+            'One global, one inside function.': 'واحد عام والآخر داخل دالة.',
+            'Test var vs let before declaration and observe behavior.': 'اختبر var وlet قبل التصريح ولاحظ السلوك.',
+            'Expect ReferenceError for let before declaration.': 'توقّع ReferenceError عند استخدام let قبل التصريح.',
+            'Create object with method that logs this.name.': 'أنشئ كائنًا بدالة تطبع this.name.',
+            'Call as object method, not standalone function.': 'استدعها كدالة كائن وليس كدالة مستقلة.',
+            'Use try/catch when converting invalid JSON.': 'استخدم try/catch عند تحويل JSON غير صالح.',
+            'Use JSON.parse("invalid") inside try block.': 'استخدم JSON.parse("invalid") داخل try.',
+            'Extract first item from array and username from object into variables.': 'استخرج أول عنصر من مصفوفة واسم المستخدم من كائن إلى متغيرات.',
+            'Use [] for arrays, {} for objects.': 'استخدم [] للمصفوفات و{} للكائنات.',
+            'Create string with your name and age using template literal.': 'أنشئ نصًا باسمك وعمرك باستخدام template literal.',
+            'Use backticks and ${variable}.': 'استخدم backticks و ${variable}.',
+            'Clone array and add one extra item using spread.': 'انسخ مصفوفة وأضف عنصرًا إضافيًا باستخدام spread.',
+            'const newArr = [...oldArr, newItem]': 'const newArr = [...oldArr, newItem]',
+            'Use reduce to compute total price from cart array.': 'استخدم reduce لحساب السعر الإجمالي من مصفوفة سلة.',
+            'reduce((acc, item) => ..., initialValue)': 'reduce((acc, item) => ..., initialValue)',
+            'Create JS object, convert to JSON string, then parse back.': 'أنشئ كائن JS ثم حوّله إلى JSON ثم أعد تحويله لكائن.',
+            'Use JSON.stringify and JSON.parse': 'استخدم JSON.stringify وJSON.parse',
+            'Build Todo app with add/delete/complete and localStorage persistence.': 'ابنِ تطبيق مهام مع الإضافة/الحذف/الإكمال وحفظ البيانات في localStorage.',
+            'Use array of todos + render function + localStorage sync.': 'استخدم مصفوفة مهام + دالة render + مزامنة localStorage.',
+            'Create function that waits 1 second before printing message.': 'أنشئ دالة تنتظر ثانية واحدة قبل طباعة رسالة.',
+            'Use setTimeout inside function.': 'استخدم setTimeout داخل الدالة.',
+            'Create Promise that resolves with "Done" after 1 second.': 'أنشئ Promise تنجح بقيمة "Done" بعد ثانية واحدة.',
+            'Use new Promise((resolve, reject) => ...).': 'استخدم new Promise((resolve, reject) => ...).',
+            'Convert Promise chain into async/await style.': 'حوّل سلسلة Promise إلى أسلوب async/await.',
+            'Wrap await code inside async function.': 'ضع await داخل دالة async.',
+            'Fetch users from JSONPlaceholder and print first user name.': 'اجلب المستخدمين من JSONPlaceholder واطبع اسم أول مستخدم.',
+            'Use fetch + await response.json()': 'استخدم fetch + await response.json()',
+            'Build search UI that queries API and renders cards.': 'ابنِ واجهة بحث تستعلم من API وتعرض النتائج كبطاقات.',
+            'Use loading spinner + empty state + error state.': 'استخدم حالة تحميل + حالة نتائج فارغة + حالة خطأ.',
+            'Create Product class with constructor(name, price) and method label().': 'أنشئ class باسم Product تحتوي constructor(name, price) ودالة label().',
+            'Use class + constructor + method.': 'استخدم class + constructor + method.',
+            'Create one module exporting utility function and import it in another file.': 'أنشئ وحدة تصدّر دالة مساعدة واستوردها في ملف آخر.',
+            'Remember to use type="module" in script tag.': 'تذكّر استخدام type="module" في وسم script.',
+            'Use bind() to force this inside a function.': 'استخدم bind() لتثبيت this داخل الدالة.',
+            'const fixed = fn.bind(obj)': 'const fixed = fn.bind(obj)',
+            'Create makeAdder(x) returning function(y) => x + y.': 'أنشئ makeAdder(x) تعيد دالة function(y) => x + y.',
+            'Inner function can access x from outer scope.': 'الدالة الداخلية يمكنها الوصول إلى x من النطاق الخارجي.',
+            'Predict output order for code using console.log + setTimeout + Promise.': 'توقّع ترتيب الإخراج لكود يستخدم console.log + setTimeout + Promise.',
+            'Microtasks (Promise) run before macrotasks (setTimeout).': 'المهام الدقيقة (Promise) تعمل قبل المهام الكبيرة (setTimeout).',
+            'Build an API project that fetches data from a public API (e.g. JSONPlaceholder or GitHub), supports search, loading states, and error handling.': 'ابنِ مشروع API يجلب بيانات من API عام (مثل JSONPlaceholder أو GitHub) ويدعم البحث وحالات التحميل ومعالجة الأخطاء.',
+            'Use async/await + try/catch + dynamic DOM rendering.': 'استخدم async/await + try/catch + تحديث DOM ديناميكي.',
+            'You learned core syntax, DOM, and modern ES6+': 'تعلمت الصياغة الأساسية وDOM وميزات ES6+ الحديثة',
+            'You understand async JavaScript and API integration': 'أصبحت تفهم JavaScript غير المتزامنة والتكامل مع API',
+            'You practiced with 3 project ideas (one per level)': 'تدرّبت على 3 أفكار مشاريع (مشروع لكل مستوى)',
+            'Next step: build and deploy your own portfolio projects!': 'الخطوة التالية: ابنِ وانشر مشاريع معرض أعمالك!'
+        };
+
+        function t(text) {
+            if (currentLang !== 'ar') return text;
+            return arMap[text] || text;
+        }
+
+        function localizeSlide(slide) {
+            if (currentLang !== 'ar') return slide;
+            const out = {
+                ...slide
+            };
+
+            if (out.title) out.title = t(out.title);
+            if (out.subtitle) out.subtitle = t(out.subtitle);
+            if (out.explain) out.explain = t(out.explain);
+            if (out.exercise) out.exercise = t(out.exercise);
+            if (out.hint) out.hint = t(out.hint);
+            if (out.analogy) out.analogy = t(out.analogy);
+            if (out.instructorNote) out.instructorNote = t(out.instructorNote);
+            if (Array.isArray(out.content)) out.content = out.content.map(item => t(item));
+
+            return out;
+        }
 
         // Render slides
         function renderSlides() {
             container.innerHTML = '';
 
             slides.forEach((slide, index) => {
+                const localized = localizeSlide(slide);
                 const slideEl = document.createElement('div');
                 slideEl.className = 'slide';
                 slideEl.setAttribute('role', 'group');
@@ -1092,11 +1362,12 @@ console.log("D");
                     slideEl.classList.add('prev');
                 }
 
-                slideEl.innerHTML = renderSlideContent(slide, index);
+                slideEl.innerHTML = renderSlideContent(localized, index);
                 container.appendChild(slideEl);
             });
 
             updateNav();
+            document.body.classList.toggle('lang-ar', currentLang === 'ar');
         }
 
         function renderSlideContent(slide, index) {
@@ -1109,14 +1380,14 @@ console.log("D");
                             </div>
                             <h1 class="section-title">${slide.title}</h1>
                             <p class="section-subtitle">${slide.subtitle}</p>
-                            <p style="margin-top: 3rem; color: var(--muted);">Press <kbd>→</kbd> or click Next to begin</p>
+                            <p style="margin-top: 3rem; color: var(--muted);">${uiText[currentLang].startHint}</p>
                         </div>
                     `;
 
                 case 'section':
                     return `
                         <div class="slide-content text-center">
-                            <p class="slide-number">Section ${getSectionNumber(slide.section)}</p>
+                            <p class="slide-number">${uiText[currentLang].section} ${getSectionNumber(slide.section)}</p>
                             <h1 class="section-title">${slide.title}</h1>
                             <p class="section-subtitle">${slide.subtitle}</p>
                         </div>
@@ -1125,20 +1396,20 @@ console.log("D");
                 case 'explain':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Explain</p>
+                            <p class="slide-number">${uiText[currentLang].explain}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <ul class="bullet-list">
                                 ${slide.content.map(item => `<li>${item}</li>`).join('')}
                             </ul>
                             ${slide.analogy ? `
                                 <div class="analogy-box">
-                                    <p class="analogy-label">Real-world Analogy</p>
+                                    <p class="analogy-label">${uiText[currentLang].realAnalogy}</p>
                                     <p style="margin: 0; color: #c4b5fd;">${slide.analogy}</p>
                                 </div>
                             ` : ''}
                             ${slide.instructorNote ? `
                                 <div class="instructor-note">
-                                    <strong>Instructor Note:</strong> ${slide.instructorNote}
+                                    <strong>${uiText[currentLang].instructorNote}:</strong> ${slide.instructorNote}
                                 </div>
                             ` : ''}
                         </div>
@@ -1147,7 +1418,7 @@ console.log("D");
                 case 'code':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Code Example</p>
+                            <p class="slide-number">${uiText[currentLang].codeExample}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <div class="code-block">
                                 <pre style="margin: 0;"><code>${highlightJS(slide.code)}</code></pre>
@@ -1158,18 +1429,18 @@ console.log("D");
                 case 'exercise':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Practice</p>
+                            <p class="slide-number">${uiText[currentLang].practice}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <div class="exercise-box">
                                 <p class="exercise-label">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-                                    Hands-on Exercise
+                                    ${uiText[currentLang].handsOn}
                                 </p>
                                 <p style="margin: 0; font-size: 1.1rem;">${slide.exercise}</p>
                             </div>
                             ${slide.hint ? `
                                 <p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">
-                                    <strong>Hint:</strong> ${slide.hint}
+                                    <strong>${uiText[currentLang].hint}:</strong> ${slide.hint}
                                 </p>
                             ` : ''}
                         </div>
@@ -1192,13 +1463,13 @@ console.log("D");
                 case 'challenge':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Final Challenge</p>
+                            <p class="slide-number">${uiText[currentLang].finalChallenge}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <p style="color: var(--muted); margin-bottom: 1.5rem;">${slide.subtitle}</p>
                             <div class="exercise-box" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-color: rgba(167, 139, 250, 0.3);">
                                 <p class="exercise-label" style="color: #a78bfa;">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    Final Project
+                                    ${uiText[currentLang].finalProject}
                                 </p>
                                 <p style="margin: 0; font-size: 1rem; white-space: pre-line;">${slide.exercise}</p>
                             </div>
@@ -1208,11 +1479,11 @@ console.log("D");
                 case 'lesson':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">${slide.section.toUpperCase()} LESSON</p>
+                            <p class="slide-number">${t(slide.section.toUpperCase())} ${uiText[currentLang].lesson}</p>
                             <h2 class="slide-title">${slide.title}</h2>
 
                             <div class="analogy-box" style="margin-bottom: 1.25rem;">
-                                <p class="analogy-label">Simple Explanation</p>
+                                <p class="analogy-label">${uiText[currentLang].simpleExplanation}</p>
                                 <p style="margin: 0; color: #c4b5fd;">${slide.explain}</p>
                             </div>
 
@@ -1221,10 +1492,10 @@ console.log("D");
                             </div>
 
                             <div class="exercise-box">
-                                <p class="exercise-label">Mini Exercise</p>
+                                <p class="exercise-label">${uiText[currentLang].miniExercise}</p>
                                 <p style="margin: 0; font-size: 1rem;">${slide.exercise}</p>
                             </div>
-                            ${slide.hint ? `<p style="margin-top: 0.8rem; color: var(--muted); font-size: 0.9rem;"><strong>Hint:</strong> ${slide.hint}</p>` : ''}
+                            ${slide.hint ? `<p style="margin-top: 0.8rem; color: var(--muted); font-size: 0.9rem;"><strong>${uiText[currentLang].hint}:</strong> ${slide.hint}</p>` : ''}
                         </div>
                     `;
 
@@ -1292,6 +1563,13 @@ console.log("D");
         // Event listeners
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
+
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            langToggleBtn.textContent = currentLang === 'en' ? 'AR' : 'EN';
+            renderSlides();
+            goToSlide(currentSlide);
+        });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
