@@ -410,6 +410,44 @@
             gap: 0.5rem;
         }
         
+        .lang-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 120;
+            padding: 0.45rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .lang-ar .slide-content {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .lang-ar .bullet-list li {
+            padding-left: 0;
+            padding-right: 2rem;
+        }
+        
+        .lang-ar .bullet-list li::before {
+            left: auto;
+            right: 0;
+        }
+        
+        .lang-ar pre,
+        .lang-ar code,
+        .lang-ar .code-block {
+            direction: ltr;
+            text-align: left;
+        }
+        
         kbd {
             background: var(--bg-card);
             border: 1px solid var(--border);
@@ -472,6 +510,8 @@
     <div class="keyboard-hint">
         <kbd>←</kbd> <kbd>→</kbd> to navigate
     </div>
+
+    <button id="langToggleBtn" class="lang-toggle" aria-label="Toggle Arabic language">AR</button>
 
     <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
         <div class="nav-inner">
@@ -1468,14 +1508,265 @@ transition: transform 0.3s ease,
         const nextBtn = document.getElementById('nextBtn');
         const progressFill = document.getElementById('progressFill');
         const slideCounter = document.getElementById('slideCounter');
+        const langToggleBtn = document.getElementById('langToggleBtn');
 
         let currentSlide = 0;
+        let currentLang = 'en';
+
+        const uiText = {
+            en: {
+                section: 'Section',
+                explain: 'Explain',
+                codeExample: 'Code Example',
+                practice: 'Practice',
+                handsOn: 'Hands-on Exercise',
+                hint: 'Hint',
+                finalChallenge: 'Final Challenge',
+                finalProject: 'Final Project',
+                realAnalogy: 'Real-world Analogy',
+                instructorNote: 'Instructor Note',
+                startHint: 'Press <kbd>→</kbd> or click Next to begin'
+            },
+            ar: {
+                section: 'القسم',
+                explain: 'شرح',
+                codeExample: 'مثال كود',
+                practice: 'تطبيق',
+                handsOn: 'تمرين عملي',
+                hint: 'تلميح',
+                finalChallenge: 'التحدي النهائي',
+                finalProject: 'المشروع النهائي',
+                realAnalogy: 'تشبيه من الواقع',
+                instructorNote: 'ملاحظة المدرّس',
+                startHint: 'اضغط <kbd>→</kbd> أو انقر Next للبدء'
+            }
+        };
+
+        const arMap = {
+            'CSS for Beginners': 'CSS للمبتدئين',
+            'Master the art of styling web pages': 'أتقن فن تنسيق صفحات الويب',
+            'CSS Basics': 'أساسيات CSS',
+            'Understanding how to style elements': 'فهم كيفية تنسيق العناصر',
+            'What is CSS?': 'ما هي CSS؟',
+            'CSS Syntax': 'صياغة CSS',
+            'CSS Selectors': 'محددات CSS',
+            'Types of Selectors': 'أنواع المحددات',
+            'Practice: Selectors': 'تطبيق: المحددات',
+            'How to Add CSS': 'كيفية إضافة CSS',
+            'Adding CSS to HTML': 'إضافة CSS إلى HTML',
+            'CSS Comments': 'تعليقات CSS',
+            'Writing Comments': 'كتابة التعليقات',
+            'Colors & Backgrounds': 'الألوان والخلفيات',
+            'Bringing your pages to life': 'إضفاء الحياة على صفحاتك',
+            'CSS Colors': 'ألوان CSS',
+            'Color Formats': 'تنسيقات الألوان',
+            'Background Properties': 'خصائص الخلفية',
+            'Background Examples': 'أمثلة الخلفية',
+            'CSS Gradients': 'تدرجات CSS',
+            'Gradient Examples': 'أمثلة التدرجات',
+            'Practice: Stylish Button': 'تطبيق: زر أنيق',
+            'The Box Model': 'نموذج الصندوق',
+            'Understanding spacing and layout': 'فهم المسافات والتخطيط',
+            'What is the Box Model?': 'ما هو نموذج الصندوق؟',
+            'Box Model Properties': 'خصائص نموذج الصندوق',
+            'Padding': 'الحشو Padding',
+            'Padding Syntax': 'صياغة الحشو',
+            'Margin': 'الهامش Margin',
+            'Margin Syntax': 'صياغة الهامش',
+            'Borders': 'الحدود Borders',
+            'Border Properties': 'خصائص الحدود',
+            'Practice: Card Component': 'تطبيق: مكوّن البطاقة',
+            'Typography': 'الطباعة',
+            'Styling text for readability': 'تنسيق النص لتحسين القراءة',
+            'Text Properties': 'خصائص النص',
+            'Typography Basics': 'أساسيات الطباعة',
+            'Text Alignment & Decoration': 'محاذاة النص وزخرفته',
+            'Text Styling': 'تنسيق النص',
+            'Custom Fonts': 'الخطوط المخصصة',
+            'Using Google Fonts': 'استخدام Google Fonts',
+            'Layout Basics': 'أساسيات التخطيط',
+            'Positioning elements on the page': 'تموضع العناصر في الصفحة',
+            'Display Property': 'خاصية display',
+            'Display Examples': 'أمثلة display',
+            'Position Property': 'خاصية position',
+            'Position Examples': 'أمثلة position',
+            'Practice: Fixed Navigation': 'تطبيق: شريط تنقل ثابت',
+            'Flexbox': 'فليكس بوكس',
+            'Modern one-dimensional layouts': 'تخطيطات حديثة أحادية البعد',
+            'What is Flexbox?': 'ما هو Flexbox؟',
+            'Flex Container': 'حاوية Flex',
+            'Flex Items': 'عناصر Flex',
+            'Practice: Centered Content': 'تطبيق: محتوى في المنتصف',
+            'CSS Grid': 'شبكة CSS',
+            'Two-dimensional layouts made easy': 'تخطيطات ثنائية البعد بسهولة',
+            'What is CSS Grid?': 'ما هي CSS Grid؟',
+            'Grid Container': 'حاوية Grid',
+            'Grid Items': 'عناصر Grid',
+            'Responsive Design': 'التصميم المتجاوب',
+            'Building for all devices': 'التصميم لكل الأجهزة',
+            'Media Queries': 'استعلامات الوسائط',
+            'Media Query Syntax': 'صياغة Media Query',
+            'Responsive Patterns': 'أنماط التجاوب',
+            'Practice: Responsive Layout': 'تطبيق: تخطيط متجاوب',
+            'Transitions & Animations': 'الانتقالات والحركات',
+            'Bringing interfaces to life': 'إضفاء الحياة على الواجهات',
+            'CSS Transitions': 'انتقالات CSS',
+            'Transition Syntax': 'صياغة الانتقالات',
+            'CSS Transforms': 'تحويلات CSS',
+            'Transform Examples': 'أمثلة التحويلات',
+            'CSS Animations': 'حركات CSS',
+            'Animation Syntax': 'صياغة الحركات',
+            'Practice: Hover Card': 'تطبيق: بطاقة Hover',
+            'Congratulations!': 'مبروك!',
+            'You have learned the fundamentals of CSS': 'لقد تعلمت أساسيات CSS',
+            'Final Challenge': 'التحدي النهائي',
+            'Put it all together': 'طبّق كل ما تعلمته',
+
+            'CSS stands for <span class="highlight">Cascading Style Sheets</span>': 'CSS اختصار لـ <span class="highlight">Cascading Style Sheets</span>',
+            'It controls the <span class="highlight">visual presentation</span> of HTML': 'تتحكم في <span class="highlight">المظهر المرئي</span> لعناصر HTML',
+            'CSS describes how elements should be displayed': 'CSS تصف كيف يجب أن تظهر العناصر',
+            'If HTML is the skeleton of a house, CSS is the paint, wallpaper, and decorations that make it beautiful.': 'إذا كان HTML هو هيكل المنزل، فإن CSS هي الطلاء والزينة التي تجعله جميلًا.',
+            'Emphasize "Cascading" - styles can override each other based on specificity and order.': 'ركّز على معنى "Cascading" لأن الأنماط قد تتجاوز بعضها حسب التخصيص والترتيب.',
+            '<span class="highlight">Element</span> selector: targets HTML tags (p, h1, div)': 'محدد <span class="highlight">العنصر</span>: يستهدف وسوم HTML مثل p و h1 و div',
+            '<span class="highlight">Class</span> selector: targets .classname (reusable)': 'محدد <span class="highlight">class</span>: يستهدف .classname (قابل لإعادة الاستخدام)',
+            '<span class="highlight">ID</span> selector: targets #idname (unique per page)': 'محدد <span class="highlight">ID</span>: يستهدف #idname (فريد في الصفحة)',
+            'Best practice: Use classes for styling, IDs for JavaScript hooks and anchor links.': 'أفضل ممارسة: استخدم classes للتنسيق و IDs لروابط المرساة وتعامل JavaScript.',
+            'Write CSS to: make all paragraphs gray, create a class called "warning" with red text, and style an element with id="logo" to have a blue background.': 'اكتب CSS لـ: جعل كل الفقرات رمادية، وإنشاء class اسمها "warning" بنص أحمر، وتنسيق عنصر id="logo" بخلفية زرقاء.',
+            'Remember: element {} .class {} #id {}': 'تذكّر: element {} .class {} #id {}',
+            '<span class="highlight">External CSS</span>: Separate .css file (recommended)': '<span class="highlight">External CSS</span>: ملف .css منفصل (مستحسن)',
+            '<span class="highlight">Internal CSS</span>: Inside &lt;style&gt; tag in &lt;head&gt;': '<span class="highlight">Internal CSS</span>: داخل وسم &lt;style&gt; في &lt;head&gt;',
+            '<span class="highlight">Inline CSS</span>: style attribute on elements (avoid)': '<span class="highlight">Inline CSS</span>: خاصية style داخل العنصر (يفضّل تجنبه)',
+            'External CSS is like a central wardrobe - change one file and your whole site updates. Inline is like painting clothes individually - hard to maintain.': 'الـ External CSS مثل خزانة مركزية: تغيير ملف واحد يحدّث كل الموقع. أما Inline فهو مثل تعديل كل قطعة وحدها وصعب الصيانة.',
+            'Comments help document your code': 'التعليقات تساعد في توثيق الكود',
+            'They are <span class="highlight">ignored</span> by the browser': 'المتصفح <span class="highlight">يتجاهلها</span>',
+            'Use them to organize sections and explain logic': 'استخدمها لتنظيم الأقسام وشرح المنطق',
+            '<span class="highlight">Named colors</span>: red, blue, coral, tomato': '<span class="highlight">ألوان مسماة</span>: red, blue, coral, tomato',
+            '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF': '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF',
+            '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - includes transparency': '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - يدعم الشفافية',
+            '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - intuitive color model': '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - نموذج ألوان بديهي',
+            'RGBA and HSLA allow transparency with the alpha channel (0-1). Hex is most common in production.': 'RGBA و HSLA يسمحان بالشفافية عبر alpha (من 0 إلى 1). وHex هو الأكثر استخدامًا في المشاريع.',
+            '<code>background-color</code>: solid color fill': '<code>background-color</code>: تعبئة بلون ثابت',
+            '<code>background-image</code>: use an image': '<code>background-image</code>: استخدام صورة',
+            '<code>background-size</code>: cover, contain, or specific size': '<code>background-size</code>: cover أو contain أو حجم محدد',
+            '<code>background-position</code>: center, top, coordinates': '<code>background-position</code>: center أو top أو إحداثيات',
+            'Create smooth <span class="highlight">color transitions</span>': 'أنشئ <span class="highlight">انتقالات لونية</span> ناعمة',
+            '<code>linear-gradient</code>: straight line transition': '<code>linear-gradient</code>: انتقال بخط مستقيم',
+            '<code>radial-gradient</code>: circular transition': '<code>radial-gradient</code>: انتقال دائري',
+            'Use multiple colors for complex effects': 'استخدم عدة ألوان لمؤثرات أكثر',
+            'Create a button class with: gradient background (two colors of your choice), white text, and padding.': 'أنشئ class لزر يحتوي على: خلفية متدرجة (لونان من اختيارك) ونص أبيض وpadding.',
+            'Use background: linear-gradient() and color: white': 'استخدم background: linear-gradient() و color: white',
+            'Every element is a <span class="highlight">rectangular box</span>': 'كل عنصر هو <span class="highlight">صندوق مستطيل</span>',
+            'Four layers: content → padding → border → margin': 'أربع طبقات: المحتوى ← padding ← border ← margin',
+            'Understanding this is <span class="highlight">essential</span> for layout': 'فهم هذا <span class="highlight">أساسي</span> للتخطيط',
+            'Think of a picture frame: the photo is content, the mat is padding, the frame is border, and the space on the wall is margin.': 'تخيل إطار صورة: الصورة هي المحتوى، والحشوة padding، والإطار border، والمسافة حوله margin.',
+            'This is often the most confusing concept for beginners. Draw diagrams and use browser DevTools to visualize.': 'هذا غالبًا أكثر مفهوم يربك المبتدئين. ارسم مخططات واستخدم DevTools للتوضيح.',
+            'Space <span class="highlight">inside</span> the element': 'مساحة <span class="highlight">داخل</span> العنصر',
+            'Background color extends into padding': 'لون الخلفية يمتد داخل padding',
+            'Can be set per side: top, right, bottom, left': 'يمكن ضبطه لكل جهة: أعلى، يمين، أسفل، يسار',
+            'Space <span class="highlight">outside</span> the element': 'مساحة <span class="highlight">خارج</span> العنصر',
+            'Transparent - shows background of parent': 'شفاف ويُظهر خلفية العنصر الأب',
+            'Margins can <span class="highlight">collapse</span> vertically': 'الهوامش قد <span class="highlight">تنهار/تندمج</span> عموديًا',
+            'Margin collapse is tricky: when two vertical margins meet, they combine into the larger one, not add together.': 'اندماج الهوامش قد يكون صعبًا: عند التقاء هامشين عموديين يتم أخذ الأكبر وليس مجموعهما.',
+            'The edge <span class="highlight">around</span> the element': 'الحافة <span class="highlight">حول</span> العنصر',
+            'Requires: width, style, color': 'يتطلب: العرض، النمط، اللون',
+            'Styles: solid, dashed, dotted, double, none': 'أنماط مثل: solid, dashed, dotted, double, none',
+            'Create a "card" class with: light gray background, 20px padding, 1px solid border, 10px border-radius, and 15px bottom margin.': 'أنشئ class باسم "card" بخلفية رمادية فاتحة، وpadding 20px، وحد 1px solid، وborder-radius 10px، وmargin-bottom 15px.',
+            'Combine background, padding, border, border-radius, and margin.': 'اجمع بين background وpadding وborder وborder-radius وmargin.',
+            '<code>font-family</code>: choose typefaces': '<code>font-family</code>: اختيار الخطوط',
+            '<code>font-size</code>: text size (px, rem, em)': '<code>font-size</code>: حجم النص (px, rem, em)',
+            '<code>font-weight</code>: boldness (100-900)': '<code>font-weight</code>: سماكة الخط (100-900)',
+            '<code>line-height</code>: spacing between lines': '<code>line-height</code>: المسافة بين الأسطر',
+            '<code>text-align</code>: left, center, right, justify': '<code>text-align</code>: left, center, right, justify',
+            '<code>text-decoration</code>: underline, none, line-through': '<code>text-decoration</code>: underline, none, line-through',
+            '<code>text-transform</code>: uppercase, lowercase, capitalize': '<code>text-transform</code>: uppercase, lowercase, capitalize',
+            '<code>letter-spacing</code>: space between letters': '<code>letter-spacing</code>: المسافة بين الحروف',
+            'Use <span class="highlight">Google Fonts</span> for free web fonts': 'استخدم <span class="highlight">Google Fonts</span> للحصول على خطوط ويب مجانية',
+            'Add &lt;link&gt; in HTML head': 'أضف وسم &lt;link&gt; داخل head في HTML',
+            'Reference in CSS with font-family': 'استخدم الخط في CSS عبر font-family',
+            'Always include fallback fonts': 'ضع دائمًا خطوط بديلة',
+            'Remind students to include fallback fonts in case Google Fonts fails to load.': 'ذكّر الطلاب بوضع خطوط بديلة في حال لم يتم تحميل Google Fonts.',
+            '<code>block</code>: full width, new line (div, p, h1)': '<code>block</code>: عرض كامل وسطر جديد (div, p, h1)',
+            '<code>inline</code>: only needed width (span, a)': '<code>inline</code>: يأخذ العرض اللازم فقط (span, a)',
+            '<code>inline-block</code>: inline but accepts width/height': '<code>inline-block</code>: مثل inline لكنه يقبل width/height',
+            '<code>none</code>: hides element completely': '<code>none</code>: يخفي العنصر بالكامل',
+            'Understanding display is fundamental. Block elements break to new lines; inline elements flow within text.': 'فهم display أساسي. عناصر block تبدأ سطرًا جديدًا، بينما inline تسير داخل النص.',
+            '<code>static</code>: default, normal flow': '<code>static</code>: الوضع الافتراضي وتدفق طبيعي',
+            '<code>relative</code>: offset from normal position': '<code>relative</code>: إزاحة عن الموضع الطبيعي',
+            '<code>absolute</code>: positioned relative to nearest positioned ancestor': '<code>absolute</code>: يتموضع بالنسبة لأقرب أب متموضع',
+            '<code>fixed</code>: positioned relative to viewport': '<code>fixed</code>: يتموضع بالنسبة للشاشة',
+            '<code>sticky</code>: toggles between relative and fixed': '<code>sticky</code>: يتبدل بين relative وfixed',
+            'Create a fixed navigation bar that stays at the top of the page with: dark background, white text, and 20px padding.': 'أنشئ شريط تنقل ثابتًا أعلى الصفحة بخلفية داكنة ونص أبيض وpadding بقيمة 20px.',
+            'Use position: fixed; top: 0; width: 100%': 'استخدم position: fixed; top: 0; width: 100%',
+            'A powerful layout mode for <span class="highlight">one-dimensional</span> layouts': 'نمط تخطيط قوي لتخطيطات <span class="highlight">أحادية البعد</span>',
+            'Easily align and distribute space': 'محاذاة العناصر وتوزيع المسافات بسهولة',
+            'Great for navigation, cards, centering': 'ممتاز لشريط التنقل والبطاقات والتمركز',
+            'Works on container and items': 'يعمل على الحاوية والعناصر',
+            'Flexbox is like a smart shelf that automatically adjusts item positions based on your rules.': 'Flexbox مثل رف ذكي يضبط مواقع العناصر تلقائيًا حسب قواعدك.',
+            'Create a container that perfectly centers its content both horizontally and vertically (assume the container has a fixed height of 400px).': 'أنشئ حاوية تُوسّط المحتوى أفقيًا وعموديًا (افترض ارتفاعًا ثابتًا 400px).',
+            'Use display: flex with justify-content and align-items.': 'استخدم display: flex مع justify-content وalign-items.',
+            'A layout system for <span class="highlight">two-dimensional</span> layouts': 'نظام تخطيط لتخطيطات <span class="highlight">ثنائية البعد</span>',
+            'Work with rows AND columns simultaneously': 'يتعامل مع الصفوف والأعمدة معًا',
+            'Perfect for page layouts and galleries': 'مثالي لتخطيط الصفحات والمعارض',
+            'More control than Flexbox for complex layouts': 'تحكم أكبر من Flexbox في التخطيطات المعقدة',
+            'Apply CSS based on <span class="highlight">screen size</span>': 'طبّق CSS حسب <span class="highlight">حجم الشاشة</span>',
+            'Mobile-first approach: start small, add for larger screens': 'منهج Mobile-first: ابدأ بالشاشات الصغيرة ثم أضف للشاشات الأكبر',
+            'Common breakpoints: 768px (tablet), 1024px (desktop)': 'نقاط توقف شائعة: 768px (تابلت)، 1024px (سطح مكتب)',
+            'Use relative units (rem, %, vw/vh)': 'استخدم الوحدات النسبية (rem, %, vw/vh)',
+            'Mobile-first is preferred because it forces you to prioritize content and performance.': 'يفضّل Mobile-first لأنه يجبرك على ترتيب أولوية المحتوى والأداء.',
+            'Create a card grid that shows 1 column on mobile, 2 columns on tablet (768px+), and 3 columns on desktop (1024px+).': 'أنشئ شبكة بطاقات تعرض عمودًا واحدًا على الهاتف، وعمودين على التابلت (768px+)، و3 أعمدة على سطح المكتب (1024px+).',
+            'Use CSS Grid with media queries to change grid-template-columns.': 'استخدم CSS Grid مع media queries لتغيير grid-template-columns.',
+            'Smooth changes between <span class="highlight">states</span>': 'انتقالات سلسة بين <span class="highlight">الحالات</span>',
+            'Triggered by hover, focus, class changes': 'تعمل عند hover وfocus وتغيير class',
+            'Properties: property, duration, timing-function, delay': 'الخصائص: property وduration وtiming-function وdelay',
+            'Great for micro-interactions': 'ممتازة للتفاعلات الدقيقة',
+            '<code>translate</code>: move elements': '<code>translate</code>: تحريك العناصر',
+            '<code>rotate</code>: spin elements': '<code>rotate</code>: تدوير العناصر',
+            '<code>scale</code>: resize elements': '<code>scale</code>: تغيير حجم العناصر',
+            '<code>skew</code>: distort elements': '<code>skew</code>: إمالة/تشويه العناصر',
+            'Does not affect document flow': 'لا يؤثر على تدفق المستند',
+            'Create <span class="highlight">keyframe</span> sequences': 'أنشئ تسلسلات <span class="highlight">keyframe</span>',
+            'More control than transitions': 'تحكم أكبر من transitions',
+            'Can loop and run automatically': 'يمكن أن تتكرر وتعمل تلقائيًا',
+            'Define @keyframes, then apply to elements': 'عرّف @keyframes ثم طبّقها على العناصر',
+            'Create a card that smoothly lifts up and adds a shadow when hovered. Use transform, box-shadow, and transition.': 'أنشئ بطاقة ترتفع بسلاسة وتضيف ظلًا عند hover. استخدم transform وbox-shadow وtransition.',
+            'transform: translateY(-5px) and box-shadow: 0 10px 20px rgba(0,0,0,0.2)': 'transform: translateY(-5px) و box-shadow: 0 10px 20px rgba(0,0,0,0.2)',
+            'You can style elements with selectors and properties': 'يمكنك تنسيق العناصر باستخدام المحددات والخصائص',
+            'You understand the box model and spacing': 'أصبحت تفهم نموذج الصندوق والمسافات',
+            'You can create layouts with Flexbox and Grid': 'يمكنك إنشاء تخطيطات باستخدام Flexbox وGrid',
+            'You know how to make responsive designs': 'تعرف كيف تصنع تصميمات متجاوبة',
+            'You can add animations and transitions': 'يمكنك إضافة الحركات والانتقالات',
+            'Style your HTML page from the previous course:\n- Add a Google Font\n- Create a color scheme with CSS variables\n- Style your navigation with Flexbox\n- Add hover effects on links\n- Make it responsive with media queries\n- Add a gradient background to the header': 'نسّق صفحة HTML من الدورة السابقة:\n- أضف Google Font\n- أنشئ نظام ألوان باستخدام CSS variables\n- نسّق شريط التنقل بـ Flexbox\n- أضف تأثيرات hover للروابط\n- اجعلها متجاوبة باستخدام media queries\n- أضف خلفية متدرجة للهيدر',
+            'Use the cascade to your advantage - base styles first, then overrides!': 'استفد من الـ cascade: ابدأ بالأنماط الأساسية ثم أضف التعديلات!'
+        };
+
+        function t(text) {
+            if (currentLang !== 'ar') return text;
+            return arMap[text] || text;
+        }
+
+        function localizeSlide(slide) {
+            if (currentLang !== 'ar') return slide;
+            const out = {
+                ...slide
+            };
+
+            if (out.title) out.title = t(out.title);
+            if (out.subtitle) out.subtitle = t(out.subtitle);
+            if (out.analogy) out.analogy = t(out.analogy);
+            if (out.instructorNote) out.instructorNote = t(out.instructorNote);
+            if (out.exercise) out.exercise = t(out.exercise);
+            if (out.hint) out.hint = t(out.hint);
+            if (Array.isArray(out.content)) out.content = out.content.map(item => t(item));
+
+            return out;
+        }
 
         // Render slides
         function renderSlides() {
             container.innerHTML = '';
 
             slides.forEach((slide, index) => {
+                const localized = localizeSlide(slide);
                 const slideEl = document.createElement('div');
                 slideEl.className = 'slide';
                 slideEl.setAttribute('role', 'group');
@@ -1487,11 +1778,12 @@ transition: transform 0.3s ease,
                     slideEl.classList.add('prev');
                 }
 
-                slideEl.innerHTML = renderSlideContent(slide, index);
+                slideEl.innerHTML = renderSlideContent(localized, index);
                 container.appendChild(slideEl);
             });
 
             updateNav();
+            document.body.classList.toggle('lang-ar', currentLang === 'ar');
         }
 
         function renderSlideContent(slide, index) {
@@ -1504,14 +1796,14 @@ transition: transform 0.3s ease,
                             </div>
                             <h1 class="section-title">${slide.title}</h1>
                             <p class="section-subtitle">${slide.subtitle}</p>
-                            <p style="margin-top: 3rem; color: var(--muted);">Press <kbd>→</kbd> or click Next to begin</p>
+                            <p style="margin-top: 3rem; color: var(--muted);">${uiText[currentLang].startHint}</p>
                         </div>
                     `;
 
                 case 'section':
                     return `
                         <div class="slide-content text-center">
-                            <p class="slide-number">Section ${getSectionNumber(slide.section)}</p>
+                            <p class="slide-number">${uiText[currentLang].section} ${getSectionNumber(slide.section)}</p>
                             <h1 class="section-title">${slide.title}</h1>
                             <p class="section-subtitle">${slide.subtitle}</p>
                         </div>
@@ -1520,20 +1812,20 @@ transition: transform 0.3s ease,
                 case 'explain':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Explain</p>
+                            <p class="slide-number">${uiText[currentLang].explain}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <ul class="bullet-list">
                                 ${slide.content.map(item => `<li>${item}</li>`).join('')}
                             </ul>
                             ${slide.analogy ? `
                                 <div class="analogy-box">
-                                    <p class="analogy-label">Real-world Analogy</p>
+                                    <p class="analogy-label">${uiText[currentLang].realAnalogy}</p>
                                     <p style="margin: 0; color: #c4b5fd;">${slide.analogy}</p>
                                 </div>
                             ` : ''}
                             ${slide.instructorNote ? `
                                 <div class="instructor-note">
-                                    <strong>Instructor Note:</strong> ${slide.instructorNote}
+                                    <strong>${uiText[currentLang].instructorNote}:</strong> ${slide.instructorNote}
                                 </div>
                             ` : ''}
                         </div>
@@ -1543,7 +1835,7 @@ transition: transform 0.3s ease,
                     const isHtml = slide.isHtml;
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Code Example</p>
+                            <p class="slide-number">${uiText[currentLang].codeExample}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <div class="code-block ${isHtml ? 'html' : ''}">
                                 <pre style="margin: 0;"><code>${isHtml ? highlightHTML(slide.code) : highlightCSS(slide.code)}</code></pre>
@@ -1554,18 +1846,18 @@ transition: transform 0.3s ease,
                 case 'exercise':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Practice</p>
+                            <p class="slide-number">${uiText[currentLang].practice}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <div class="exercise-box">
                                 <p class="exercise-label">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-                                    Hands-on Exercise
+                                    ${uiText[currentLang].handsOn}
                                 </p>
                                 <p style="margin: 0; font-size: 1.1rem;">${slide.exercise}</p>
                             </div>
                             ${slide.hint ? `
                                 <p style="margin-top: 1rem; color: var(--muted); font-size: 0.9rem;">
-                                    <strong>Hint:</strong> ${slide.hint}
+                                    <strong>${uiText[currentLang].hint}:</strong> ${slide.hint}
                                 </p>
                             ` : ''}
                         </div>
@@ -1588,13 +1880,13 @@ transition: transform 0.3s ease,
                 case 'challenge':
                     return `
                         <div class="slide-content">
-                            <p class="slide-number">Final Challenge</p>
+                            <p class="slide-number">${uiText[currentLang].finalChallenge}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <p style="color: var(--muted); margin-bottom: 1.5rem;">${slide.subtitle}</p>
                             <div class="exercise-box" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-color: rgba(167, 139, 250, 0.3);">
                                 <p class="exercise-label" style="color: #a78bfa;">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                                    Final Project
+                                    ${uiText[currentLang].finalProject}
                                 </p>
                                 <p style="margin: 0; font-size: 1rem; white-space: pre-line;">${slide.exercise}</p>
                             </div>
@@ -1675,6 +1967,13 @@ transition: transform 0.3s ease,
         // Event listeners
         prevBtn.addEventListener('click', prevSlide);
         nextBtn.addEventListener('click', nextSlide);
+
+        langToggleBtn.addEventListener('click', () => {
+            currentLang = currentLang === 'en' ? 'ar' : 'en';
+            langToggleBtn.textContent = currentLang === 'en' ? 'AR' : 'EN';
+            renderSlides();
+            goToSlide(currentSlide);
+        });
 
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
