@@ -179,7 +179,7 @@
             transform: rotate(45deg);
         }
         
-        .highlight {
+        .accent {
             color: #a78bfa;
             font-weight: 600;
         }
@@ -1048,7 +1048,7 @@
 							</div>
 
 							<div class="code-block" style="margin-bottom: 1.25rem;">
-								<pre style="margin: 0;"><code>${highlightCode(slide.code)}</code></pre>
+								<pre style="margin: 0;"><code>${accentCode(slide.code)}</code></pre>
 							</div>
 
 							<div class="exercise-box">
@@ -1089,15 +1089,15 @@
 			}
 		}
 
-		function highlightCode(code) {
+		function accentCode(code) {
 			return code
 				.replace(/&/g, '&amp;')
 				.replace(/</g, '&lt;')
 				.replace(/>/g, '&gt;')
+                .replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, '<span class="value">$1</span>')
 				.replace(/(\/\/[^\n]*)/g, '<span class="comment">$1</span>')
 				.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
-				.replace(/\b(const|let|var|function|return|if|else|for|while|switch|case|break|continue|class|extends|import|export|from|new|this|true|false|null|undefined)\b/g, '<span class="highlight">$1</span>')
-				.replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, '<span class="value">$1</span>')
+				.replace(/\b(const|let|var|function|return|if|else|for|while|switch|case|break|continue|class|extends|import|export|from|new|this|true|false|null|undefined)\b/g, '<span class="accent">$1</span>')
 				.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="unit">$1</span>');
 		}
 

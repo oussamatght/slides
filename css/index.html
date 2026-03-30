@@ -156,12 +156,12 @@
             transform: rotate(45deg);
         }
         
-        .highlight {
+        .accent {
             color: #a78bfa;
             font-weight: 600;
         }
         
-        .highlight-warm {
+        .accent-warm {
             color: var(--accent-warm);
             font-weight: 600;
         }
@@ -590,8 +590,8 @@
                 section: 'basics',
                 title: 'What is CSS?',
                 content: [
-                    'CSS stands for <span class="highlight">Cascading Style Sheets</span>',
-                    'It controls the <span class="highlight">visual presentation</span> of HTML',
+                    'CSS stands for <span class="accent">Cascading Style Sheets</span>',
+                    'It controls the <span class="accent">visual presentation</span> of HTML',
                     'CSS describes how elements should be displayed'
                 ],
                 analogy: 'If HTML is the skeleton of a house, CSS is the paint, wallpaper, and decorations that make it beautiful.',
@@ -619,9 +619,9 @@ h1 {
                 section: 'basics',
                 title: 'CSS Selectors',
                 content: [
-                    '<span class="highlight">Element</span> selector: targets HTML tags (p, h1, div)',
-                    '<span class="highlight">Class</span> selector: targets .classname (reusable)',
-                    '<span class="highlight">ID</span> selector: targets #idname (unique per page)'
+                    '<span class="accent">Element</span> selector: targets HTML tags (p, h1, div)',
+                    '<span class="accent">Class</span> selector: targets .classname (reusable)',
+                    '<span class="accent">ID</span> selector: targets #idname (unique per page)'
                 ],
                 instructorNote: 'Best practice: Use classes for styling, IDs for JavaScript hooks and anchor links.'
             },
@@ -636,7 +636,7 @@ p {
 }
 
 /* Class selector (most common) */
-.highlight {
+.accent {
   background: yellow;
 }
 
@@ -660,9 +660,9 @@ p {
                 section: 'basics',
                 title: 'How to Add CSS',
                 content: [
-                    '<span class="highlight">External CSS</span>: Separate .css file (recommended)',
-                    '<span class="highlight">Internal CSS</span>: Inside &lt;style&gt; tag in &lt;head&gt;',
-                    '<span class="highlight">Inline CSS</span>: style attribute on elements (avoid)'
+                    '<span class="accent">External CSS</span>: Separate .css file (recommended)',
+                    '<span class="accent">Internal CSS</span>: Inside &lt;style&gt; tag in &lt;head&gt;',
+                    '<span class="accent">Inline CSS</span>: style attribute on elements (avoid)'
                 ],
                 analogy: 'External CSS is like a central wardrobe - change one file and your whole site updates. Inline is like painting clothes individually - hard to maintain.'
             },
@@ -690,7 +690,7 @@ p {
                 title: 'CSS Comments',
                 content: [
                     'Comments help document your code',
-                    'They are <span class="highlight">ignored</span> by the browser',
+                    'They are <span class="accent">ignored</span> by the browser',
                     'Use them to organize sections and explain logic'
                 ]
             },
@@ -726,10 +726,10 @@ header {
                 section: 'colors',
                 title: 'CSS Colors',
                 content: [
-                    '<span class="highlight">Named colors</span>: red, blue, coral, tomato',
-                    '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF',
-                    '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - includes transparency',
-                    '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - intuitive color model'
+                    '<span class="accent">Named colors</span>: red, blue, coral, tomato',
+                    '<span class="accent">Hex</span>: #FF0000, #00FF00, #0000FF',
+                    '<span class="accent">RGB/RGBA</span>: rgb(255, 0, 0) - includes transparency',
+                    '<span class="accent">HSL</span>: hsl(0, 100%, 50%) - intuitive color model'
                 ],
                 instructorNote: 'RGBA and HSLA allow transparency with the alpha channel (0-1). Hex is most common in production.'
             },
@@ -788,7 +788,7 @@ color: hsla(0, 100%, 50%, 0.5);`
                 section: 'colors',
                 title: 'CSS Gradients',
                 content: [
-                    'Create smooth <span class="highlight">color transitions</span>',
+                    'Create smooth <span class="accent">color transitions</span>',
                     '<code>linear-gradient</code>: straight line transition',
                     '<code>radial-gradient</code>: circular transition',
                     'Use multiple colors for complex effects'
@@ -840,9 +840,9 @@ color: hsla(0, 100%, 50%, 0.5);`
                 section: 'boxmodel',
                 title: 'What is the Box Model?',
                 content: [
-                    'Every element is a <span class="highlight">rectangular box</span>',
+                    'Every element is a <span class="accent">rectangular box</span>',
                     'Four layers: content → padding → border → margin',
-                    'Understanding this is <span class="highlight">essential</span> for layout'
+                    'Understanding this is <span class="accent">essential</span> for layout'
                 ],
                 analogy: 'Think of a picture frame: the photo is content, the mat is padding, the frame is border, and the space on the wall is margin.',
                 instructorNote: 'This is often the most confusing concept for beginners. Draw diagrams and use browser DevTools to visualize.'
@@ -874,7 +874,7 @@ color: hsla(0, 100%, 50%, 0.5);`
                 section: 'boxmodel',
                 title: 'Padding',
                 content: [
-                    'Space <span class="highlight">inside</span> the element',
+                    'Space <span class="accent">inside</span> the element',
                     'Background color extends into padding',
                     'Can be set per side: top, right, bottom, left'
                 ]
@@ -907,9 +907,9 @@ padding-right: 20px;`
                 section: 'boxmodel',
                 title: 'Margin',
                 content: [
-                    'Space <span class="highlight">outside</span> the element',
+                    'Space <span class="accent">outside</span> the element',
                     'Transparent - shows background of parent',
-                    'Margins can <span class="highlight">collapse</span> vertically'
+                    'Margins can <span class="accent">collapse</span> vertically'
                 ],
                 instructorNote: 'Margin collapse is tricky: when two vertical margins meet, they combine into the larger one, not add together.'
             },
@@ -941,7 +941,7 @@ body {
                 section: 'boxmodel',
                 title: 'Borders',
                 content: [
-                    'The edge <span class="highlight">around</span> the element',
+                    'The edge <span class="accent">around</span> the element',
                     'Requires: width, style, color',
                     'Styles: solid, dashed, dotted, double, none'
                 ]
@@ -1056,7 +1056,7 @@ a:hover {
                 section: 'typography',
                 title: 'Custom Fonts',
                 content: [
-                    'Use <span class="highlight">Google Fonts</span> for free web fonts',
+                    'Use <span class="accent">Google Fonts</span> for free web fonts',
                     'Add &lt;link&gt; in HTML head',
                     'Reference in CSS with font-family',
                     'Always include fallback fonts'
@@ -1196,7 +1196,7 @@ header {
                 section: 'flexbox',
                 title: 'What is Flexbox?',
                 content: [
-                    'A powerful layout mode for <span class="highlight">one-dimensional</span> layouts',
+                    'A powerful layout mode for <span class="accent">one-dimensional</span> layouts',
                     'Easily align and distribute space',
                     'Great for navigation, cards, centering',
                     'Works on container and items'
@@ -1263,7 +1263,7 @@ header {
                 section: 'grid',
                 title: 'What is CSS Grid?',
                 content: [
-                    'A layout system for <span class="highlight">two-dimensional</span> layouts',
+                    'A layout system for <span class="accent">two-dimensional</span> layouts',
                     'Work with rows AND columns simultaneously',
                     'Perfect for page layouts and galleries',
                     'More control than Flexbox for complex layouts'
@@ -1323,7 +1323,7 @@ header {
                 section: 'responsive',
                 title: 'Media Queries',
                 content: [
-                    'Apply CSS based on <span class="highlight">screen size</span>',
+                    'Apply CSS based on <span class="accent">screen size</span>',
                     'Mobile-first approach: start small, add for larger screens',
                     'Common breakpoints: 768px (tablet), 1024px (desktop)',
                     'Use relative units (rem, %, vw/vh)'
@@ -1405,7 +1405,7 @@ h1 {
                 section: 'animations',
                 title: 'CSS Transitions',
                 content: [
-                    'Smooth changes between <span class="highlight">states</span>',
+                    'Smooth changes between <span class="accent">states</span>',
                     'Triggered by hover, focus, class changes',
                     'Properties: property, duration, timing-function, delay',
                     'Great for micro-interactions'
@@ -1477,7 +1477,7 @@ transition: transform 0.3s ease,
                 section: 'animations',
                 title: 'CSS Animations',
                 content: [
-                    'Create <span class="highlight">keyframe</span> sequences',
+                    'Create <span class="accent">keyframe</span> sequences',
                     'More control than transitions',
                     'Can loop and run automatically',
                     'Define @keyframes, then apply to elements'
@@ -1657,52 +1657,52 @@ transition: transform 0.3s ease,
             'Final Challenge': 'التحدي النهائي',
             'Put it all together': 'طبّق كل ما تعلمته',
 
-            'CSS stands for <span class="highlight">Cascading Style Sheets</span>': 'CSS اختصار لـ <span class="highlight">Cascading Style Sheets</span>',
-            'It controls the <span class="highlight">visual presentation</span> of HTML': 'تتحكم في <span class="highlight">المظهر المرئي</span> لعناصر HTML',
+            'CSS stands for <span class="accent">Cascading Style Sheets</span>': 'CSS اختصار لـ <span class="accent">Cascading Style Sheets</span>',
+            'It controls the <span class="accent">visual presentation</span> of HTML': 'تتحكم في <span class="accent">المظهر المرئي</span> لعناصر HTML',
             'CSS describes how elements should be displayed': 'CSS تصف كيف يجب أن تظهر العناصر',
             'If HTML is the skeleton of a house, CSS is the paint, wallpaper, and decorations that make it beautiful.': 'إذا كان HTML هو هيكل المنزل، فإن CSS هي الطلاء والزينة التي تجعله جميلًا.',
             'Emphasize "Cascading" - styles can override each other based on specificity and order.': 'ركّز على معنى "Cascading" لأن الأنماط قد تتجاوز بعضها حسب التخصيص والترتيب.',
-            '<span class="highlight">Element</span> selector: targets HTML tags (p, h1, div)': 'محدد <span class="highlight">العنصر</span>: يستهدف وسوم HTML مثل p و h1 و div',
-            '<span class="highlight">Class</span> selector: targets .classname (reusable)': 'محدد <span class="highlight">class</span>: يستهدف .classname (قابل لإعادة الاستخدام)',
-            '<span class="highlight">ID</span> selector: targets #idname (unique per page)': 'محدد <span class="highlight">ID</span>: يستهدف #idname (فريد في الصفحة)',
+            '<span class="accent">Element</span> selector: targets HTML tags (p, h1, div)': 'محدد <span class="accent">العنصر</span>: يستهدف وسوم HTML مثل p و h1 و div',
+            '<span class="accent">Class</span> selector: targets .classname (reusable)': 'محدد <span class="accent">class</span>: يستهدف .classname (قابل لإعادة الاستخدام)',
+            '<span class="accent">ID</span> selector: targets #idname (unique per page)': 'محدد <span class="accent">ID</span>: يستهدف #idname (فريد في الصفحة)',
             'Best practice: Use classes for styling, IDs for JavaScript hooks and anchor links.': 'أفضل ممارسة: استخدم classes للتنسيق و IDs لروابط المرساة وتعامل JavaScript.',
             'Write CSS to: make all paragraphs gray, create a class called "warning" with red text, and style an element with id="logo" to have a blue background.': 'اكتب CSS لـ: جعل كل الفقرات رمادية، وإنشاء class اسمها "warning" بنص أحمر، وتنسيق عنصر id="logo" بخلفية زرقاء.',
             'Remember: element {} .class {} #id {}': 'تذكّر: element {} .class {} #id {}',
-            '<span class="highlight">External CSS</span>: Separate .css file (recommended)': '<span class="highlight">External CSS</span>: ملف .css منفصل (مستحسن)',
-            '<span class="highlight">Internal CSS</span>: Inside &lt;style&gt; tag in &lt;head&gt;': '<span class="highlight">Internal CSS</span>: داخل وسم &lt;style&gt; في &lt;head&gt;',
-            '<span class="highlight">Inline CSS</span>: style attribute on elements (avoid)': '<span class="highlight">Inline CSS</span>: خاصية style داخل العنصر (يفضّل تجنبه)',
+            '<span class="accent">External CSS</span>: Separate .css file (recommended)': '<span class="accent">External CSS</span>: ملف .css منفصل (مستحسن)',
+            '<span class="accent">Internal CSS</span>: Inside &lt;style&gt; tag in &lt;head&gt;': '<span class="accent">Internal CSS</span>: داخل وسم &lt;style&gt; في &lt;head&gt;',
+            '<span class="accent">Inline CSS</span>: style attribute on elements (avoid)': '<span class="accent">Inline CSS</span>: خاصية style داخل العنصر (يفضّل تجنبه)',
             'External CSS is like a central wardrobe - change one file and your whole site updates. Inline is like painting clothes individually - hard to maintain.': 'الـ External CSS مثل خزانة مركزية: تغيير ملف واحد يحدّث كل الموقع. أما Inline فهو مثل تعديل كل قطعة وحدها وصعب الصيانة.',
             'Comments help document your code': 'التعليقات تساعد في توثيق الكود',
-            'They are <span class="highlight">ignored</span> by the browser': 'المتصفح <span class="highlight">يتجاهلها</span>',
+            'They are <span class="accent">ignored</span> by the browser': 'المتصفح <span class="accent">يتجاهلها</span>',
             'Use them to organize sections and explain logic': 'استخدمها لتنظيم الأقسام وشرح المنطق',
-            '<span class="highlight">Named colors</span>: red, blue, coral, tomato': '<span class="highlight">ألوان مسماة</span>: red, blue, coral, tomato',
-            '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF': '<span class="highlight">Hex</span>: #FF0000, #00FF00, #0000FF',
-            '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - includes transparency': '<span class="highlight">RGB/RGBA</span>: rgb(255, 0, 0) - يدعم الشفافية',
-            '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - intuitive color model': '<span class="highlight">HSL</span>: hsl(0, 100%, 50%) - نموذج ألوان بديهي',
+            '<span class="accent">Named colors</span>: red, blue, coral, tomato': '<span class="accent">ألوان مسماة</span>: red, blue, coral, tomato',
+            '<span class="accent">Hex</span>: #FF0000, #00FF00, #0000FF': '<span class="accent">Hex</span>: #FF0000, #00FF00, #0000FF',
+            '<span class="accent">RGB/RGBA</span>: rgb(255, 0, 0) - includes transparency': '<span class="accent">RGB/RGBA</span>: rgb(255, 0, 0) - يدعم الشفافية',
+            '<span class="accent">HSL</span>: hsl(0, 100%, 50%) - intuitive color model': '<span class="accent">HSL</span>: hsl(0, 100%, 50%) - نموذج ألوان بديهي',
             'RGBA and HSLA allow transparency with the alpha channel (0-1). Hex is most common in production.': 'RGBA و HSLA يسمحان بالشفافية عبر alpha (من 0 إلى 1). وHex هو الأكثر استخدامًا في المشاريع.',
             '<code>background-color</code>: solid color fill': '<code>background-color</code>: تعبئة بلون ثابت',
             '<code>background-image</code>: use an image': '<code>background-image</code>: استخدام صورة',
             '<code>background-size</code>: cover, contain, or specific size': '<code>background-size</code>: cover أو contain أو حجم محدد',
             '<code>background-position</code>: center, top, coordinates': '<code>background-position</code>: center أو top أو إحداثيات',
-            'Create smooth <span class="highlight">color transitions</span>': 'أنشئ <span class="highlight">انتقالات لونية</span> ناعمة',
+            'Create smooth <span class="accent">color transitions</span>': 'أنشئ <span class="accent">انتقالات لونية</span> ناعمة',
             '<code>linear-gradient</code>: straight line transition': '<code>linear-gradient</code>: انتقال بخط مستقيم',
             '<code>radial-gradient</code>: circular transition': '<code>radial-gradient</code>: انتقال دائري',
             'Use multiple colors for complex effects': 'استخدم عدة ألوان لمؤثرات أكثر',
             'Create a button class with: gradient background (two colors of your choice), white text, and padding.': 'أنشئ class لزر يحتوي على: خلفية متدرجة (لونان من اختيارك) ونص أبيض وpadding.',
             'Use background: linear-gradient() and color: white': 'استخدم background: linear-gradient() و color: white',
-            'Every element is a <span class="highlight">rectangular box</span>': 'كل عنصر هو <span class="highlight">صندوق مستطيل</span>',
+            'Every element is a <span class="accent">rectangular box</span>': 'كل عنصر هو <span class="accent">صندوق مستطيل</span>',
             'Four layers: content → padding → border → margin': 'أربع طبقات: المحتوى ← padding ← border ← margin',
-            'Understanding this is <span class="highlight">essential</span> for layout': 'فهم هذا <span class="highlight">أساسي</span> للتخطيط',
+            'Understanding this is <span class="accent">essential</span> for layout': 'فهم هذا <span class="accent">أساسي</span> للتخطيط',
             'Think of a picture frame: the photo is content, the mat is padding, the frame is border, and the space on the wall is margin.': 'تخيل إطار صورة: الصورة هي المحتوى، والحشوة padding، والإطار border، والمسافة حوله margin.',
             'This is often the most confusing concept for beginners. Draw diagrams and use browser DevTools to visualize.': 'هذا غالبًا أكثر مفهوم يربك المبتدئين. ارسم مخططات واستخدم DevTools للتوضيح.',
-            'Space <span class="highlight">inside</span> the element': 'مساحة <span class="highlight">داخل</span> العنصر',
+            'Space <span class="accent">inside</span> the element': 'مساحة <span class="accent">داخل</span> العنصر',
             'Background color extends into padding': 'لون الخلفية يمتد داخل padding',
             'Can be set per side: top, right, bottom, left': 'يمكن ضبطه لكل جهة: أعلى، يمين، أسفل، يسار',
-            'Space <span class="highlight">outside</span> the element': 'مساحة <span class="highlight">خارج</span> العنصر',
+            'Space <span class="accent">outside</span> the element': 'مساحة <span class="accent">خارج</span> العنصر',
             'Transparent - shows background of parent': 'شفاف ويُظهر خلفية العنصر الأب',
-            'Margins can <span class="highlight">collapse</span> vertically': 'الهوامش قد <span class="highlight">تنهار/تندمج</span> عموديًا',
+            'Margins can <span class="accent">collapse</span> vertically': 'الهوامش قد <span class="accent">تنهار/تندمج</span> عموديًا',
             'Margin collapse is tricky: when two vertical margins meet, they combine into the larger one, not add together.': 'اندماج الهوامش قد يكون صعبًا: عند التقاء هامشين عموديين يتم أخذ الأكبر وليس مجموعهما.',
-            'The edge <span class="highlight">around</span> the element': 'الحافة <span class="highlight">حول</span> العنصر',
+            'The edge <span class="accent">around</span> the element': 'الحافة <span class="accent">حول</span> العنصر',
             'Requires: width, style, color': 'يتطلب: العرض، النمط، اللون',
             'Styles: solid, dashed, dotted, double, none': 'أنماط مثل: solid, dashed, dotted, double, none',
             'Create a "card" class with: light gray background, 20px padding, 1px solid border, 10px border-radius, and 15px bottom margin.': 'أنشئ class باسم "card" بخلفية رمادية فاتحة، وpadding 20px، وحد 1px solid، وborder-radius 10px، وmargin-bottom 15px.',
@@ -1715,7 +1715,7 @@ transition: transform 0.3s ease,
             '<code>text-decoration</code>: underline, none, line-through': '<code>text-decoration</code>: underline, none, line-through',
             '<code>text-transform</code>: uppercase, lowercase, capitalize': '<code>text-transform</code>: uppercase, lowercase, capitalize',
             '<code>letter-spacing</code>: space between letters': '<code>letter-spacing</code>: المسافة بين الحروف',
-            'Use <span class="highlight">Google Fonts</span> for free web fonts': 'استخدم <span class="highlight">Google Fonts</span> للحصول على خطوط ويب مجانية',
+            'Use <span class="accent">Google Fonts</span> for free web fonts': 'استخدم <span class="accent">Google Fonts</span> للحصول على خطوط ويب مجانية',
             'Add &lt;link&gt; in HTML head': 'أضف وسم &lt;link&gt; داخل head في HTML',
             'Reference in CSS with font-family': 'استخدم الخط في CSS عبر font-family',
             'Always include fallback fonts': 'ضع دائمًا خطوط بديلة',
@@ -1732,25 +1732,25 @@ transition: transform 0.3s ease,
             '<code>sticky</code>: toggles between relative and fixed': '<code>sticky</code>: يتبدل بين relative وfixed',
             'Create a fixed navigation bar that stays at the top of the page with: dark background, white text, and 20px padding.': 'أنشئ شريط تنقل ثابتًا أعلى الصفحة بخلفية داكنة ونص أبيض وpadding بقيمة 20px.',
             'Use position: fixed; top: 0; width: 100%': 'استخدم position: fixed; top: 0; width: 100%',
-            'A powerful layout mode for <span class="highlight">one-dimensional</span> layouts': 'نمط تخطيط قوي لتخطيطات <span class="highlight">أحادية البعد</span>',
+            'A powerful layout mode for <span class="accent">one-dimensional</span> layouts': 'نمط تخطيط قوي لتخطيطات <span class="accent">أحادية البعد</span>',
             'Easily align and distribute space': 'محاذاة العناصر وتوزيع المسافات بسهولة',
             'Great for navigation, cards, centering': 'ممتاز لشريط التنقل والبطاقات والتمركز',
             'Works on container and items': 'يعمل على الحاوية والعناصر',
             'Flexbox is like a smart shelf that automatically adjusts item positions based on your rules.': 'Flexbox مثل رف ذكي يضبط مواقع العناصر تلقائيًا حسب قواعدك.',
             'Create a container that perfectly centers its content both horizontally and vertically (assume the container has a fixed height of 400px).': 'أنشئ حاوية تُوسّط المحتوى أفقيًا وعموديًا (افترض ارتفاعًا ثابتًا 400px).',
             'Use display: flex with justify-content and align-items.': 'استخدم display: flex مع justify-content وalign-items.',
-            'A layout system for <span class="highlight">two-dimensional</span> layouts': 'نظام تخطيط لتخطيطات <span class="highlight">ثنائية البعد</span>',
+            'A layout system for <span class="accent">two-dimensional</span> layouts': 'نظام تخطيط لتخطيطات <span class="accent">ثنائية البعد</span>',
             'Work with rows AND columns simultaneously': 'يتعامل مع الصفوف والأعمدة معًا',
             'Perfect for page layouts and galleries': 'مثالي لتخطيط الصفحات والمعارض',
             'More control than Flexbox for complex layouts': 'تحكم أكبر من Flexbox في التخطيطات المعقدة',
-            'Apply CSS based on <span class="highlight">screen size</span>': 'طبّق CSS حسب <span class="highlight">حجم الشاشة</span>',
+            'Apply CSS based on <span class="accent">screen size</span>': 'طبّق CSS حسب <span class="accent">حجم الشاشة</span>',
             'Mobile-first approach: start small, add for larger screens': 'منهج Mobile-first: ابدأ بالشاشات الصغيرة ثم أضف للشاشات الأكبر',
             'Common breakpoints: 768px (tablet), 1024px (desktop)': 'نقاط توقف شائعة: 768px (تابلت)، 1024px (سطح مكتب)',
             'Use relative units (rem, %, vw/vh)': 'استخدم الوحدات النسبية (rem, %, vw/vh)',
             'Mobile-first is preferred because it forces you to prioritize content and performance.': 'يفضّل Mobile-first لأنه يجبرك على ترتيب أولوية المحتوى والأداء.',
             'Create a card grid that shows 1 column on mobile, 2 columns on tablet (768px+), and 3 columns on desktop (1024px+).': 'أنشئ شبكة بطاقات تعرض عمودًا واحدًا على الهاتف، وعمودين على التابلت (768px+)، و3 أعمدة على سطح المكتب (1024px+).',
             'Use CSS Grid with media queries to change grid-template-columns.': 'استخدم CSS Grid مع media queries لتغيير grid-template-columns.',
-            'Smooth changes between <span class="highlight">states</span>': 'انتقالات سلسة بين <span class="highlight">الحالات</span>',
+            'Smooth changes between <span class="accent">states</span>': 'انتقالات سلسة بين <span class="accent">الحالات</span>',
             'Triggered by hover, focus, class changes': 'تعمل عند hover وfocus وتغيير class',
             'Properties: property, duration, timing-function, delay': 'الخصائص: property وduration وtiming-function وdelay',
             'Great for micro-interactions': 'ممتازة للتفاعلات الدقيقة',
@@ -1759,7 +1759,7 @@ transition: transform 0.3s ease,
             '<code>scale</code>: resize elements': '<code>scale</code>: تغيير حجم العناصر',
             '<code>skew</code>: distort elements': '<code>skew</code>: إمالة/تشويه العناصر',
             'Does not affect document flow': 'لا يؤثر على تدفق المستند',
-            'Create <span class="highlight">keyframe</span> sequences': 'أنشئ تسلسلات <span class="highlight">keyframe</span>',
+            'Create <span class="accent">keyframe</span> sequences': 'أنشئ تسلسلات <span class="accent">keyframe</span>',
             'More control than transitions': 'تحكم أكبر من transitions',
             'Can loop and run automatically': 'يمكن أن تتكرر وتعمل تلقائيًا',
             'Define @keyframes, then apply to elements': 'عرّف @keyframes ثم طبّقها على العناصر',
@@ -1873,7 +1873,7 @@ transition: transform 0.3s ease,
                             <p class="slide-number">${uiText[currentLang].codeExample}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <div class="code-block ${isHtml ? 'html' : ''}">
-                                <pre style="margin: 0;"><code>${isHtml ? highlightHTML(slide.code) : highlightCSS(slide.code)}</code></pre>
+                                <pre style="margin: 0;"><code>${isHtml ? accentHTML(slide.code) : accentCSS(slide.code)}</code></pre>
                             </div>
                         </div>
                     `;
@@ -1939,7 +1939,7 @@ transition: transform 0.3s ease,
             return num > 0 ? num : '';
         }
 
-        function highlightCSS(code) {
+        function accentCSS(code) {
             return code
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
@@ -1951,15 +1951,15 @@ transition: transform 0.3s ease,
                 .replace(/(#[a-fA-F0-9]{3,8})/g, '<span class="unit">$1</span>');
         }
 
-        function highlightHTML(code) {
+        function accentHTML(code) {
             return code
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
+                .replace(/(".*?")/g, '<span class="value">$1</span>')
                 .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comment">$1</span>')
                 .replace(/(&lt;\/?)([\w-]+)/g, '$1<span class="selector">$2</span>')
-                .replace(/(\s)([\w-]+)(=)/g, '$1<span class="property">$2</span>$3')
-                .replace(/(".*?")/g, '<span class="value">$1</span>');
+                .replace(/(\s)([\w-]+)(=)/g, '$1<span class="property">$2</span>$3');
         }
 
         function updateNav() {

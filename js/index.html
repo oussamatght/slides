@@ -179,12 +179,12 @@
             transform: rotate(45deg);
         }
         
-        .highlight {
+        .accent {
             color: #a78bfa;
             font-weight: 600;
         }
         
-        .highlight-warm {
+        .accent-warm {
             color: var(--accent-warm);
             font-weight: 600;
         }
@@ -625,9 +625,9 @@
                 section: 'overview',
                 title: 'Course Overview',
                 content: [
-                    'This course is split into <span class="highlight">3 levels</span>: Beginner, Intermediate, and Advanced',
-                    'Each topic includes: <span class="highlight">simple explanation + code example + mini exercise</span>',
-                    'You will build <span class="highlight">3 projects</span>: one at the end of each level',
+                    'This course is split into <span class="accent">3 levels</span>: Beginner, Intermediate, and Advanced',
+                    'Each topic includes: <span class="accent">simple explanation + code example + mini exercise</span>',
+                    'You will build <span class="accent">3 projects</span>: one at the end of each level',
                     'Use <kbd>←</kbd> and <kbd>→</kbd> or the buttons below to navigate slides'
                 ]
             },
@@ -1205,9 +1205,9 @@ console.log("D");
             'Course Completed 🎉': 'اكتملت الدورة 🎉',
             'You covered Beginner, Intermediate, and Advanced JavaScript': 'أنهيت مستويات JavaScript: مبتدئ، متوسط، متقدم',
 
-            'This course is split into <span class="highlight">3 levels</span>: Beginner, Intermediate, and Advanced': 'تنقسم هذه الدورة إلى <span class="highlight">3 مستويات</span>: مبتدئ، متوسط، متقدم',
-            'Each topic includes: <span class="highlight">simple explanation + code example + mini exercise</span>': 'كل موضوع يتضمن: <span class="highlight">شرح مبسط + مثال كود + تمرين صغير</span>',
-            'You will build <span class="highlight">3 projects</span>: one at the end of each level': 'ستبني <span class="highlight">3 مشاريع</span>: مشروعًا في نهاية كل مستوى',
+            'This course is split into <span class="accent">3 levels</span>: Beginner, Intermediate, and Advanced': 'تنقسم هذه الدورة إلى <span class="accent">3 مستويات</span>: مبتدئ، متوسط، متقدم',
+            'Each topic includes: <span class="accent">simple explanation + code example + mini exercise</span>': 'كل موضوع يتضمن: <span class="accent">شرح مبسط + مثال كود + تمرين صغير</span>',
+            'You will build <span class="accent">3 projects</span>: one at the end of each level': 'ستبني <span class="accent">3 مشاريع</span>: مشروعًا في نهاية كل مستوى',
             'Use <kbd>←</kbd> and <kbd>→</kbd> or the buttons below to navigate slides': 'استخدم <kbd>←</kbd> و<kbd>→</kbd> أو الأزرار بالأسفل للتنقل بين الشرائح',
 
             'JavaScript is the language that makes websites interactive. HTML gives structure, CSS gives style, and JavaScript gives behavior.': 'JavaScript هي اللغة التي تجعل المواقع تفاعلية. HTML للبنية، CSS للتنسيق، وJavaScript للسلوك.',
@@ -1421,7 +1421,7 @@ console.log("D");
                             <p class="slide-number">${uiText[currentLang].codeExample}</p>
                             <h2 class="slide-title">${slide.title}</h2>
                             <div class="code-block">
-                                <pre style="margin: 0;"><code>${highlightJS(slide.code)}</code></pre>
+                                <pre style="margin: 0;"><code>${accentJS(slide.code)}</code></pre>
                             </div>
                         </div>
                     `;
@@ -1488,7 +1488,7 @@ console.log("D");
                             </div>
 
                             <div class="code-block" style="margin-bottom: 1.25rem;">
-                                <pre style="margin: 0;"><code>${highlightJS(slide.code)}</code></pre>
+                                <pre style="margin: 0;"><code>${accentJS(slide.code)}</code></pre>
                             </div>
 
                             <div class="exercise-box">
@@ -1510,15 +1510,15 @@ console.log("D");
             return num > 0 ? num : '';
         }
 
-        function highlightJS(code) {
+        function accentJS(code) {
             return code
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;')
+                .replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, '<span class="value">$1</span>')
                 .replace(/(\/\/[^\n]*)/g, '<span class="comment">$1</span>')
                 .replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
-                .replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|true|false|null|undefined|new|this|class|extends|import|export|async|await)\b/g, '<span class="highlight">$1</span>')
-                .replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, '<span class="value">$1</span>')
+                .replace(/\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|true|false|null|undefined|new|this|class|extends|import|export|async|await)\b/g, '<span class="accent">$1</span>')
                 .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="unit">$1</span>')
                 .replace(/\b(console|document|window|Math|Array|Object|String|Number|Boolean|Date|JSON|parseInt|parseFloat|isNaN|Math\.\w+|document\.\w+)\b/g, '<span class="selector">$1</span>');
         }
