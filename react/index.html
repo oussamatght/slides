@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Complete Course - Interactive Tutorial</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #0a0f1a;
+            --bg-card: #111827;
+            --fg: #f1f5f9;
+            --muted: #64748b;
+            --accent: #22d3ee;
+            --accent-warm: #fbbf24;
+            --border: #1e293b;
+            --code-bg: #1a1f2e;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        code,
+        pre,
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(139, 92, 246, 0.15), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(251, 191, 36, 0.1), transparent), linear-gradient(180deg, var(--bg) 0%, #0d1424 100%);
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(139, 92, 246, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(139, 92, 246, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        
+        .slides-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 2rem 8rem;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide {
+                transition: opacity 0.3s ease;
+                transform: none !important;
+            }
+        }
+        
+        .slide-content {
+            max-width: 900px;
+            width: 100%;
+            max-height: calc(100vh - 12rem);
+            overflow-y: auto;
+            padding-right: 0.35rem;
+        }
+        
+        .slide-content::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .slide-content::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(30, 41, 59, 0.22));
+            border-radius: 999px;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(167, 139, 250, 0.9), rgba(251, 191, 36, 0.88));
+            border-radius: 999px;
+            border: 2px solid rgba(15, 23, 42, 0.55);
+            box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.18) inset;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #a78bfa, #fbbf24);
+        }
+        
+        .slide-number {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slide-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--fg) 0%, #a78bfa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .bullet-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 8px;
+            height: 8px;
+            background: #a78bfa;
+            border-radius: 2px;
+            transform: rotate(45deg);
+        }
+        
+        .highlight {
+            color: #a78bfa;
+            font-weight: 600;
+        }
+        
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: 'REACT';
+            position: absolute;
+            top: 0.75rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+        }
+        
+        .selector {
+            color: #f472b6;
+        }
+        
+        .property {
+            color: #22d3ee;
+        }
+        
+        .value {
+            color: #34d399;
+        }
+        
+        .comment {
+            color: var(--muted);
+            font-style: italic;
+        }
+        
+        .unit {
+            color: #fbbf24;
+        }
+        
+        .exercise-box {
+            background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        
+        .exercise-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent-warm);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+        
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to top, var(--bg), transparent);
+            padding: 2rem;
+        }
+        
+        .nav-inner {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #a78bfa, var(--accent-warm));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn:hover {
+            border-color: #a78bfa;
+            background: rgba(167, 139, 250, 0.1);
+        }
+        
+        .nav-btn:focus-visible {
+            outline: 2px solid #a78bfa;
+            outline-offset: 2px;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        
+        .slide-counter {
+            font-size: 0.875rem;
+            color: var(--muted);
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .analogy-box {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px dashed rgba(167, 139, 250, 0.4);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin: 1rem 0;
+        }
+        
+        .analogy-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #a78bfa;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+        
+        .section-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, #61dafb, #a78bfa);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide.active .slide-content>* {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .slide.active .slide-content>*:nth-child(1) {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(2) {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(3) {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(4) {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(5) {
+            animation-delay: 0.5s;
+            opacity: 0;
+        }
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .lang-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 120;
+            padding: 0.45rem 0.8rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .lang-ar .slide-content {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .lang-ar .bullet-list li {
+            padding-left: 0;
+            padding-right: 2rem;
+        }
+        
+        .lang-ar .bullet-list li::before {
+            left: auto;
+            right: 0;
+        }
+        
+        .lang-ar pre,
+        .lang-ar code,
+        .lang-ar .code-block {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        kbd {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: inherit;
+            font-size: 0.7rem;
+        }
+        
+        @media (max-width: 640px) {
+            .slide {
+                padding: 1rem 1rem 8rem;
+            }
+            .slide-title {
+                font-size: 1.75rem;
+            }
+            .section-title {
+                font-size: clamp(1.8rem, 8vw, 2.4rem);
+            }
+            .section-subtitle {
+                font-size: 1rem;
+            }
+            .bullet-list li {
+                font-size: 1rem;
+                padding-left: 1.5rem;
+                margin-bottom: 0.75rem;
+            }
+            .code-block {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+            .exercise-box {
+                padding: 1rem;
+            }
+            .slide-content {
+                max-height: calc(100vh - 11rem);
+                padding-right: 0.2rem;
+            }
+            .nav-inner {
+                flex-wrap: wrap;
+                padding: 1rem;
+            }
+            .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+            .slide-counter {
+                font-size: 0.75rem;
+            }
+            .keyboard-hint {
+                display: none;
+            }
+            .lang-toggle {
+                padding: 0.35rem 0.6rem;
+                font-size: 0.75rem;
+                top: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="slides-container" id="slidesContainer"></div>
+
+    <div class="keyboard-hint">
+        <kbd>←</kbd> <kbd>→</kbd> to navigate
+    </div>
+
+    <button id="langToggleBtn" class="lang-toggle" aria-label="Toggle Arabic language">AR</button>
+
+    <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
+        <div class="nav-inner">
+            <button class="nav-btn" id="prevBtn" aria-label="Previous slide">Prev</button>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Slide progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="slide-counter" id="slideCounter">1 / 1</span>
+            <button class="nav-btn" id="nextBtn" aria-label="Next slide">Next</button>
+        </div>
+    </nav>
+
+    <script>
+        const slides = [{
+                type: 'title',
+                title: 'React Tutorial',
+                subtitle: 'From React Home to Custom Hooks',
+                section: 'start'
+            }, {
+                type: 'lesson',
+                section: 'fundamentals',
+                title: 'React Home',
+                explain: 'React is a JavaScript library for building reusable user interfaces with components.',
+                code: `import React from "react";\n\nfunction App() {\n  return <h1>React Home</h1>;\n}`,
+                exercise: 'Create a simple React app and render a Home heading.',
+                hint: 'Use a function component and return JSX.'
+            }, {
+                type: 'lesson',
+                section: 'fundamentals',
+                title: 'React Intro',
+                explain: 'React uses a virtual DOM and component model to update UI efficiently.',
+                code: `const root = ReactDOM.createRoot(document.getElementById("root"));\nroot.render(<App />);`,
+                exercise: 'Explain in one sentence why virtual DOM helps performance.',
+                hint: 'Focus on minimal DOM updates.'
+            }, {
+                type: 'lesson',
+                section: 'fundamentals',
+                title: 'React Get Started',
+                explain: 'Use Vite or Create React App to bootstrap quickly and start development.',
+                code: `npm create vite@latest my-react-app -- --template react\ncd my-react-app\nnpm install\nnpm run dev`,
+                exercise: 'Create a new React project and run it locally.',
+                hint: 'Prefer Vite for faster startup.'
+            }, {
+                type: 'lesson',
+                section: 'fundamentals',
+                title: 'React First App',
+                explain: 'Your first app usually starts with one App component and a few child components.',
+                code: `function App() {\n  return <p>My first React app!</p>;\n}`,
+                exercise: 'Create a First App message with your name.',
+                hint: 'Put it inside App component JSX.'
+            }, {
+                type: 'lesson',
+                section: 'fundamentals',
+                title: 'React Render HTML',
+                explain: 'React renders JSX that becomes real HTML in the browser.',
+                code: `function App() {\n  return (\n    <main>\n      <h2>Hello</h2>\n      <p>Rendered by React</p>\n    </main>\n  );\n}`,
+                exercise: 'Render a heading + paragraph + button using JSX.',
+                hint: 'Return one parent element.'
+            }, {
+                type: 'lesson',
+                section: 'fundamentals',
+                title: 'React ES6',
+                explain: 'Modern React relies heavily on ES6 features like arrow functions, destructuring, and modules.',
+                code: `const Welcome = ({ name }) => <h1>Hello {name}</h1>;\nexport default Welcome;`,
+                exercise: 'Use destructuring in a React component props parameter.',
+                hint: 'function Card({ title }) { ... }'
+            },
+
+            {
+                type: 'section',
+                title: 'JSX & Components',
+                subtitle: 'Building blocks of React UI',
+                section: 'jsx'
+            }, {
+                type: 'lesson',
+                section: 'jsx',
+                title: 'React JSX Intro',
+                explain: 'JSX is a syntax extension that lets you write HTML-like code in JavaScript.',
+                code: `const el = <h1>JSX Intro</h1>;`,
+                exercise: 'Write JSX for a card with title and description.',
+                hint: 'Use className, not class.'
+            }, {
+                type: 'lesson',
+                section: 'jsx',
+                title: 'React JSX Expressions',
+                explain: 'Use curly braces {} in JSX to embed JavaScript expressions.',
+                code: `const name = "Aya";\nreturn <p>Welcome {name}</p>;`,
+                exercise: 'Display current year in JSX.',
+                hint: 'Use {new Date().getFullYear()}.'
+            }, {
+                type: 'lesson',
+                section: 'jsx',
+                title: 'React JSX Attributes',
+                explain: 'Attributes in JSX look like HTML but follow JS naming (e.g., className).',
+                code: `return <img src="/logo.png" alt="Logo" className="logo" />;`,
+                exercise: 'Create a button with type and className attributes.',
+                hint: 'className="btn"'
+            }, {
+                type: 'lesson',
+                section: 'jsx',
+                title: 'React JSX If Statements',
+                explain: 'Use if, ternary, or && to conditionally render elements.',
+                code: `return isLoggedIn ? <Dashboard /> : <Login />;`,
+                exercise: 'Show “Admin” only if isAdmin is true.',
+                hint: 'Use && for simple conditions.'
+            }, {
+                type: 'lesson',
+                section: 'components',
+                title: 'React Components',
+                explain: 'Components are reusable UI units. Compose small components into big screens.',
+                code: `function Button() {\n  return <button>Click</button>;\n}`,
+                exercise: 'Create Header, Main, Footer components.',
+                hint: 'Render them in App.'
+            }, {
+                type: 'lesson',
+                section: 'components',
+                title: 'React Class',
+                explain: 'Class components are older but still useful to understand legacy code.',
+                code: `class Welcome extends React.Component {\n  render() {\n    return <h1>Hello</h1>;\n  }\n}`,
+                exercise: 'Convert a function component to class component.',
+                hint: 'Use render() method.'
+            }, {
+                type: 'lesson',
+                section: 'components',
+                title: 'React Props',
+                explain: 'Props pass data from parent to child components.',
+                code: `function User({ name }) {\n  return <p>{name}</p>;\n}\n\n<User name="Sara" />`,
+                exercise: 'Pass title and subtitle props into Hero component.',
+                hint: 'Use attributes on component tag.'
+            }, {
+                type: 'lesson',
+                section: 'components',
+                title: 'React Props Destructuring',
+                explain: 'Destructure props directly for cleaner component signatures.',
+                code: `function Card({ title, text }) {\n  return <article><h3>{title}</h3><p>{text}</p></article>;\n}`,
+                exercise: 'Destructure 3 props in one component.',
+                hint: 'function X({a,b,c})'
+            }, {
+                type: 'lesson',
+                section: 'components',
+                title: 'React Props Children',
+                explain: 'children lets components wrap nested JSX content.',
+                code: `function Panel({ children }) {\n  return <div className="panel">{children}</div>;\n}\n\n<Panel><p>Hello</p></Panel>`,
+                exercise: 'Build a wrapper component using children.',
+                hint: 'Render {children} inside container.'
+            },
+
+            {
+                type: 'section',
+                title: 'Interaction & Forms',
+                subtitle: 'Events, lists, and form handling',
+                section: 'forms'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Events',
+                explain: 'React events use camelCase handlers like onClick and onChange.',
+                code: `function App() {\n  const handleClick = () => alert("Clicked");\n  return <button onClick={handleClick}>Click</button>;\n}`,
+                exercise: 'Create button that increases counter on click.',
+                hint: 'Attach onClick to button.'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Conditionals',
+                explain: 'Conditionally render UI based on state or props.',
+                code: `return loading ? <Spinner /> : <Content />;`,
+                exercise: 'Show “Loading...” for 2 seconds, then show content.',
+                hint: 'Use state boolean.'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Lists',
+                explain: 'Render arrays with map() and provide stable key props.',
+                code: `const items = ["A", "B", "C"];\nreturn <ul>{items.map((i) => <li key={i}>{i}</li>)}</ul>;`,
+                exercise: 'Render a todo array as list items.',
+                hint: 'Each li needs key.'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Forms',
+                explain: 'Controlled components keep form inputs synced with React state.',
+                code: `const [name, setName] = useState("");\n<input value={name} onChange={(e) => setName(e.target.value)} />`,
+                exercise: 'Create controlled input for username.',
+                hint: 'Use value + onChange.'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Forms Submit',
+                explain: 'Handle submit with onSubmit and prevent default refresh.',
+                code: `const onSubmit = (e) => {\n  e.preventDefault();\n  console.log("submitted");\n};`,
+                exercise: 'Log form data on submit.',
+                hint: 'Use e.preventDefault().'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Textarea',
+                explain: 'Textarea is controlled the same way as input with value and onChange.',
+                code: `const [msg, setMsg] = useState("");\n<textarea value={msg} onChange={(e) => setMsg(e.target.value)} />`,
+                exercise: 'Build a feedback textarea with live character count.',
+                hint: 'Use msg.length.'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Select',
+                explain: 'Use select with value/onChange to keep selected option in state.',
+                code: `const [role, setRole] = useState("user");\n<select value={role} onChange={(e) => setRole(e.target.value)}>\n  <option value="user">User</option>\n  <option value="admin">Admin</option>\n</select>`,
+                exercise: 'Create language selector (EN/AR/FR).',
+                hint: 'Store selected option in state.'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Multiple Inputs',
+                explain: 'Use one state object for multiple fields and update by input name.',
+                code: `const [form, setForm] = useState({ email: "", password: "" });\nconst onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });`,
+                exercise: 'Handle name + email + phone with one onChange handler.',
+                hint: 'Use computed property [e.target.name].'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Checkbox',
+                explain: 'Checkboxes are controlled with checked and onChange.',
+                code: `const [accepted, setAccepted] = useState(false);\n<input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />`,
+                exercise: 'Disable submit button until checkbox is checked.',
+                hint: 'Use accepted state in button disabled prop.'
+            }, {
+                type: 'lesson',
+                section: 'forms',
+                title: 'React Radio',
+                explain: 'Radio buttons share same name; state tracks selected value.',
+                code: `const [plan, setPlan] = useState("basic");\n<input type="radio" value="basic" checked={plan === "basic"} onChange={(e) => setPlan(e.target.value)} />`,
+                exercise: 'Create radio options for payment method.',
+                hint: 'Compare state to each radio value.'
+            },
+
+            {
+                type: 'section',
+                title: 'Advanced React',
+                subtitle: 'Architecture, routing, styling, and performance',
+                section: 'advanced'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'React Portals',
+                explain: 'Portals render children into a different DOM node, useful for modals.',
+                code: `return createPortal(<Modal />, document.getElementById("modal-root"));`,
+                exercise: 'Create modal using React Portal.',
+                hint: 'Use createPortal from react-dom.'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'React Suspense',
+                explain: 'Suspense shows fallback UI while lazy components are loading.',
+                code: `const Dashboard = React.lazy(() => import("./Dashboard"));\n<Suspense fallback={<p>Loading...</p>}><Dashboard /></Suspense>`,
+                exercise: 'Lazy-load one page with Suspense fallback.',
+                hint: 'Combine React.lazy + Suspense.'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'React CSS Styling',
+                explain: 'You can style React with regular CSS files and className.',
+                code: `import "./App.css";\nreturn <h1 className="title">Styled</h1>;`,
+                exercise: 'Style a card component with external CSS file.',
+                hint: 'Use className="card".'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'React CSS Modules',
+                explain: 'CSS Modules scope styles locally and prevent naming collisions.',
+                code: `import styles from "./Button.module.css";\n<button className={styles.primary}>Save</button>`,
+                exercise: 'Convert one component style to CSS Modules.',
+                hint: 'Filename must be *.module.css.'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'React CSS-in-JS',
+                explain: 'CSS-in-JS libraries define styles directly in components.',
+                code: `const Button = styled.button\`\n  background: #7c3aed;\n  color: white;\n\`;`,
+                exercise: 'Create one styled button component.',
+                hint: 'Try styled-components or emotion.'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'React Router',
+                explain: 'React Router enables client-side navigation between views.',
+                code: `<Routes>\n  <Route path="/" element={<Home />} />\n  <Route path="/about" element={<About />} />\n</Routes>`,
+                exercise: 'Set up Home and About routes.',
+                hint: 'Wrap app in BrowserRouter.'
+            }, {
+                type: 'lesson',
+                section: 'advanced',
+                title: 'React Transitions',
+                explain: 'Transitions improve UX by animating enter/exit states.',
+                code: `<CSSTransition in={open} timeout={300} classNames="fade" unmountOnExit>\n  <div>Animated</div>\n</CSSTransition>`,
+                exercise: 'Animate a panel opening/closing.',
+                hint: 'Use react-transition-group.'
+            },
+
+            {
+                type: 'section',
+                title: 'React Hooks',
+                subtitle: 'State and side-effects in function components',
+                section: 'hooks'
+            }, {
+                type: 'lesson',
+                section: 'hooks',
+                title: 'What is Hooks?',
+                explain: 'Hooks let you use state and lifecycle features in function components.',
+                code: `function Counter() {\n  const [count, setCount] = useState(0);\n  return <button onClick={() => setCount(count + 1)}>{count}</button>;\n}`,
+                exercise: 'Explain why hooks replaced many class use cases.',
+                hint: 'Focus on simpler function components.'
+            }, {
+                type: 'lesson',
+                section: 'hooks',
+                title: 'React useState',
+                explain: 'useState stores local component state and triggers rerender when updated.',
+                code: `const [open, setOpen] = useState(false);`,
+                exercise: 'Toggle menu open/closed with useState.',
+                hint: 'setOpen((prev) => !prev)'
+            }, {
+                type: 'lesson',
+                section: 'hooks',
+                title: 'React useContext',
+                explain: 'useContext reads shared values from React Context without prop drilling.',
+                code: `const theme = useContext(ThemeContext);`,
+                exercise: 'Create ThemeContext and read current theme in child.',
+                hint: 'Wrap tree with Provider.'
+            }, {
+                type: 'lesson',
+                section: 'hooks',
+                title: 'React useRef',
+                explain: 'useRef stores mutable values and accesses DOM nodes without rerendering.',
+                code: `const inputRef = useRef(null);\ninputRef.current.focus();`,
+                exercise: 'Auto-focus an input on component mount.',
+                hint: 'Use ref attribute + useEffect.'
+            }, {
+                type: 'lesson',
+                section: 'hooks',
+                title: 'React useReducer',
+                explain: 'useReducer handles complex state transitions with reducer functions.',
+                code: `const [state, dispatch] = useReducer(reducer, { count: 0 });\ndispatch({ type: "inc" });`,
+                exercise: 'Build counter reducer with increment/decrement/reset.',
+                hint: 'Switch on action.type.'
+            }, {
+                type: 'lesson',
+                section: 'hooks',
+                title: 'React useCallback',
+                explain: 'useCallback memoizes function references to avoid unnecessary re-renders.',
+                code: `const onSave = useCallback(() => {\n  // save logic\n}, [id]);`,
+                exercise: 'Memoize click handler passed to child component.',
+                hint: 'Wrap handler with useCallback.'
+            }, {
+                type: 'lesson',
+                section: 'hooks',
+                title: 'React useMemo',
+                explain: 'useMemo memoizes expensive computed values.',
+                code: `const filtered = useMemo(() => items.filter(i => i.active), [items]);`,
+                exercise: 'Memoize sorted list from large dataset.',
+                hint: 'Use useMemo for derived values.'
+            }, {
+                type: 'lesson',
+                section: 'hooks',
+                title: 'React Custom Hooks',
+                explain: 'Custom hooks extract reusable logic into plain functions starting with use.',
+                code: `function useToggle(initial = false) {\n  const [value, setValue] = useState(initial);\n  const toggle = () => setValue(v => !v);\n  return [value, toggle];\n}`,
+                exercise: 'Build custom hook useFetch(url).',
+                hint: 'Return { data, loading, error }.'
+            },
+
+            {
+                type: 'challenge',
+                title: 'React Final Challenge',
+                subtitle: 'Build a mini product dashboard',
+                exercise: 'Create a React app with Router, one form, one list, one API fetch, and at least 2 hooks (useState + one more).',
+                hint: 'Suggested pages: Home, Products, Settings.'
+            }, {
+                type: 'final',
+                title: 'React Course Completed 🎉',
+                subtitle: 'You covered core React + Hooks + routing/styling patterns',
+                content: [
+                    'You learned all key React tutorial topics listed in this course',
+                    'You practiced JSX, components, forms, events, and conditional rendering',
+                    'You explored advanced topics: Suspense, Portals, Router, and transitions',
+                    'You now understand hooks from useState to custom hooks'
+                ]
+            }
+        ];
+
+        const container = document.getElementById('slidesContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+        const slideCounter = document.getElementById('slideCounter');
+        const langToggleBtn = document.getElementById('langToggleBtn');
+
+        let currentSlide = 0;
+        let currentLang = 'en';
+
+        const uiText = {
+            en: {
+                section: 'Section',
+                lesson: 'Lesson',
+                simpleExplanation: 'Simple Explanation',
+                miniExercise: 'Mini Exercise',
+                codeExample: 'Code Example',
+                finalChallenge: 'Final Challenge',
+                finalProject: 'Final Project',
+                hint: 'Hint',
+                startHint: 'Press <kbd>→</kbd> or click Next to begin'
+            },
+            ar: {
+                section: 'القسم',
+                lesson: 'درس',
+                simpleExplanation: 'شرح مبسط',
+                miniExercise: 'تمرين صغير',
+                codeExample: 'مثال كود',
+                finalChallenge: 'التحدي النهائي',
+                finalProject: 'المشروع النهائي',
+                hint: 'تلميح',
+                startHint: 'اضغط <kbd>→</kbd> أو انقر Next للبدء'
+            }
+        };
+
+        const arMap = {
+            'React Tutorial': 'دورة React التعليمية',
+            'From React Home to Custom Hooks': 'من React Home إلى Custom Hooks',
+            'React Home': 'الصفحة الرئيسية في React',
+            'React Intro': 'مقدمة React',
+            'React Get Started': 'البدء مع React',
+            'React First App': 'أول تطبيق React',
+            'React Render HTML': 'عرض HTML في React',
+            'React ES6': 'React وES6',
+            'React JSX Intro': 'مقدمة JSX في React',
+            'React JSX Expressions': 'تعابير JSX',
+            'React JSX Attributes': 'خصائص JSX',
+            'React JSX If Statements': 'شروط JSX',
+            'React Components': 'مكونات React',
+            'React Class': 'Class في React',
+            'React Props': 'Props في React',
+            'React Props Destructuring': 'تفكيك Props',
+            'React Props Children': 'Props Children',
+            'React Events': 'أحداث React',
+            'React Conditionals': 'الشروط في React',
+            'React Lists': 'القوائم في React',
+            'React Forms': 'النماذج في React',
+            'React Forms Submit': 'إرسال النماذج',
+            'React Textarea': 'Textarea في React',
+            'React Select': 'Select في React',
+            'React Multiple Inputs': 'مدخلات متعددة',
+            'React Checkbox': 'Checkbox في React',
+            'React Radio': 'Radio في React',
+            'React Portals': 'Portals في React',
+            'React Suspense': 'Suspense في React',
+            'React CSS Styling': 'تنسيق CSS في React',
+            'React CSS Modules': 'CSS Modules في React',
+            'React CSS-in-JS': 'CSS-in-JS في React',
+            'React Router': 'React Router',
+            'React Transitions': 'الانتقالات في React',
+            'React Hooks': 'Hooks في React',
+            'What is Hooks?': 'ما هي Hooks؟',
+            'React useState': 'React useState',
+            'React useContext': 'React useContext',
+            'React useRef': 'React useRef',
+            'React useReducer': 'React useReducer',
+            'React useCallback': 'React useCallback',
+            'React useMemo': 'React useMemo',
+            'React Custom Hooks': 'React Custom Hooks',
+            'React Final Challenge': 'تحدي React النهائي',
+            'React Course Completed 🎉': 'اكتملت دورة React 🎉'
+        };
+
+        function t(text) {
+            if (currentLang !== 'ar') return text;
+            return arMap[text] || text;
+        }
+
+        function localizeSlide(slide) {
+            if (currentLang !== 'ar') return slide;
+            const out = {...slide
+            };
+            if (out.title) out.title = t(out.title);
+            if (out.subtitle) out.subtitle = t(out.subtitle);
+            return out;
+        }
+
+        function renderSlides() {
+            container.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                const localized = localizeSlide(slide);
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide';
+
+                if (index === currentSlide) {
+                    slideEl.classList.add('active');
+                } else if (index < currentSlide) {
+                    slideEl.classList.add('prev');
+                }
+
+                slideEl.innerHTML = renderSlideContent(localized);
+                container.appendChild(slideEl);
+            });
+
+            updateNav();
+            document.body.classList.toggle('lang-ar', currentLang === 'ar');
+        }
+
+        function renderSlideContent(slide) {
+            switch (slide.type) {
+                case 'title':
+                    return `
+						<div class="slide-content text-center">
+							<div class="section-icon">⚛️</div>
+							<h1 class="section-title">${slide.title}</h1>
+							<p class="section-subtitle">${slide.subtitle}</p>
+							<p style="margin-top: 3rem; color: var(--muted);">${uiText[currentLang].startHint}</p>
+						</div>
+					`;
+
+                case 'section':
+                    return `
+						<div class="slide-content text-center">
+							<p class="slide-number">${uiText[currentLang].section}</p>
+							<h1 class="section-title">${slide.title}</h1>
+							<p class="section-subtitle">${slide.subtitle}</p>
+						</div>
+					`;
+
+                case 'lesson':
+                    return `
+						<div class="slide-content">
+							<p class="slide-number">${uiText[currentLang].lesson}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+
+							<div class="analogy-box" style="margin-bottom: 1.25rem;">
+								<p class="analogy-label">${uiText[currentLang].simpleExplanation}</p>
+								<p style="margin: 0; color: #c4b5fd;">${slide.explain}</p>
+							</div>
+
+							<div class="code-block" style="margin-bottom: 1.25rem;">
+								<pre style="margin: 0;"><code>${highlightCode(slide.code)}</code></pre>
+							</div>
+
+							<div class="exercise-box">
+								<p class="exercise-label">${uiText[currentLang].miniExercise}</p>
+								<p style="margin: 0; font-size: 1rem;">${slide.exercise}</p>
+							</div>
+							${slide.hint ? `<p style="margin-top: 0.8rem; color: var(--muted); font-size: 0.9rem;"><strong>${uiText[currentLang].hint}:</strong> ${slide.hint}</p>` : ''}
+						</div>
+					`;
+
+				case 'challenge':
+					return `
+						<div class="slide-content">
+							<p class="slide-number">${uiText[currentLang].finalChallenge}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<p style="color: var(--muted); margin-bottom: 1.5rem;">${slide.subtitle}</p>
+							<div class="exercise-box" style="background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(52, 211, 153, 0.1) 100%); border-color: rgba(167, 139, 250, 0.3);">
+								<p class="exercise-label" style="color: #a78bfa;">${uiText[currentLang].finalProject}</p>
+								<p style="margin: 0; font-size: 1rem; white-space: pre-line;">${slide.exercise}</p>
+							</div>
+						</div>
+					`;
+
+				case 'final':
+					return `
+						<div class="slide-content text-center">
+							<div class="section-icon" style="background: linear-gradient(135deg, #22d3ee, #34d399);">✅</div>
+							<h1 class="section-title">${slide.title}</h1>
+							<p class="section-subtitle" style="margin-bottom: 2rem;">${slide.subtitle}</p>
+							<ul class="bullet-list" style="text-align: left; max-width: 700px; margin: 0 auto;">
+								${slide.content.map(item => `<li>${item}</li>`).join('')}
+							</ul>
+						</div>
+					`;
+
+				default:
+					return '';
+			}
+		}
+
+		function highlightCode(code) {
+			return code
+				.replace(/&/g, '&amp;')
+				.replace(/</g, '&lt;')
+				.replace(/>/g, '&gt;')
+				.replace(/(\/\/[^\n]*)/g, '<span class="comment">$1</span>')
+				.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
+				.replace(/\b(const|let|var|function|return|if|else|for|while|switch|case|break|continue|class|extends|import|export|from|new|this|true|false|null|undefined)\b/g, '<span class="highlight">$1</span>')
+				.replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, '<span class="value">$1</span>')
+				.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="unit">$1</span>');
+		}
+
+		function updateNav() {
+			const total = slides.length;
+			const progress = ((currentSlide + 1) / total) * 100;
+			progressFill.style.width = `${progress}%`;
+			slideCounter.textContent = `${currentSlide + 1} / ${total}`;
+			prevBtn.disabled = currentSlide === 0;
+			nextBtn.disabled = currentSlide === total - 1;
+		}
+
+		function goToSlide(index) {
+			if (index < 0 || index >= slides.length) return;
+			currentSlide = index;
+			renderSlides();
+		}
+
+		function nextSlide() {
+			goToSlide(currentSlide + 1);
+		}
+
+		function prevSlide() {
+			goToSlide(currentSlide - 1);
+		}
+
+		prevBtn.addEventListener('click', prevSlide);
+		nextBtn.addEventListener('click', nextSlide);
+
+		langToggleBtn.addEventListener('click', () => {
+			currentLang = currentLang === 'en' ? 'ar' : 'en';
+			langToggleBtn.textContent = currentLang === 'en' ? 'AR' : 'EN';
+			renderSlides();
+		});
+
+		document.addEventListener('keydown', (e) => {
+			if (e.key === 'ArrowRight' || e.key === ' ') {
+				e.preventDefault();
+				nextSlide();
+			} else if (e.key === 'ArrowLeft') {
+				e.preventDefault();
+				prevSlide();
+			}
+		});
+
+		let touchStartX = 0;
+		let touchEndX = 0;
+
+		container.addEventListener('touchstart', (e) => {
+			touchStartX = e.changedTouches[0].screenX;
+		}, { passive: true });
+
+		container.addEventListener('touchend', (e) => {
+			touchEndX = e.changedTouches[0].screenX;
+			const diff = touchStartX - touchEndX;
+			if (Math.abs(diff) > 50) {
+				if (diff > 0) nextSlide();
+				else prevSlide();
+			}
+		}, { passive: true });
+
+		renderSlides();
+    </script>
+</body>
+
+</html>
