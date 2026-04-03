@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git & GitHub Beginner Formation - Interactive Course</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #0a0f1a;
+            --bg-end: #0b1220;
+            --bg-card: #111827;
+            --fg: #f1f5f9;
+            --muted: #64748b;
+            --accent: #22c55e;
+            --accent-2: #22d3ee;
+            --accent-warm: #fbbf24;
+            --border: #1e293b;
+            --code-bg: #111827;
+            --details-bg: rgba(34, 197, 94, 0.08);
+            --scroll-track: rgba(17, 24, 39, 0.72);
+            --scroll-thumb-border: rgba(10, 15, 26, 0.75);
+            --text-soft: #d8e2ee;
+            --chip-border: rgba(34, 197, 94, 0.45);
+            --chip-fg: #86efac;
+            --chip-bg: rgba(34, 197, 94, 0.12);
+            --panel-border: rgba(34, 197, 94, 0.35);
+            --panel-title: #4ade80;
+            --copy-border: rgba(34, 197, 94, 0.4);
+            --copy-bg: rgba(34, 197, 94, 0.11);
+            --copy-bg-hover: rgba(34, 197, 94, 0.2);
+            --copy-fg: #86efac;
+            --task-bg-a: rgba(251, 191, 36, 0.16);
+            --task-bg-b: rgba(251, 191, 36, 0.07);
+            --task-border: rgba(251, 191, 36, 0.42);
+            --task-text: #dbe5f1;
+            --hover-bg: rgba(34, 197, 94, 0.1);
+        }
+        
+        body.theme-light {
+            --bg: #f1f5f9;
+            --bg-end: #dbeafe;
+            --bg-card: #ffffff;
+            --fg: #0f172a;
+            --muted: #475569;
+            --accent: #16a34a;
+            --accent-2: #0891b2;
+            --accent-warm: #d97706;
+            --border: #cbd5e1;
+            --code-bg: #f8fafc;
+            --details-bg: rgba(22, 163, 74, 0.08);
+            --scroll-track: rgba(203, 213, 225, 0.8);
+            --scroll-thumb-border: rgba(241, 245, 249, 0.95);
+            --text-soft: #334155;
+            --chip-border: rgba(22, 163, 74, 0.35);
+            --chip-fg: #15803d;
+            --chip-bg: rgba(22, 163, 74, 0.12);
+            --panel-border: rgba(22, 163, 74, 0.34);
+            --panel-title: #15803d;
+            --copy-border: rgba(22, 163, 74, 0.38);
+            --copy-bg: rgba(22, 163, 74, 0.1);
+            --copy-bg-hover: rgba(22, 163, 74, 0.16);
+            --copy-fg: #166534;
+            --task-bg-a: rgba(217, 119, 6, 0.14);
+            --task-bg-b: rgba(217, 119, 6, 0.06);
+            --task-border: rgba(217, 119, 6, 0.4);
+            --task-text: #334155;
+            --hover-bg: rgba(22, 163, 74, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        code,
+        pre,
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 197, 94, 0.16), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(34, 211, 238, 0.12), transparent), linear-gradient(180deg, var(--bg) 0%, var(--bg-end) 100%);
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        
+        .slides-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 2rem 8rem;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: opacity 0.45s ease, transform 0.45s ease;
+            pointer-events: none;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide {
+                transition: opacity 0.2s ease;
+                transform: none !important;
+            }
+        }
+        
+        .slide-content {
+            max-width: 980px;
+            width: 100%;
+            max-height: calc(100vh - 12rem);
+            overflow-y: auto;
+            padding-right: 0.35rem;
+        }
+        
+        .slide-content::-webkit-scrollbar {
+            width: 9px;
+        }
+        
+        .slide-content::-webkit-scrollbar-track {
+            background: var(--scroll-track);
+            border-radius: 999px;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--accent-2), var(--accent));
+            border-radius: 999px;
+            border: 2px solid var(--scroll-thumb-border);
+        }
+        
+        .slide-number {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slide-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(135deg, var(--fg) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title {
+            font-size: clamp(2.4rem, 6vw, 4.4rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        
+        .lead {
+            color: var(--text-soft);
+            line-height: 1.7;
+            margin-bottom: 0.8rem;
+            font-size: 1.03rem;
+        }
+        
+        .chip-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.35rem;
+        }
+        
+        .chip {
+            font-size: 0.76rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid var(--chip-border);
+            color: var(--chip-fg);
+            background: var(--chip-bg);
+            border-radius: 999px;
+            padding: 0.32rem 0.78rem;
+        }
+        
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .bullet-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.92rem;
+            font-size: 1.07rem;
+            line-height: 1.55;
+        }
+        
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.6em;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 2px;
+            transform: rotate(45deg);
+        }
+        
+        .bullet-list.compact li {
+            font-size: 0.96rem;
+            margin-bottom: 0.63rem;
+        }
+        
+        .accent {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .accent-2 {
+            color: var(--accent-2);
+            font-weight: 600;
+        }
+        
+        .module-panel {
+            background: var(--details-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 0.45rem 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .module-panel summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--panel-title);
+            padding: 0.5rem 0.2rem;
+        }
+        
+        .module-panel[open] summary {
+            margin-bottom: 0.35rem;
+        }
+        
+        .module-panel p {
+            margin: 0 0 0.55rem;
+            color: var(--text-soft);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.45rem;
+            overflow-x: auto;
+            font-size: 0.92rem;
+            line-height: 1.72;
+            position: relative;
+        }
+        
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, var(--accent-2), var(--accent));
+            border-radius: 999px;
+        }
+        
+        .code-lang {
+            position: absolute;
+            top: 0.72rem;
+            right: 1rem;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.09em;
+            text-transform: uppercase;
+        }
+        
+        .copy-btn {
+            position: absolute;
+            top: 0.66rem;
+            right: 4.1rem;
+            border: 1px solid var(--copy-border);
+            background: var(--copy-bg);
+            color: var(--copy-fg);
+            border-radius: 8px;
+            font-size: 0.72rem;
+            padding: 0.24rem 0.52rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .copy-btn:hover {
+            background: var(--copy-bg-hover);
+        }
+        
+        .task-box {
+            margin-top: 1rem;
+            background: linear-gradient(135deg, var(--task-bg-a), var(--task-bg-b));
+            border: 1px solid var(--task-border);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+        
+        .task-title {
+            margin: 0 0 0.55rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent-warm);
+            font-weight: 700;
+        }
+        
+        .task-text {
+            margin: 0;
+            line-height: 1.6;
+            font-size: 0.96rem;
+            color: var(--task-text);
+        }
+        
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to top, var(--bg), transparent);
+            padding: 2rem;
+        }
+        
+        .nav-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-warm));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.72rem 1.35rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.86rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--accent);
+            background: var(--hover-bg);
+        }
+        
+        .nav-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+        
+        .slide-counter {
+            font-size: 0.84rem;
+            color: var(--muted);
+            min-width: 75px;
+            text-align: center;
+        }
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        kbd {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: inherit;
+            font-size: 0.7rem;
+        }
+        
+        .section-icon {
+            width: 82px;
+            height: 82px;
+            margin: 0 auto 1.4rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .top-controls {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 120;
+            display: flex;
+            gap: 0.55rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        
+        .control-btn {
+            padding: 0.45rem 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-card);
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.79rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .control-btn:hover {
+            border-color: var(--accent);
+            background: var(--hover-bg);
+        }
+        
+        .lang-ar .slide-content {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        .lang-ar .bullet-list li {
+            padding-left: 0;
+            padding-right: 2rem;
+        }
+        
+        .lang-ar .bullet-list li::before {
+            left: auto;
+            right: 0;
+        }
+        
+        .lang-ar pre,
+        .lang-ar code,
+        .lang-ar .code-block {
+            direction: ltr;
+            text-align: left;
+        }
+        
+        .lang-ar .code-lang {
+            left: 1rem;
+            right: auto;
+        }
+        
+        .lang-ar .copy-btn {
+            left: 4.1rem;
+            right: auto;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide.active .slide-content>* {
+            animation: fadeInUp 0.45s ease forwards;
+        }
+        
+        .slide.active .slide-content>*:nth-child(1) {
+            animation-delay: 0.08s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(2) {
+            animation-delay: 0.16s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(3) {
+            animation-delay: 0.24s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(4) {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide.active .slide-content>* {
+                animation: none;
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 760px) {
+            .slide {
+                padding: 1rem 1rem 8rem;
+            }
+            .slide-title {
+                font-size: 1.75rem;
+            }
+            .section-title {
+                font-size: clamp(1.9rem, 8vw, 2.7rem);
+            }
+            .section-subtitle {
+                font-size: 1rem;
+            }
+            .bullet-list li {
+                font-size: 0.95rem;
+                padding-left: 1.5rem;
+                margin-bottom: 0.68rem;
+            }
+            .code-block {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+            .slide-content {
+                max-height: calc(100vh - 11rem);
+                padding-right: 0.2rem;
+            }
+            .nav-inner {
+                flex-wrap: wrap;
+                padding: 0.9rem;
+            }
+            .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+            .slide-counter {
+                font-size: 0.75rem;
+            }
+            .keyboard-hint {
+                display: none;
+            }
+            .top-controls {
+                top: 0.6rem;
+                right: 0.6rem;
+            }
+            .control-btn {
+                font-size: 0.72rem;
+                padding: 0.36rem 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="top-controls">
+        <button id="langToggleBtn" class="control-btn" aria-label="Toggle Arabic language">AR</button>
+        <button id="themeToggleBtn" class="control-btn" aria-label="Toggle light and dark mode">☀️ Light</button>
+    </div>
+
+    <div class="slides-container" id="slidesContainer"></div>
+
+    <div class="keyboard-hint" id="keyboardHint">
+        <kbd>←</kbd> <kbd>→</kbd> to navigate
+    </div>
+
+    <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
+        <div class="nav-inner">
+            <button class="nav-btn" id="prevBtn" aria-label="Previous slide">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<polyline points="15 18 9 12 15 6"></polyline>
+				</svg>
+				<span id="prevLabel">Prev</span>
+			</button>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Slide progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="slide-counter" id="slideCounter">1 / 1</span>
+            <button class="nav-btn" id="nextBtn" aria-label="Next slide">
+				<span id="nextLabel">Next</span>
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<polyline points="9 18 15 12 9 6"></polyline>
+				</svg>
+			</button>
+        </div>
+    </nav>
+
+    <script>
+        const bi = (en, ar) => ({
+            en,
+            ar
+        });
+
+        const uiText = {
+            en: {
+                section: 'Section',
+                module: 'Module',
+                codeExample: 'Code Example',
+                task: 'Practice Task',
+                nextSteps: 'Next Steps',
+                copy: 'Copy',
+                copied: 'Copied!',
+                prev: 'Prev',
+                next: 'Next',
+                keyboardHint: 'to navigate',
+                startHint: 'Press → or click Next to begin',
+                light: '☀️ Light',
+                dark: '🌙 Dark'
+            },
+            ar: {
+                section: 'القسم',
+                module: 'الوحدة',
+                codeExample: 'مثال كود',
+                task: 'تمرين عملي',
+                nextSteps: 'الخطوات التالية',
+                copy: 'نسخ',
+                copied: 'تم النسخ!',
+                prev: 'السابق',
+                next: 'التالي',
+                keyboardHint: 'للتنقّل',
+                startHint: 'اضغط ←/→ أو انقر التالي للبدء',
+                light: '☀️ فاتح',
+                dark: '🌙 داكن'
+            }
+        };
+
+        const slides = [{
+                type: 'title',
+                title: bi('🎓 Full Beginner Formation: Git & GitHub', '🎓 تكوين المبتدئين الكامل: Git و GitHub'),
+                subtitle: bi('Interactive + Practical + Bilingual (EN/AR)', 'تفاعلي + عملي + ثنائي اللغة (إنجليزي/عربي)'),
+                description: bi('Same logic and UI/UX as your other formations, with extra features: dark/light mode, collapsible sections, and copy buttons for commands.', 'نفس المنطق وتجربة المستخدم مثل باقي التكوينات، مع ميزات إضافية: وضع فاتح/داكن، أقسام قابلة للطي، وزر نسخ للأوامر.'),
+                chips: ['Git Basics', 'GitHub Workflow', 'Branches', 'Pull Requests', 'Best Practices']
+            }, {
+                type: 'section',
+                title: bi('Formation Roadmap', 'خريطة التكوين'),
+                subtitle: bi('8 core modules + examples + tasks', '8 وحدات أساسية + أمثلة + تمارين')
+            }, {
+                type: 'content',
+                label: bi('Index', 'الفهرس'),
+                title: bi('What You Will Learn', 'ماذا ستتعلم'),
+                bullets: [
+                    bi('🧩 Module 1 — Introduction', '🧩 الوحدة 1 — المقدمة'),
+                    bi('💻 Module 2 — Install & Setup', '💻 الوحدة 2 — التثبيت والإعداد'),
+                    bi('📁 Module 3 — Basic Git Commands', '📁 الوحدة 3 — أوامر Git الأساسية'),
+                    bi('🌐 Module 4 — Connect to GitHub', '🌐 الوحدة 4 — الربط مع GitHub'),
+                    bi('🔄 Module 5 — Daily Workflow', '🔄 الوحدة 5 — سير العمل اليومي'),
+                    bi('🌿 Module 6 — Branching', '🌿 الوحدة 6 — التفرعات'),
+                    bi('🤝 Module 7 — Collaboration', '🤝 الوحدة 7 — التعاون'),
+                    bi('🧠 Module 8 — Best Practices', '🧠 الوحدة 8 — أفضل الممارسات')
+                ]
+            },
+
+            // Module 1
+            {
+                type: 'section',
+                title: bi('🧩 Module 1 — Introduction', '🧩 الوحدة 1 — المقدمة'),
+                subtitle: bi('Version control fundamentals', 'أساسيات التحكم في الإصدارات')
+            }, {
+                type: 'module',
+                title: bi('What is Version Control?', 'ما هو التحكم في الإصدارات؟'),
+                lead: bi('Version control tracks project history so you can collaborate safely, recover mistakes, and understand what changed over time.', 'التحكم في الإصدارات يتتبع تاريخ المشروع لتتعاون بأمان، وتسترجع الأخطاء، وتفهم ما الذي تغير مع الوقت.'),
+                panels: [{
+                    title: bi('Core Concepts', 'المفاهيم الأساسية'),
+                    items: [
+                        bi('Git stores snapshots of your files as commits.', 'Git يحفظ لقطات من الملفات على شكل commits.'),
+                        bi('Each commit has a message, author, and timestamp.', 'كل commit يحتوي رسالة واسم الكاتب والوقت.'),
+                        bi('You can move backward/forward in project history.', 'يمكنك الرجوع للأمام أو للخلف في تاريخ المشروع.'),
+                        bi('You work locally first, then sync with remote repositories.', 'تعمل محليًا أولًا ثم تزامن مع المستودعات البعيدة.')
+                    ]
+                }, {
+                    title: bi('Git vs GitHub', 'الفرق بين Git و GitHub'),
+                    items: [
+                        bi('Git = version control tool on your machine.', 'Git = أداة التحكم في الإصدارات على جهازك.'),
+                        bi('GitHub = platform to host repositories online and collaborate.', 'GitHub = منصة لاستضافة المستودعات والتعاون عبر الإنترنت.'),
+                        bi('You can use Git without GitHub, but teams usually use both.', 'يمكنك استخدام Git بدون GitHub، لكن الفرق عادةً تستخدم الاثنين.')
+                    ]
+                }, {
+                    title: bi('Real-Life Use Cases + Task', 'حالات استخدام حقيقية + تمرين'),
+                    items: [
+                        bi('E-commerce team tracks features and bug fixes.', 'فريق متجر إلكتروني يتابع الميزات وإصلاحات الأخطاء.'),
+                        bi('Student team collaborates on graduation project safely.', 'فريق طلاب يتعاون على مشروع التخرج بأمان.'),
+                        bi('Task: explain Git vs GitHub to a friend in 3 lines.', 'تمرين: اشرح الفرق بين Git وGitHub لصديق في 3 أسطر.')
+                    ]
+                }]
+            },
+
+            // Module 2
+            {
+                type: 'section',
+                title: bi('💻 Module 2 — Install & Setup', '💻 الوحدة 2 — التثبيت والإعداد'),
+                subtitle: bi('Prepare your Git environment correctly', 'جهّز بيئة Git بشكل صحيح')
+            }, {
+                type: 'module',
+                title: bi('Install Git + Create GitHub Account', 'تثبيت Git + إنشاء حساب GitHub'),
+                panels: [{
+                    title: bi('Installation Checklist', 'قائمة التثبيت'),
+                    items: [
+                        bi('Install Git from git-scm.com.', 'ثبّت Git من git-scm.com.'),
+                        bi('Verify installation with git --version.', 'تحقق من التثبيت عبر git --version.'),
+                        bi('Create your account on github.com.', 'أنشئ حسابك على github.com.'),
+                        bi('Choose HTTPS or SSH workflow (beginners can start with HTTPS).', 'اختر طريقة HTTPS أو SSH (المبتدئ يمكنه البدء بـ HTTPS).')
+                    ]
+                }, {
+                    title: bi('Essential Global Configuration', 'إعدادات عامة أساسية'),
+                    items: [
+                        bi('Set username and email once globally.', 'اضبط الاسم والبريد مرة واحدة بشكل عام.'),
+                        bi('Set default branch to main for consistency.', 'اضبط الفرع الافتراضي على main للتوحيد.'),
+                        bi('Optional: use aliases to speed up common commands.', 'اختياري: استخدم aliases لتسريع الأوامر الشائعة.')
+                    ]
+                }, {
+                    title: bi('Task', 'تمرين'),
+                    items: [
+                        bi('Configure Git identity and verify using git config --list.', 'قم بإعداد هوية Git وتحقق منها بأمر git config --list.'),
+                        bi('Create your first empty repository on GitHub.', 'أنشئ أول مستودع فارغ على GitHub.')
+                    ]
+                }]
+            }, {
+                type: 'code',
+                lang: 'Bash',
+                title: bi('Git Configuration Commands', 'أوامر إعداد Git'),
+                code: `git config --global user.name "Your Name"
+git config --global user.email "your@email.com"
+git config --global init.defaultBranch main
+git config --list`,
+                task: bi('Run each command, then screenshot your configuration list.', 'نفّذ كل أمر ثم خذ لقطة شاشة لقائمة الإعدادات.')
+            },
+
+            // Module 3
+            {
+                type: 'section',
+                title: bi('📁 Module 3 — Basic Git Commands', '📁 الوحدة 3 — أوامر Git الأساسية'),
+                subtitle: bi('Initialize, track, and commit changes', 'تهيئة المشروع وتتبع التغييرات وحفظها')
+            }, {
+                type: 'module',
+                title: bi('Your First Local Repository Workflow', 'أول سير عمل محلي للمستودع'),
+                panels: [{
+                    title: bi('Command Purpose', 'فائدة كل أمر'),
+                    items: [
+                        bi('git init: start Git in your project folder.', 'git init: يبدأ Git داخل مجلد المشروع.'),
+                        bi('git status: show staged/unstaged files.', 'git status: يعرض الملفات المضافة وغير المضافة.'),
+                        bi('git add .: stage all current changes.', 'git add .: يضيف كل التغييرات الحالية للـ staging.'),
+                        bi('git commit -m "message": save a snapshot.', 'git commit -m "message": يحفظ لقطة للحالة الحالية.')
+                    ]
+                }, {
+                    title: bi('Extra Useful Commands', 'أوامر إضافية مفيدة'),
+                    items: [
+                        bi('git log --oneline: view compact history.', 'git log --oneline: عرض سجل مختصر.'),
+                        bi('git diff: compare unstaged changes.', 'git diff: مقارنة التغييرات غير المضافة.'),
+                        bi('git restore file.txt: discard local changes in one file.', 'git restore file.txt: إلغاء تغييرات ملف واحد.')
+                    ]
+                }, {
+                    title: bi('Task', 'تمرين'),
+                    items: [
+                        bi('Create 3 files and commit them in 2 separate commits.', 'أنشئ 3 ملفات واحفظها في 2 commits منفصلين.'),
+                        bi('Use meaningful commit messages.', 'استخدم رسائل commit واضحة.')
+                    ]
+                }]
+            }, {
+                type: 'code',
+                lang: 'Bash',
+                title: bi('Basic Command Sequence', 'تسلسل الأوامر الأساسية'),
+                code: `git init
+git status
+git add .
+git commit -m "first commit"
+git log --oneline`,
+                task: bi('Repeat this workflow in a fresh folder until it becomes natural.', 'كرّر هذا التسلسل في مجلد جديد حتى يصبح عادة.')
+            },
+
+            // Module 4
+            {
+                type: 'section',
+                title: bi('🌐 Module 4 — Connect to GitHub', '🌐 الوحدة 4 — الربط مع GitHub'),
+                subtitle: bi('Push local work to remote repository', 'رفع العمل المحلي إلى المستودع البعيد')
+            }, {
+                type: 'module',
+                title: bi('Local → Remote Connection Flow', 'تدفق الربط من المحلي إلى البعيد'),
+                panels: [{
+                    title: bi('Steps', 'الخطوات'),
+                    items: [
+                        bi('Create a new repo on GitHub (empty, no README).', 'أنشئ مستودعًا جديدًا على GitHub (فارغًا بدون README).'),
+                        bi('Add remote origin URL in your local project.', 'أضف رابط remote origin داخل مشروعك المحلي.'),
+                        bi('Rename branch to main if needed.', 'أعد تسمية الفرع إلى main إذا لزم الأمر.'),
+                        bi('Push first commit with upstream tracking.', 'ادفع أول commit مع ربط upstream.')
+                    ]
+                }, {
+                    title: bi('Common Errors & Fixes', 'أخطاء شائعة وحلولها'),
+                    items: [
+                        bi('remote origin already exists → use git remote set-url origin ...', 'origin موجود مسبقًا → استخدم git remote set-url origin ...'),
+                        bi('failed to push due to non-fast-forward → run git pull first.', 'فشل push بسبب non-fast-forward → نفّذ git pull أولًا.'),
+                        bi('authentication failed → check token/credentials.', 'فشل المصادقة → تحقق من التوكن/بيانات الدخول.')
+                    ]
+                }, {
+                    title: bi('Task', 'تمرين'),
+                    items: [
+                        bi('Push your local project to GitHub and open it in browser.', 'ارفع مشروعك المحلي إلى GitHub وافتحه في المتصفح.'),
+                        bi('Verify commit history appears online.', 'تأكد أن سجل الـ commits يظهر على GitHub.')
+                    ]
+                }]
+            }, {
+                type: 'code',
+                lang: 'Bash',
+                title: bi('Connect Project to GitHub', 'ربط المشروع مع GitHub'),
+                code: `git remote add origin https://github.com/username/repo.git
+git branch -M main
+git push -u origin main`,
+                task: bi('Change username/repo and run safely in your own project.', 'عدّل username/repo ونفّذها بأمان في مشروعك الحقيقي.')
+            },
+
+            // Module 5
+            {
+                type: 'section',
+                title: bi('🔄 Module 5 — Daily Workflow', '🔄 الوحدة 5 — سير العمل اليومي'),
+                subtitle: bi('Keep your project synced every day', 'حافظ على تزامن مشروعك يوميًا')
+            }, {
+                type: 'module',
+                title: bi('The Practical Daily Loop', 'الحلقة اليومية العملية'),
+                panels: [{
+                    title: bi('Recommended Order', 'الترتيب الموصى به'),
+                    items: [
+                        bi('git pull before starting work.', 'نفّذ git pull قبل بدء العمل.'),
+                        bi('Implement feature or fix bug locally.', 'نفّذ الميزة أو أصلح الخطأ محليًا.'),
+                        bi('git add + git commit with clear message.', 'نفّذ git add + git commit برسالة واضحة.'),
+                        bi('git push to share updates.', 'نفّذ git push لمشاركة التحديثات.')
+                    ]
+                }, {
+                    title: bi('Good Habits', 'عادات جيدة'),
+                    items: [
+                        bi('Commit small and often.', 'قم بعمل commits صغيرة ومتكررة.'),
+                        bi('Pull frequently in team projects.', 'قم بعملية pull بشكل متكرر في المشاريع الجماعية.'),
+                        bi('Write one intent per commit message.', 'اجعل كل commit يعبر عن هدف واحد واضح.')
+                    ]
+                }, {
+                    title: bi('Task', 'تمرين'),
+                    items: [
+                        bi('Simulate a two-day workflow: pull → work → commit → push.', 'حاكي سير عمل يومين: pull ← عمل ← commit ← push.'),
+                        bi('Document your commands in a markdown note.', 'وثّق الأوامر التي استخدمتها داخل ملف markdown.')
+                    ]
+                }]
+            }, {
+                type: 'code',
+                lang: 'Bash',
+                title: bi('Daily Sync Commands', 'أوامر التزامن اليومية'),
+                code: `git pull
+# edit files
+git add .
+git commit -m "feat: update homepage hero"
+git push`,
+                task: bi('Practice with at least 3 commits and push each one.', 'تدرّب على الأقل بـ 3 commits وادفع كل واحد.')
+            },
+
+            // Module 6
+            {
+                type: 'section',
+                title: bi('🌿 Module 6 — Branching', '🌿 الوحدة 6 — التفرعات'),
+                subtitle: bi('Build features safely in isolated branches', 'ابنِ الميزات بأمان داخل فروع منفصلة')
+            }, {
+                type: 'module',
+                title: bi('Branching Strategy for Beginners', 'استراتيجية التفرعات للمبتدئين'),
+                panels: [{
+                    title: bi('Why Branches Matter', 'لماذا التفرعات مهمة'),
+                    items: [
+                        bi('Keep main branch stable.', 'الحفاظ على استقرار فرع main.'),
+                        bi('Develop each feature independently.', 'تطوير كل ميزة بشكل مستقل.'),
+                        bi('Easier code review and rollback.', 'تسهيل المراجعة والرجوع عند الحاجة.')
+                    ]
+                }, {
+                    title: bi('Core Branch Commands', 'أوامر التفرع الأساسية'),
+                    items: [
+                        bi('git branch feature-name → create branch.', 'git branch feature-name ← إنشاء فرع.'),
+                        bi('git checkout feature-name → switch branch.', 'git checkout feature-name ← الانتقال للفرع.'),
+                        bi('git merge feature-name → merge into current branch.', 'git merge feature-name ← دمج الفرع في الفرع الحالي.')
+                    ]
+                }, {
+                    title: bi('Task', 'تمرين'),
+                    items: [
+                        bi('Create a feature branch, add one commit, then merge to main.', 'أنشئ فرع ميزة، أضف commit واحد، ثم ادمجه مع main.'),
+                        bi('Delete merged branch afterward.', 'احذف الفرع بعد الدمج.')
+                    ]
+                }]
+            }, {
+                type: 'code',
+                lang: 'Bash',
+                title: bi('Branch Create / Switch / Merge', 'إنشاء / انتقال / دمج الفروع'),
+                code: `git branch feature
+git checkout feature
+# make changes
+git add .
+git commit -m "feat: add feature page"
+git checkout main
+git merge feature
+git branch -d feature`,
+                task: bi('Repeat this flow with two different feature names.', 'كرّر هذا التدفق مع اسمين مختلفين لفرعين.')
+            },
+
+            // Module 7
+            {
+                type: 'section',
+                title: bi('🤝 Module 7 — Collaboration', '🤝 الوحدة 7 — التعاون'),
+                subtitle: bi('Forks, pull requests, and code reviews', 'Fork وطلبات السحب ومراجعة الكود')
+            }, {
+                type: 'module',
+                title: bi('How Teams Collaborate on GitHub', 'كيف تتعاون الفرق على GitHub'),
+                panels: [{
+                    title: bi('Fork + PR Workflow', 'تدفق Fork + Pull Request'),
+                    items: [
+                        bi('Fork repository to your account.', 'اعمل Fork للمستودع إلى حسابك.'),
+                        bi('Create branch, commit changes, and push.', 'أنشئ فرعًا، نفّذ commits، ثم push.'),
+                        bi('Open Pull Request and explain your changes.', 'افتح Pull Request واشرح التغييرات.'),
+                        bi('Team reviews and requests improvements if needed.', 'الفريق يراجع ويطلب تحسينات عند الحاجة.')
+                    ]
+                }, {
+                    title: bi('Code Review Checklist', 'قائمة فحص المراجعة'),
+                    items: [
+                        bi('Is code readable and scoped to one purpose?', 'هل الكود واضح ومحدود لهدف واحد؟'),
+                        bi('Are names, commits, and files organized?', 'هل الأسماء وcommits والملفات منظمة؟'),
+                        bi('Any security or logic risks?', 'هل توجد مخاطر منطقية أو أمنية؟')
+                    ]
+                }, {
+                    title: bi('Task', 'تمرين'),
+                    items: [
+                        bi('Open a sample Pull Request with clear description.', 'افتح Pull Request تجريبيًا بوصف واضح.'),
+                        bi('Review a classmate PR and leave constructive comments.', 'راجع PR لزميلك واترك تعليقات بناءة.')
+                    ]
+                }]
+            }, {
+                type: 'code',
+                lang: 'Bash',
+                title: bi('Collaboration Command Example', 'مثال أوامر التعاون'),
+                code: `git checkout -b fix/navbar-spacing
+git add .
+git commit -m "fix: navbar spacing on mobile"
+git push -u origin fix/navbar-spacing
+# then open Pull Request on GitHub`,
+                task: bi('Write a PR title and description for this change.', 'اكتب عنوان ووصف Pull Request لهذا التغيير.')
+            },
+
+            // Module 8
+            {
+                type: 'section',
+                title: bi('🧠 Module 8 — Best Practices', '🧠 الوحدة 8 — أفضل الممارسات'),
+                subtitle: bi('Work clean, safe, and team-friendly', 'اعمل بشكل نظيف وآمن ومناسب للفريق')
+            }, {
+                type: 'module',
+                title: bi('Professional Git Habits', 'عادات Git الاحترافية'),
+                panels: [{
+                    title: bi('Commit Message Quality', 'جودة رسائل Commit'),
+                    items: [
+                        bi('Bad: "update" / "fix stuff"', 'سيء: "update" / "fix stuff"'),
+                        bi('Good: "feat: add login validation"', 'جيد: "feat: add login validation"'),
+                        bi('Use intent-first, concise messages.', 'اكتب الرسالة بشكل مختصر وواضح حسب الهدف.')
+                    ]
+                }, {
+                    title: bi('Safe Team Workflow', 'سير عمل آمن للفريق'),
+                    items: [
+                        bi('Use branches for each feature/fix.', 'استخدم فرعًا لكل ميزة/إصلاح.'),
+                        bi('Pull before push to avoid conflicts.', 'نفّذ pull قبل push لتجنب التعارضات.'),
+                        bi('Keep repositories organized with README and .gitignore.', 'حافظ على تنظيم المستودع عبر README و .gitignore.')
+                    ]
+                }, {
+                    title: bi('Task', 'تمرين'),
+                    items: [
+                        bi('Rewrite 5 bad commit messages into clean professional ones.', 'أعد كتابة 5 رسائل commit سيئة إلى رسائل احترافية.'),
+                        bi('Create a .gitignore for a Node.js project.', 'أنشئ ملف .gitignore لمشروع Node.js.')
+                    ]
+                }]
+            }, {
+                type: 'code',
+                lang: 'Git',
+                title: bi('Examples of Better Commits + .gitignore', 'أمثلة Commit أفضل + .gitignore'),
+                code: `# Better commit messages
+git commit -m "feat: add register form validation"
+git commit -m "fix: resolve API timeout on profile fetch"
+git commit -m "docs: update setup steps in README"
+
+# Example .gitignore
+node_modules/
+.env
+dist/
+coverage/`,
+                task: bi('Apply these conventions in your next project from day one.', 'طبّق هذه القواعد في مشروعك القادم من اليوم الأول.')
+            },
+
+            // Final
+            {
+                type: 'content',
+                label: bi('Challenge', 'التحدي'),
+                title: bi('Mini Final Challenge (All Modules)', 'تحدي نهائي مصغّر (جميع الوحدات)'),
+                bullets: [
+                    bi('Create a local project and initialize Git.', 'أنشئ مشروعًا محليًا وفعّل Git.'),
+                    bi('Commit at least 3 meaningful steps.', 'نفّذ 3 commits واضحة على الأقل.'),
+                    bi('Push to GitHub main branch.', 'ادفع المشروع إلى فرع main على GitHub.'),
+                    bi('Create feature branch and open one Pull Request.', 'أنشئ فرع ميزة وافتح Pull Request واحد.'),
+                    bi('Ask a classmate to review and merge.', 'اطلب من زميلك مراجعة ودمج التغييرات.')
+                ]
+            }, {
+                type: 'final',
+                title: bi('You are now Git & GitHub ready 🚀', 'أصبحت جاهزًا لـ Git و GitHub 🚀'),
+                subtitle: bi('Practice daily and your workflow will become second nature.', 'تدرّب يوميًا وسيصبح سير العمل عادة تلقائية.'),
+                bullets: [
+                    bi('Track changes confidently.', 'تتبّع التغييرات بثقة.'),
+                    bi('Collaborate using branches and pull requests.', 'تعاون عبر الفروع وطلبات السحب.'),
+                    bi('Ship cleaner code with better history.', 'قدّم كودًا أنظف مع سجل تغييرات احترافي.')
+                ]
+            }
+        ];
+
+        const container = document.getElementById('slidesContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const prevLabel = document.getElementById('prevLabel');
+        const nextLabel = document.getElementById('nextLabel');
+        const progressFill = document.getElementById('progressFill');
+        const slideCounter = document.getElementById('slideCounter');
+        const langToggleBtn = document.getElementById('langToggleBtn');
+        const themeToggleBtn = document.getElementById('themeToggleBtn');
+        const keyboardHint = document.getElementById('keyboardHint');
+
+        let currentSlide = 0;
+        let currentLang = localStorage.getItem('git-formation-lang') || 'en';
+        let currentTheme = localStorage.getItem('git-formation-theme') || 'dark';
+
+        function t(value) {
+            if (value === null || value === undefined) return '';
+            if (typeof value === 'object' && value.en !== undefined && value.ar !== undefined) {
+                return currentLang === 'ar' ? value.ar : value.en;
+            }
+            return value;
+        }
+
+        function escapeHtml(input) {
+            return input
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function renderSlides() {
+            container.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide';
+                slideEl.setAttribute('role', 'group');
+                slideEl.setAttribute('aria-label', `Slide ${index + 1} of ${slides.length}`);
+
+                if (index === currentSlide) {
+                    slideEl.classList.add('active');
+                } else if (index < currentSlide) {
+                    slideEl.classList.add('prev');
+                }
+
+                slideEl.innerHTML = renderSlideContent(slide);
+                container.appendChild(slideEl);
+            });
+
+            document.body.classList.toggle('lang-ar', currentLang === 'ar');
+            updateControlsText();
+            updateNav();
+        }
+
+        function renderSlideContent(slide) {
+            switch (slide.type) {
+                case 'title':
+                    return `
+						<div class="slide-content text-center">
+							<div class="section-icon">
+								<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+									<path d="M2 17l10 5 10-5"></path>
+									<path d="M2 12l10 5 10-5"></path>
+								</svg>
+							</div>
+							<h1 class="section-title">${t(slide.title)}</h1>
+							<p class="section-subtitle">${t(slide.subtitle)}</p>
+							<p class="lead" style="max-width: 850px; margin: 0.9rem auto 0;">${t(slide.description)}</p>
+							<div class="chip-wrap" style="justify-content: center;">
+								${slide.chips.map((item) => `<span class="chip">${item}</span>`).join('')}
+							</div>
+							<p style="margin-top: 2.3rem; color: var(--muted);">${uiText[currentLang].startHint}</p>
+						</div>
+					`;
+
+				case 'section':
+					return `
+						<div class="slide-content text-center">
+							<p class="slide-number">${uiText[currentLang].section}</p>
+							<h1 class="section-title">${t(slide.title)}</h1>
+							<p class="section-subtitle">${t(slide.subtitle)}</p>
+						</div>
+					`;
+
+				case 'content':
+					return `
+						<div class="slide-content">
+							<p class="slide-number">${t(slide.label)}</p>
+							<h2 class="slide-title">${t(slide.title)}</h2>
+							<ul class="bullet-list">
+								${slide.bullets.map((item) => `<li>${t(item)}</li>`).join('')}
+							</ul>
+						</div>
+					`;
+
+				case 'module':
+					return `
+						<div class="slide-content">
+							<p class="slide-number">${uiText[currentLang].module}</p>
+							<h2 class="slide-title">${t(slide.title)}</h2>
+							${slide.lead ? `<p class="lead">${t(slide.lead)}</p>` : ''}
+							<div>
+								${(slide.panels || []).map((panel, index) => `
+									<details class="module-panel" ${index === 0 ? 'open' : ''}>
+										<summary>${t(panel.title)}</summary>
+										${panel.description ? `<p>${t(panel.description)}</p>` : ''}
+										<ul class="bullet-list compact">
+											${(panel.items || []).map((item) => `<li>${t(item)}</li>`).join('')}
+										</ul>
+									</details>
+								`).join('')}
+							</div>
+						</div>
+					`;
+
+				case 'code':
+					return `
+						<div class="slide-content">
+							<p class="slide-number">${uiText[currentLang].codeExample}</p>
+							<h2 class="slide-title">${t(slide.title)}</h2>
+							<div class="code-block">
+								<span class="code-lang">${slide.lang}</span>
+								<button class="copy-btn" type="button" aria-label="Copy code">${uiText[currentLang].copy}</button>
+								<pre style="margin: 0;"><code>${escapeHtml(slide.code)}</code></pre>
+							</div>
+							${slide.task ? `
+								<div class="task-box">
+									<p class="task-title">${uiText[currentLang].task}</p>
+									<p class="task-text">${t(slide.task)}</p>
+								</div>
+							` : ''}
+						</div>
+					`;
+
+				case 'final':
+					return `
+						<div class="slide-content text-center">
+							<div class="section-icon" style="background: linear-gradient(135deg, #22d3ee, #22c55e);">
+								<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+									<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+									<polyline points="22 4 12 14.01 9 11.01"></polyline>
+								</svg>
+							</div>
+							<h1 class="section-title">${t(slide.title)}</h1>
+							<p class="section-subtitle" style="margin-bottom: 2rem;">${t(slide.subtitle)}</p>
+							<ul class="bullet-list" style="text-align: left; max-width: 700px; margin: 0 auto;">
+								${slide.bullets.map((item) => `<li>${t(item)}</li>`).join('')}
+							</ul>
+						</div>
+					`;
+
+				default:
+					return '';
+			}
+		}
+
+		function updateNav() {
+			const total = slides.length;
+			const progress = ((currentSlide + 1) / total) * 100;
+
+			progressFill.style.width = `${progress}%`;
+			slideCounter.textContent = `${currentSlide + 1} / ${total}`;
+
+			prevBtn.disabled = currentSlide === 0;
+			nextBtn.disabled = currentSlide === total - 1;
+		}
+
+		function updateControlsText() {
+			prevLabel.textContent = uiText[currentLang].prev;
+			nextLabel.textContent = uiText[currentLang].next;
+			langToggleBtn.textContent = currentLang === 'en' ? 'AR' : 'EN';
+			themeToggleBtn.textContent = currentTheme === 'dark' ? uiText[currentLang].light : uiText[currentLang].dark;
+			keyboardHint.innerHTML = `<kbd>←</kbd> <kbd>→</kbd> ${uiText[currentLang].keyboardHint}`;
+		}
+
+		function goToSlide(index) {
+			if (index < 0 || index >= slides.length) return;
+
+			const allSlides = container.querySelectorAll('.slide');
+
+			allSlides.forEach((slideEl, i) => {
+				slideEl.classList.remove('active', 'prev');
+				if (i === index) {
+					slideEl.classList.add('active');
+				} else if (i < index) {
+					slideEl.classList.add('prev');
+				}
+			});
+
+			currentSlide = index;
+			updateNav();
+		}
+
+		function nextSlide() {
+			goToSlide(currentSlide + 1);
+		}
+
+		function prevSlide() {
+			goToSlide(currentSlide - 1);
+		}
+
+		function setTheme(theme) {
+			currentTheme = theme;
+			document.body.classList.toggle('theme-light', theme === 'light');
+			localStorage.setItem('git-formation-theme', theme);
+			updateControlsText();
+		}
+
+		async function copyToClipboard(text) {
+			try {
+				await navigator.clipboard.writeText(text);
+				return true;
+			} catch {
+				const textarea = document.createElement('textarea');
+				textarea.value = text;
+				document.body.appendChild(textarea);
+				textarea.select();
+				const ok = document.execCommand('copy');
+				document.body.removeChild(textarea);
+				return ok;
+			}
+		}
+
+		prevBtn.addEventListener('click', prevSlide);
+		nextBtn.addEventListener('click', nextSlide);
+
+		langToggleBtn.addEventListener('click', () => {
+			currentLang = currentLang === 'en' ? 'ar' : 'en';
+			localStorage.setItem('git-formation-lang', currentLang);
+			renderSlides();
+			goToSlide(currentSlide);
+		});
+
+		themeToggleBtn.addEventListener('click', () => {
+			setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+		});
+
+		document.addEventListener('click', async(event) => {
+			const btn = event.target.closest('.copy-btn');
+			if (!btn) return;
+
+			const codeEl = btn.closest('.code-block')?.querySelector('code');
+			if (!codeEl) return;
+
+			const rawCode = codeEl.textContent || '';
+			const success = await copyToClipboard(rawCode);
+			const original = btn.textContent;
+
+			btn.textContent = success ? uiText[currentLang].copied : 'Copy failed';
+			setTimeout(() => {
+				btn.textContent = original;
+			}, 1200);
+		});
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowRight' || event.key === ' ') {
+				event.preventDefault();
+				nextSlide();
+			} else if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				prevSlide();
+			}
+		});
+
+		let touchStartX = 0;
+		let touchEndX = 0;
+
+		container.addEventListener('touchstart', (event) => {
+			touchStartX = event.changedTouches[0].screenX;
+		}, {
+			passive: true
+		});
+
+		container.addEventListener('touchend', (event) => {
+			touchEndX = event.changedTouches[0].screenX;
+			const diff = touchStartX - touchEndX;
+
+			if (Math.abs(diff) > 50) {
+				if (diff > 0) nextSlide();
+				else prevSlide();
+			}
+		}, {
+			passive: true
+		});
+
+		setTheme(currentTheme);
+		renderSlides();
+    </script>
+</body>
+
+</html>

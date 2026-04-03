@@ -1,0 +1,1324 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workshop - Full Stack Web Development</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #0a0f1a;
+            --bg-card: #111827;
+            --fg: #f1f5f9;
+            --muted: #64748b;
+            --accent: #22d3ee;
+            --accent-2: #a78bfa;
+            --accent-warm: #fbbf24;
+            --border: #1e293b;
+            --code-bg: #1a1f2e;
+        }
+        
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        code,
+        pre,
+        .code-block {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .bg-pattern {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.15), transparent), radial-gradient(ellipse 60% 40% at 100% 100%, rgba(167, 139, 250, 0.12), transparent), linear-gradient(180deg, var(--bg) 0%, #0d1424 100%);
+        }
+        
+        .grid-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background-image: linear-gradient(rgba(34, 211, 238, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(34, 211, 238, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        
+        .slides-container {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+        
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 2rem 8rem;
+            opacity: 0;
+            transform: translateX(100px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+            pointer-events: none;
+        }
+        
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+        
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide {
+                transition: opacity 0.3s ease;
+                transform: none !important;
+            }
+        }
+        
+        .slide-content {
+            max-width: 980px;
+            width: 100%;
+            max-height: calc(100vh - 12rem);
+            overflow-y: auto;
+            padding-right: 0.35rem;
+        }
+        
+        .slide-content::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .slide-content::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(30, 41, 59, 0.22));
+            border-radius: 999px;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(34, 211, 238, 0.9), rgba(167, 139, 250, 0.9));
+            border-radius: 999px;
+            border: 2px solid rgba(15, 23, 42, 0.55);
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #22d3ee, #a78bfa);
+        }
+        
+        .slide-number {
+            font-size: 0.75rem;
+            color: var(--muted);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .slide-title {
+            font-size: clamp(2rem, 5vw, 3.3rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(135deg, var(--fg) 0%, var(--accent-2) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-title {
+            font-size: clamp(2.4rem, 6vw, 4.2rem);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--muted);
+            text-align: center;
+        }
+        
+        .lead {
+            color: #cbd5e1;
+            line-height: 1.8;
+            font-size: 1.03rem;
+            margin-bottom: 1rem;
+        }
+        
+        .bullet-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .bullet-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 0.95rem;
+            font-size: 1.12rem;
+            line-height: 1.55;
+        }
+        
+        .bullet-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.65em;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 2px;
+            transform: rotate(45deg);
+        }
+        
+        .accent {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .accent-2 {
+            color: var(--accent-2);
+            font-weight: 600;
+        }
+        
+        .chip-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-top: 1.4rem;
+        }
+        
+        .chip {
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            border: 1px solid rgba(34, 211, 238, 0.35);
+            color: #7dd3fc;
+            background: rgba(34, 211, 238, 0.09);
+            border-radius: 999px;
+            padding: 0.35rem 0.8rem;
+        }
+        
+        .note-box {
+            background: rgba(167, 139, 250, 0.1);
+            border: 1px dashed rgba(167, 139, 250, 0.35);
+            border-radius: 10px;
+            padding: 1rem 1.1rem;
+            margin-top: 1.1rem;
+            color: #d8b4fe;
+            line-height: 1.6;
+        }
+        
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-size: 0.93rem;
+            line-height: 1.7;
+            position: relative;
+        }
+        
+        .code-block::-webkit-scrollbar {
+            height: 8px;
+        }
+        
+        .code-block::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.35);
+            border-radius: 999px;
+        }
+        
+        .code-block::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, rgba(34, 211, 238, 0.92), rgba(167, 139, 250, 0.88));
+            border-radius: 999px;
+        }
+        
+        .code-lang {
+            position: absolute;
+            top: 0.7rem;
+            right: 0.95rem;
+            font-size: 0.7rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: linear-gradient(to top, var(--bg), transparent);
+            padding: 2rem;
+        }
+        
+        .nav-inner {
+            max-width: 980px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-warm));
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--fg);
+            font-family: inherit;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-btn:hover {
+            border-color: var(--accent);
+            background: rgba(34, 211, 238, 0.08);
+        }
+        
+        .nav-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+        
+        .nav-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+        
+        .nav-btn:disabled:hover {
+            border-color: var(--border);
+            background: var(--bg-card);
+        }
+        
+        .slide-counter {
+            font-size: 0.875rem;
+            color: var(--muted);
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .keyboard-hint {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            font-size: 0.75rem;
+            color: var(--muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .section-icon {
+            width: 82px;
+            height: 82px;
+            margin: 0 auto 1.45rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-radius: 22px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        kbd {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 0.2rem 0.5rem;
+            font-family: inherit;
+            font-size: 0.7rem;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide.active .slide-content>* {
+            animation: fadeInUp 0.5s ease forwards;
+        }
+        
+        .slide.active .slide-content>*:nth-child(1) {
+            animation-delay: 0.1s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(2) {
+            animation-delay: 0.2s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(3) {
+            animation-delay: 0.3s;
+            opacity: 0;
+        }
+        
+        .slide.active .slide-content>*:nth-child(4) {
+            animation-delay: 0.4s;
+            opacity: 0;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .slide.active .slide-content>* {
+                animation: none;
+                opacity: 1;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .slide {
+                padding: 1rem 1rem 8rem;
+            }
+            .slide-title {
+                font-size: 1.8rem;
+            }
+            .section-title {
+                font-size: clamp(1.9rem, 8vw, 2.7rem);
+            }
+            .section-subtitle {
+                font-size: 1rem;
+            }
+            .bullet-list li {
+                font-size: 0.98rem;
+                padding-left: 1.5rem;
+                margin-bottom: 0.7rem;
+            }
+            .code-block {
+                font-size: 0.8rem;
+                padding: 1rem;
+            }
+            .slide-content {
+                max-height: calc(100vh - 11rem);
+                padding-right: 0.2rem;
+            }
+            .nav-inner {
+                flex-wrap: wrap;
+                padding: 1rem;
+            }
+            .nav-btn {
+                padding: 0.5rem 1rem;
+                font-size: 0.75rem;
+            }
+            .slide-counter {
+                font-size: 0.75rem;
+            }
+            .keyboard-hint {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="slides-container" id="slidesContainer"></div>
+
+    <div class="keyboard-hint">
+        <kbd>←</kbd> <kbd>→</kbd> to navigate
+    </div>
+
+    <nav class="nav-bar" role="navigation" aria-label="Slide navigation">
+        <div class="nav-inner">
+            <button class="nav-btn" id="prevBtn" aria-label="Previous slide">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<polyline points="15 18 9 12 15 6"></polyline>
+				</svg>
+				Prev
+			</button>
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Slide progress">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span class="slide-counter" id="slideCounter">1 / 1</span>
+            <button class="nav-btn" id="nextBtn" aria-label="Next slide">
+				Next
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+					<polyline points="9 18 15 12 9 6"></polyline>
+				</svg>
+			</button>
+        </div>
+    </nav>
+
+    <script>
+        const sectionNumbers = {
+            fundamentals: '0',
+            landscape: '1',
+            why: '2',
+            tools: '3',
+            frontend: '4',
+            backend: '5',
+            database: '6',
+            miniProject: '7',
+            nextjs: '8',
+            career: '9',
+            conclusion: '10'
+        };
+
+        const slides = [{
+                type: 'title',
+                title: 'Workshop: Full Stack Web Development with Modern JavaScript Ecosystem',
+                subtitle: 'For Joker Scientific Club - ESGEN',
+                audience: 'Destiné aux étudiants en informatique et développement web, ou ceux qui se spécialisent dans le développement full stack.',
+                stack: ['Express.js', 'HTML', 'CSS', 'JavaScript', 'React', 'Tailwind CSS', 'Next.js', 'MongoDB', 'Mongoose ORM']
+            }, {
+                type: 'explain',
+                label: 'Workshop Context',
+                title: 'Audience, Goals, and Learning Outcome',
+                lead: 'This workshop is designed to help learners understand how modern frontend and backend systems connect into one production workflow.',
+                bullets: [
+                    'Target audience: computer science students and aspiring <span class="accent">full stack developers</span>.',
+                    'Goal: move from <span class="accent-2">theory</span> to practical architecture and coding patterns.',
+                    'Focus: real-world stack used in startups and product teams.',
+                    'Outcome: ability to build and deploy an end-to-end project with confidence.'
+                ],
+                note: 'You will see both conceptual slides and practical code snippets to connect each concept with implementation.'
+            }, {
+                type: 'section',
+                title: 'Index',
+                subtitle: '11 modules from fundamentals to career roadmap'
+            }, {
+                type: 'explain',
+                label: 'Index Overview',
+                title: 'Program Structure (0 → 10)',
+                bullets: [
+                    '0. Web Development Fundamentals',
+                    '1. Introduction: The Modern Web Development Landscape',
+                    '2. Why Full Stack Development? Strategic Importance',
+                    '3. Core Tools for Full Stack Development: Complete Toolkit',
+                    '4. Frontend Technologies: HTML, CSS, JavaScript & React',
+                    '5. Backend Development: Express.js & Node.js',
+                    '6. Database & ORM: MongoDB & Mongoose',
+                    '7. Mini Project: Build a Full Stack Notes App',
+                    '8. Next.js: Modern Full Stack Framework',
+                    '9. Career Path & Skills: Your Roadmap to Success',
+                    '10. Conclusion: Full Stack Development as a Career Lever'
+                ]
+            },
+
+            // 0. FUNDAMENTALS
+            {
+                type: 'section',
+                section: 'fundamentals',
+                title: '0. Web Development Fundamentals',
+                subtitle: 'What Full Stack means and how the pieces connect'
+            }, {
+                type: 'explain',
+                label: 'Core Concept',
+                title: 'What is Full Stack Development?',
+                lead: 'Full stack development means building both user-facing interfaces and server-side systems, then connecting them to a database layer.',
+                bullets: [
+                    'Frontend: what users see and interact with in the browser.',
+                    'Backend: APIs, business logic, authentication, integrations.',
+                    'Database: persistence layer for application data.',
+                    'A full stack developer can ship <span class="accent">end-to-end features</span>.'
+                ],
+                note: 'This end-to-end understanding improves decision quality and speeds up product iteration.'
+            }, {
+                type: 'explain',
+                label: 'Architecture View',
+                title: 'Frontend vs Backend vs Database',
+                bullets: [
+                    '<span class="accent">Frontend</span>: HTML + CSS + JavaScript (and React) for UI and interaction.',
+                    '<span class="accent">Backend</span>: Node.js + Express for routes, middleware, and business logic.',
+                    '<span class="accent">Database</span>: MongoDB stores JSON-like documents.',
+                    '<span class="accent-2">Mongoose</span> adds schemas, validation, and query helpers on top of MongoDB.'
+                ]
+            }, {
+                type: 'code',
+                title: 'Example: HTML Foundation',
+                lang: 'HTML',
+                code: `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Full Stack Workshop</title>
+</head>
+<body>
+  <h1>Welcome to Full Stack Web Dev</h1>
+  <p>This page will be styled with CSS and powered by JavaScript.</p>
+</body>
+</html>`
+            }, {
+                type: 'code',
+                title: 'Example: CSS Styling + Responsive Rule',
+                lang: 'CSS',
+                code: `body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 2rem;
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.card {
+  background: #111827;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  body { padding: 1rem; }
+}`
+            }, {
+                type: 'code',
+                title: 'Example: JavaScript DOM + Event Handling',
+                lang: 'JavaScript',
+                code: `const button = document.querySelector('#joinBtn');
+const statusText = document.querySelector('#status');
+
+button.addEventListener('click', () => {
+  statusText.textContent = 'You joined the workshop ✅';
+  statusText.style.color = '#22d3ee';
+});`
+            }, {
+                type: 'code',
+                title: 'Example: Intro to React Component',
+                lang: 'React',
+                code: `import { useState } from 'react';
+
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+	<div className="p-4 rounded-xl bg-slate-900 text-white">
+	  <p>Count: {count}</p>
+	  <button onClick={() => setCount(count + 1)}>Increment</button>
+	</div>
+  );
+}`
+            },
+
+            // 1. LANDSCAPE
+            {
+                type: 'section',
+                section: 'landscape',
+                title: '1. Introduction: The Modern Web Development Landscape',
+                subtitle: 'Current trends, tooling, and ecosystem evolution'
+            }, {
+                type: 'explain',
+                label: 'Ecosystem Snapshot',
+                title: 'What Defines Modern Web Development?',
+                bullets: [
+                    'Component-driven UIs (React, Next.js).',
+                    'API-first architectures and microservices patterns.',
+                    'Cloud deployment + CI/CD for faster releases.',
+                    'Developer tooling: linting, testing, bundlers, type checking.',
+                    'Performance and UX optimization as default expectations.'
+                ]
+            }, {
+                type: 'explain',
+                label: 'Real-World Applications',
+                title: 'Where Full Stack Skills Are Used',
+                bullets: [
+                    'E-commerce: carts, checkout, inventory, fulfillment APIs.',
+                    'SaaS: multi-tenant dashboards, billing, role-based access.',
+                    'Social media: feeds, messaging, notifications, moderation.',
+                    'Fintech & healthcare: secure APIs, compliance-heavy workflows.',
+                    'EdTech & enterprise tools: learning analytics, internal automation, reporting.'
+                ]
+            },
+
+            // 2. WHY FULL STACK
+            {
+                type: 'section',
+                section: 'why',
+                title: '2. Why Full Stack Development?',
+                subtitle: 'Strategic value for projects and career growth'
+            }, {
+                type: 'explain',
+                label: 'Strategic Importance',
+                title: 'Why This Skillset Is a Career Lever',
+                bullets: [
+                    '<span class="accent">End-to-end understanding</span>: better architecture decisions.',
+                    '<span class="accent">Faster iteration</span>: prototype and ship features without handoff friction.',
+                    'High versatility across startups, agencies, and product companies.',
+                    'Strong foundation to specialize later (frontend, backend, platform, or architecture).'
+                ],
+                note: 'Modern companies value engineers who can bridge UI, API, and data concerns in one workflow.'
+            },
+
+            // 3. TOOLS
+            {
+                type: 'section',
+                section: 'tools',
+                title: '3. Core Tools for Full Stack Development',
+                subtitle: 'Editors, CLI, package managers, version control, testing, build'
+            }, {
+                type: 'explain',
+                label: 'Toolkit',
+                title: 'Complete Toolchain You Should Master',
+                bullets: [
+                    'Editor/IDE: VS Code + extensions (ESLint, Prettier, Git, Tailwind, Mongo tools).',
+                    'CLI + package manager: npm/pnpm/yarn for scripts and dependencies.',
+                    'Version control: Git + GitHub for branching and collaboration.',
+                    'Code quality: ESLint + formatting + test runners.',
+                    'Build/deploy: Vite, Next.js build system, CI pipelines.'
+                ]
+            }, {
+                type: 'code',
+                title: 'Example: package.json Scripts for Daily Workflow',
+                lang: 'JSON',
+                code: `{
+  "name": "fullstack-notes-app",
+  "scripts": {
+	"dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+	"dev:client": "vite",
+	"dev:server": "nodemon server/index.js",
+	"build": "vite build",
+	"test": "vitest run",
+	"lint": "eslint ."
+  }
+}`
+            }, {
+                type: 'code',
+                title: 'Example: Standard Git Flow (Quick Reference)',
+                lang: 'Bash',
+                code: `git checkout -b feature/notes-filter
+git add .
+git commit -m "feat: add notes filtering"
+git push origin feature/notes-filter
+# Open Pull Request on GitHub`
+            }, {
+                type: 'code',
+                title: 'Example: Express + Vitest API Test',
+                lang: 'JavaScript',
+                code: `import request from 'supertest';
+import app from '../app.js';
+
+describe('GET /health', () => {
+  it('returns ok', async () => {
+	const res = await request(app).get('/health');
+	expect(res.statusCode).toBe(200);
+	expect(res.body.status).toBe('ok');
+  });
+});`
+            },
+
+            // 4. FRONTEND
+            {
+                type: 'section',
+                section: 'frontend',
+                title: '4. Frontend Technologies: HTML, CSS, JavaScript & React',
+                subtitle: 'Structure, styling, interactivity, and component architecture'
+            }, {
+                type: 'explain',
+                label: 'Frontend Stack',
+                title: 'From Markup to Interactive UI',
+                bullets: [
+                    'HTML provides semantic structure and accessibility foundations.',
+                    'CSS handles visual design, layout, responsive behavior.',
+                    'JavaScript adds logic, events, data binding, and dynamic updates.',
+                    'React organizes UI into reusable components and state-driven rendering.',
+                    'Tailwind CSS accelerates consistent styling with utility classes.'
+                ]
+            }, {
+                type: 'code',
+                title: 'Example: Semantic HTML + Accessibility',
+                lang: 'HTML',
+                code: `<header>
+  <h1>Workshop Portal</h1>
+  <nav aria-label="Main navigation">
+	<a href="#modules">Modules</a>
+	<a href="#resources">Resources</a>
+  </nav>
+</header>
+
+<main>
+  <section id="modules">
+	<h2>Full Stack Modules</h2>
+	<p>Learn frontend, backend, and databases end to end.</p>
+  </section>
+</main>`
+            }, {
+                type: 'code',
+                title: 'Example: Tailwind UI Component',
+                lang: 'Tailwind',
+                code: `<div class="max-w-xl rounded-2xl border border-slate-700 bg-slate-900 p-6 text-slate-100">
+  <h3 class="text-xl font-semibold">React + Tailwind Card</h3>
+  <p class="mt-2 text-slate-300">Fast styling, consistent spacing, responsive by design.</p>
+  <button class="mt-4 rounded-lg bg-cyan-400 px-4 py-2 font-semibold text-slate-900 hover:bg-cyan-300">
+	Start Learning
+  </button>
+</div>`
+            }, {
+                type: 'code',
+                title: 'Example: React State + Form Handling',
+                lang: 'React',
+                code: `import { useState } from 'react';
+
+export default function SignupForm() {
+  const [email, setEmail] = useState('');
+
+  const handleSubmit = (event) => {
+	event.preventDefault();
+	console.log('Submitted email:', email);
+  };
+
+  return (
+	<form onSubmit={handleSubmit} className="space-y-3">
+	  <input
+		value={email}
+		onChange={(e) => setEmail(e.target.value)}
+		placeholder="you@example.com"
+	  />
+	  <button type="submit">Submit</button>
+	</form>
+  );
+}`
+            },
+
+            // 5. BACKEND
+            {
+                type: 'section',
+                section: 'backend',
+                title: '5. Backend Development: Express.js & Node.js',
+                subtitle: 'REST APIs, middleware, routing, and auth basics'
+            }, {
+                type: 'explain',
+                label: 'Backend Foundations',
+                title: 'What Express Adds on Top of Node.js',
+                bullets: [
+                    'Routing for API endpoints (GET, POST, PATCH, DELETE).',
+                    'Middleware pipeline for auth, validation, logging, errors.',
+                    'JSON parsing and response shaping.',
+                    'Clean project structure for scalable services.'
+                ]
+            }, {
+                type: 'code',
+                title: 'Example: Basic Express Server',
+                lang: 'Node/Express',
+                code: `const express = require('express');
+const app = express();
+const port = 3000;
+
+app.use(express.json());
+
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
+app.listen(port, () => {
+  console.log('Server running on http://localhost:' + port);
+});`
+            }, {
+                type: 'code',
+                title: 'Example: Middleware + Route Validation',
+                lang: 'Express',
+                code: `function requireTitle(req, res, next) {
+  if (!req.body.title) {
+	return res.status(400).json({ error: 'title is required' });
+  }
+  next();
+}
+
+app.post('/api/notes', requireTitle, async (req, res) => {
+  const note = await Note.create({
+	title: req.body.title,
+	content: req.body.content || ''
+  });
+
+  res.status(201).json(note);
+});`
+            }, {
+                type: 'code',
+                title: 'Example: JWT Auth Middleware (Basics)',
+                lang: 'Express',
+                code: `const jwt = require('jsonwebtoken');
+
+function authMiddleware(req, res, next) {
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.split(' ')[1];
+
+  if (!token) return res.status(401).json({ error: 'Missing token' });
+
+  try {
+	const payload = jwt.verify(token, process.env.JWT_SECRET);
+	req.user = payload;
+	next();
+  } catch {
+	res.status(401).json({ error: 'Invalid token' });
+  }
+}`
+            },
+
+            // 6. DATABASE
+            {
+                type: 'section',
+                section: 'database',
+                title: '6. Database & ORM: MongoDB & Mongoose',
+                subtitle: 'Schema design, validation, and CRUD workflow'
+            }, {
+                type: 'explain',
+                label: 'Data Layer',
+                title: 'Why MongoDB + Mongoose in JS Full Stack',
+                bullets: [
+                    'MongoDB stores flexible JSON-like documents.',
+                    'Mongoose provides schema definitions and validation rules.',
+                    'Data modeling becomes explicit and maintainable.',
+                    'CRUD operations become cleaner through model APIs.'
+                ]
+            }, {
+                type: 'code',
+                title: 'Example: Mongoose Schema and Model',
+                lang: 'Mongoose',
+                code: `const mongoose = require('mongoose');
+
+const noteSchema = new mongoose.Schema({
+  title: { type: String, required: true, trim: true },
+  content: { type: String, default: '' },
+  tags: [{ type: String }],
+  createdAt: { type: Date, default: Date.now }
+});
+
+module.exports = mongoose.model('Note', noteSchema);`
+            }, {
+                type: 'code',
+                title: 'Example: CRUD with Mongoose',
+                lang: 'Node/Express',
+                code: `app.get('/api/notes', async (req, res) => {
+  const notes = await Note.find().sort({ createdAt: -1 });
+  res.json(notes);
+});
+
+app.patch('/api/notes/:id', async (req, res) => {
+  const updated = await Note.findByIdAndUpdate(
+	req.params.id,
+	req.body,
+	{ new: true, runValidators: true }
+  );
+
+  if (!updated) return res.status(404).json({ error: 'Note not found' });
+  res.json(updated);
+});`
+            },
+
+            // 7. MINI PROJECT
+            {
+                type: 'section',
+                section: 'miniProject',
+                title: '7. Mini Project: Build a Full Stack Notes App',
+                subtitle: 'React + Tailwind (frontend), Express (backend), MongoDB (database)'
+            }, {
+                type: 'explain',
+                label: 'Project Architecture',
+                title: 'End-to-End Build Plan',
+                bullets: [
+                    'Frontend: React pages + Tailwind UI components.',
+                    'Backend: Express REST endpoints for notes.',
+                    'Database: MongoDB collection managed via Mongoose.',
+                    'Integration: frontend fetches API and renders persisted data.',
+                    'Deployment: frontend and backend can be hosted independently or together.'
+                ]
+            }, {
+                type: 'code',
+                title: 'Example: Notes API Routes (Backend)',
+                lang: 'Express',
+                code: `const router = require('express').Router();
+const Note = require('../models/note');
+
+router.post('/', async (req, res) => {
+  const note = await Note.create(req.body);
+  res.status(201).json(note);
+});
+
+router.get('/', async (req, res) => {
+  const notes = await Note.find();
+  res.json(notes);
+});
+
+module.exports = router;`
+            }, {
+                type: 'code',
+                title: 'Example: React Data Fetching for Notes',
+                lang: 'React',
+                code: `import { useEffect, useState } from 'react';
+
+export default function NotesPage() {
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+	fetch('/api/notes')
+	  .then((res) => res.json())
+	  .then((data) => setNotes(data));
+  }, []);
+
+  return (
+	<ul>
+	  {notes.map((note) => (
+		<li key={note._id}>{note.title}</li>
+	  ))}
+	</ul>
+  );
+}`
+            }, {
+                type: 'code',
+                title: 'Example: Notes Card with Tailwind',
+                lang: 'Tailwind',
+                code: `<article class="rounded-xl border border-slate-700 bg-slate-900 p-4 shadow-lg">
+  <h3 class="text-lg font-semibold text-slate-100">API Design Notes</h3>
+  <p class="mt-2 text-sm text-slate-300">Use REST conventions and proper status codes.</p>
+  <div class="mt-3 flex gap-2">
+	<span class="rounded bg-cyan-400/20 px-2 py-1 text-xs text-cyan-300">backend</span>
+	<span class="rounded bg-violet-400/20 px-2 py-1 text-xs text-violet-300">express</span>
+  </div>
+</article>`
+            },
+
+            // 8. NEXTJS
+            {
+                type: 'section',
+                section: 'nextjs',
+                title: '8. Next.js: Modern Full Stack Framework',
+                subtitle: 'SSR, routing, API routes, and integrated developer experience'
+            }, {
+                type: 'explain',
+                label: 'Framework Perspective',
+                title: 'Why Next.js for Full Stack Teams',
+                bullets: [
+                    'Hybrid rendering: SSG + SSR + client interactivity.',
+                    'File-based routing for pages and API handlers.',
+                    'Great SEO/performance defaults and deployment workflow.',
+                    'Excellent fit for full stack React applications.'
+                ]
+            }, {
+                type: 'code',
+                title: 'Example: Next.js App Router Page (Server Component)',
+                lang: 'Next.js',
+                code: `// app/page.jsx
+export default async function HomePage() {
+  const res = await fetch('https://jsonplaceholder.typicode.com/posts?_limit=3', {
+	cache: 'no-store'
+  });
+  const posts = await res.json();
+
+  return (
+	<main>
+	  <h1>Latest Posts</h1>
+	  <ul>{posts.map((p) => <li key={p.id}>{p.title}</li>)}</ul>
+	</main>
+  );
+}`
+            }, {
+                type: 'code',
+                title: 'Example: Next.js API Route',
+                lang: 'Next.js',
+                code: `// app/api/health/route.js
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  return NextResponse.json({
+	status: 'ok',
+	service: 'next-api'
+  });
+}`
+            },
+
+            // 9. CAREER
+            {
+                type: 'section',
+                section: 'career',
+                title: '9. Career Path & Skills: Your Roadmap to Success',
+                subtitle: 'Roles, portfolio, interview prep, and long-term growth'
+            }, {
+                type: 'explain',
+                label: 'Career Roadmap',
+                title: 'Skills to Build for Employability',
+                bullets: [
+                    'Foundations: HTML, CSS, JavaScript, accessibility, web performance.',
+                    'Frontend depth: React/Next.js, state management, testing.',
+                    'Backend depth: APIs, auth, security, scalability.',
+                    'Data layer: schema design, indexes, query optimization.',
+                    'Delivery: CI/CD, deployment, logs/monitoring, documentation.'
+                ]
+            }, {
+                type: 'explain',
+                label: 'Portfolio Strategy',
+                title: 'What to Build and Showcase',
+                bullets: [
+                    'Build real projects with auth + CRUD + roles + deployment.',
+                    'Document architecture decisions in your README files.',
+                    'Contribute to open-source or club/team repositories.',
+                    'Practice interviews: system design basics + debugging + clean code communication.'
+                ],
+                note: 'Market demand remains strong for engineers who can deliver full features from UI to API to database.'
+            },
+
+            // 10. CONCLUSION
+            {
+                type: 'section',
+                section: 'conclusion',
+                title: '10. Conclusion: Full Stack Development as a Career Lever',
+                subtitle: 'Summary, next steps, and practical action plan'
+            }, {
+                type: 'final',
+                title: 'Key Takeaways',
+                subtitle: 'Express.js + React/Next.js + Tailwind + MongoDB/Mongoose is a career-ready toolkit',
+                bullets: [
+                    'You learned how modern full stack systems are structured.',
+                    'You explored frontend, backend, and data modeling with practical code.',
+                    'You saw how to build an end-to-end Notes App architecture.',
+                    'You now have a roadmap to turn skills into internships, jobs, and product work.'
+                ]
+            }, {
+                type: 'challenge',
+                title: 'Actionable Next Steps',
+                subtitle: 'Build, deploy, and iterate',
+                bullets: [
+                    'Create and deploy your own full stack Notes App variation.',
+                    'Add authentication + search + filtering + tags.',
+                    'Write a strong README with architecture and setup docs.',
+                    'Publish code on GitHub and present it in your portfolio.'
+                ],
+                note: 'Ready to build your next full stack project? Let’s ship it 🚀'
+            }
+        ];
+
+        const container = document.getElementById('slidesContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressFill = document.getElementById('progressFill');
+        const slideCounter = document.getElementById('slideCounter');
+
+        let currentSlide = 0;
+
+        function escapeHtml(input) {
+            return input
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+        }
+
+        function renderSlides() {
+            container.innerHTML = '';
+
+            slides.forEach((slide, index) => {
+                const slideEl = document.createElement('div');
+                slideEl.className = 'slide';
+                slideEl.setAttribute('role', 'group');
+                slideEl.setAttribute('aria-label', `Slide ${index + 1} of ${slides.length}`);
+
+                if (index === currentSlide) {
+                    slideEl.classList.add('active');
+                } else if (index < currentSlide) {
+                    slideEl.classList.add('prev');
+                }
+
+                slideEl.innerHTML = renderSlideContent(slide);
+                container.appendChild(slideEl);
+            });
+
+            updateNav();
+        }
+
+        function renderSlideContent(slide) {
+            switch (slide.type) {
+                case 'title':
+                    return `
+						<div class="slide-content text-center">
+							<div class="section-icon">
+								<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+							</div>
+							<h1 class="section-title">${slide.title}</h1>
+							<p class="section-subtitle">${slide.subtitle}</p>
+							<p class="lead" style="max-width: 850px; margin: 1rem auto 0;">${slide.audience}</p>
+							<div class="chip-wrap" style="justify-content: center;">
+								${slide.stack.map(item => `<span class="chip">${item}</span>`).join('')}
+							</div>
+							<p style="margin-top: 2.5rem; color: var(--muted);">Press <kbd>→</kbd> or click Next to begin</p>
+						</div>
+					`;
+
+				case 'section':
+					return `
+						<div class="slide-content text-center">
+							<p class="slide-number">${slide.section ? `Module ${sectionNumbers[slide.section]}` : 'Workshop Index'}</p>
+							<h1 class="section-title">${slide.title}</h1>
+							<p class="section-subtitle">${slide.subtitle}</p>
+						</div>
+					`;
+
+				case 'explain':
+					return `
+						<div class="slide-content">
+							<p class="slide-number">${slide.label || 'Concept'}</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							${slide.lead ? `<p class="lead">${slide.lead}</p>` : ''}
+							<ul class="bullet-list">
+								${(slide.bullets || []).map(item => `<li>${item}</li>`).join('')}
+							</ul>
+							${slide.note ? `<div class="note-box">${slide.note}</div>` : ''}
+						</div>
+					`;
+
+				case 'code':
+					return `
+						<div class="slide-content">
+							<p class="slide-number">Code Example</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<div class="code-block">
+								<span class="code-lang">${slide.lang || 'CODE'}</span>
+								<pre style="margin: 0;"><code>${escapeHtml(slide.code)}</code></pre>
+							</div>
+						</div>
+					`;
+
+				case 'final':
+					return `
+						<div class="slide-content text-center">
+							<div class="section-icon" style="background: linear-gradient(135deg, #22d3ee, #34d399);">
+								<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+							</div>
+							<h1 class="section-title">${slide.title}</h1>
+							<p class="section-subtitle" style="margin-bottom: 2rem;">${slide.subtitle}</p>
+							<ul class="bullet-list" style="text-align: left; max-width: 760px; margin: 0 auto;">
+								${slide.bullets.map(item => `<li>${item}</li>`).join('')}
+							</ul>
+						</div>
+					`;
+
+				case 'challenge':
+					return `
+						<div class="slide-content">
+							<p class="slide-number">Next Steps</p>
+							<h2 class="slide-title">${slide.title}</h2>
+							<p class="section-subtitle" style="text-align: left; margin-bottom: 1.2rem;">${slide.subtitle}</p>
+							<ul class="bullet-list">
+								${slide.bullets.map(item => `<li>${item}</li>`).join('')}
+							</ul>
+							${slide.note ? `<div class="note-box">${slide.note}</div>` : ''}
+						</div>
+					`;
+
+				default:
+					return '';
+			}
+		}
+
+		function updateNav() {
+			const total = slides.length;
+			const progress = ((currentSlide + 1) / total) * 100;
+
+			progressFill.style.width = `${progress}%`;
+			slideCounter.textContent = `${currentSlide + 1} / ${total}`;
+
+			prevBtn.disabled = currentSlide === 0;
+			nextBtn.disabled = currentSlide === total - 1;
+		}
+
+		function goToSlide(index) {
+			if (index < 0 || index >= slides.length) return;
+
+			const allSlides = container.querySelectorAll('.slide');
+
+			allSlides.forEach((slideEl, i) => {
+				slideEl.classList.remove('active', 'prev');
+				if (i === index) {
+					slideEl.classList.add('active');
+				} else if (i < index) {
+					slideEl.classList.add('prev');
+				}
+			});
+
+			currentSlide = index;
+			updateNav();
+		}
+
+		function nextSlide() {
+			goToSlide(currentSlide + 1);
+		}
+
+		function prevSlide() {
+			goToSlide(currentSlide - 1);
+		}
+
+		prevBtn.addEventListener('click', prevSlide);
+		nextBtn.addEventListener('click', nextSlide);
+
+		document.addEventListener('keydown', (event) => {
+			if (event.key === 'ArrowRight' || event.key === ' ') {
+				event.preventDefault();
+				nextSlide();
+			} else if (event.key === 'ArrowLeft') {
+				event.preventDefault();
+				prevSlide();
+			}
+		});
+
+		let touchStartX = 0;
+		let touchEndX = 0;
+
+		container.addEventListener('touchstart', (event) => {
+			touchStartX = event.changedTouches[0].screenX;
+		}, {
+			passive: true
+		});
+
+		container.addEventListener('touchend', (event) => {
+			touchEndX = event.changedTouches[0].screenX;
+			const diff = touchStartX - touchEndX;
+
+			if (Math.abs(diff) > 50) {
+				if (diff > 0) {
+					nextSlide();
+				} else {
+					prevSlide();
+				}
+			}
+		}, {
+			passive: true
+		});
+
+		renderSlides();
+    </script>
+</body>
+
+</html>
