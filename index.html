@@ -1551,16 +1551,36 @@
       return num > 0 ? num : '';
     }
 
-    function accentHTML(code) {
-      return code
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-                .replace(/(".*?")/g, '<span class="value">$1</span>')
-        .replace(/(&lt;!--[\s\S]*?--&gt;)/g, '<span class="comment">$1</span>')
-        .replace(/(&lt;\/?)([\w-]+)/g, '$1<span class="tag">$2</span>')
-                .replace(/(\s)([\w-]+)(=)/g, '$1<span class="attr">$2</span>$3');
-    }
+        function accentHTML(code) {
+            const comments = [];
+
+            let escaped = code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            escaped = escaped.replace(/(&lt;!--[\s\S]*?--&gt;)/g, (match) => {
+                const token = `__HTML_COMMENT_${comments.length}__`;
+                comments.push(match);
+                return token;
+            });
+
+            escaped = escaped.replace(/(&lt;\/?.*?&gt;)/g, (token) => {
+                // Highlight attributes first on raw token text (before adding spans)
+                let highlighted = token.replace(/(\s)([\w:-]+)(=)("[^"]*"|'[^']*')/g, '$1<span class="attr">$2</span>$3<span class="value">$4</span>');
+
+                // Then highlight tag name; keeps generated span markup untouched
+                highlighted = highlighted.replace(/^(&lt;\/?)([\w-]+)/, '$1<span class="tag">$2</span>');
+
+                return highlighted;
+            });
+
+            comments.forEach((comment, index) => {
+                escaped = escaped.replace(`__HTML_COMMENT_${index}__`, `<span class="comment">${comment}</span>`);
+            });
+
+            return escaped;
+        }
 
     function updateNav() {
       const total = slides.length;
