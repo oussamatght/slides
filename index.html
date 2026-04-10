@@ -71,7 +71,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 2rem;
+            padding: 2rem 2rem 8.2rem;
             opacity: 0;
             transform: translateX(100px);
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -98,6 +98,28 @@
         .slide-content {
             max-width: 900px;
             width: 100%;
+            max-height: calc(100vh - 12.2rem);
+            overflow-y: auto;
+            padding-right: 0.35rem;
+        }
+        
+        .slide-content::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .slide-content::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.26);
+            border-radius: 999px;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb {
+            border-radius: 999px;
+            border: 2px solid rgba(15, 23, 42, 0.55);
+            background: linear-gradient(180deg, rgba(34, 211, 238, 0.95), rgba(251, 191, 36, 0.9));
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #22d3ee, #fbbf24);
         }
         /* Typography */
         
@@ -474,7 +496,7 @@
         
         @media (max-width: 640px) {
             .slide {
-                padding: 1rem;
+                padding: 1rem 1rem 9.2rem;
             }
             .slide-title {
                 font-size: 1.75rem;
@@ -486,6 +508,10 @@
             .code-block {
                 font-size: 0.8rem;
                 padding: 1rem;
+            }
+            .slide-content {
+                max-height: calc(100vh - 13.2rem);
+                padding-right: 0.2rem;
             }
             .nav-inner {
                 flex-wrap: wrap;
@@ -687,6 +713,87 @@
                 title: 'Practice: Add Attributes',
                 exercise: 'Add an id attribute with value "main-title" to an h1 element.',
                 hint: 'The format is: id="main-title"'
+            },
+
+            // === SECTION: DISPLAY & GROUPING ===
+            {
+                type: 'section',
+                title: 'HTML Display & Grouping',
+                subtitle: 'Inline vs block elements, div/span, and grouped tag knowledge',
+                section: 'layout'
+            }, {
+                type: 'explain',
+                section: 'layout',
+                title: 'HTML Inline vs Block',
+                content: [
+                    'Block elements start on a new line and take full width by default (like <code>div</code>, <code>p</code>, <code>h1</code>, <code>section</code>).',
+                    'Inline elements stay on the same line and use only needed width (like <code>span</code>, <code>a</code>, <code>strong</code>, <code>em</code>).',
+                    'You can change behavior with CSS: <code>display: block</code>, <code>display: inline</code>, or <code>display: inline-block</code>.'
+                ],
+                analogy: 'Think of block elements as full-width shelves, and inline elements as books placed next to each other on the same shelf.'
+            }, {
+                type: 'code',
+                section: 'layout',
+                title: 'Inline vs Block Example',
+                code: `<div>Block 1</div>
+<div>Block 2</div>
+
+<span>Inline A</span>
+<span>Inline B</span>
+<a href="#">Inline link</a>`
+            }, {
+                type: 'explain',
+                section: 'layout',
+                title: 'HTML Div and Span',
+                content: [
+                    '<code>div</code> is a generic block container used to group larger sections of content.',
+                    '<code>span</code> is a generic inline container used to style or target small parts of text.',
+                    'Use <code>div</code> for layout groups and <code>span</code> for inline text highlights.'
+                ],
+                instructorNote: 'Rule of thumb: if it should break to a new line, start with div; if it should stay inside a sentence, use span.'
+            }, {
+                type: 'code',
+                section: 'layout',
+                title: 'Div and Span Example',
+                code: `<div class="card">
+  <h3>Product Title</h3>
+  <p>Price: <span class="accent-warm">$49</span></p>
+</div>`
+            }, {
+                type: 'explain',
+                section: 'layout',
+                title: 'HTML Tags + Attributes Summary',
+                content: [
+                    'Structure tags: <code>html</code>, <code>head</code>, <code>body</code>, <code>header</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>footer</code>.',
+                    'Text tags: <code>h1-h6</code>, <code>p</code>, <code>strong</code>, <code>em</code>, <code>small</code>, <code>mark</code>.',
+                    'Inline/media tags: <code>a</code>, <code>span</code>, <code>img</code>, <code>video</code>, <code>audio</code>, <code>code</code>.',
+                    'List/table tags: <code>ul</code>, <code>ol</code>, <code>li</code>, <code>table</code>, <code>tr</code>, <code>th</code>, <code>td</code>.',
+                    'Form tags: <code>form</code>, <code>label</code>, <code>input</code>, <code>select</code>, <code>textarea</code>, <code>button</code>.'
+                ]
+            }, {
+                type: 'explain',
+                section: 'layout',
+                title: 'Common Attributes (One by One)',
+                content: [
+                    '<code>id</code>: unique identifier for one element.',
+                    '<code>class</code>: reusable group name for CSS and JavaScript.',
+                    '<code>title</code>: extra hint text usually shown on hover.',
+                    '<code>href</code>: destination URL used in links.',
+                    '<code>src</code>: source path used by images and media.',
+                    '<code>alt</code>: text alternative for images (accessibility).',
+                    '<code>name</code>: key sent with form data.',
+                    '<code>value</code>: current or default value for form controls.',
+                    '<code>required</code>: blocks submit if the field is empty.',
+                    '<code>placeholder</code>: hint text displayed inside inputs.',
+                    '<code>for</code>: connects <code>label</code> to input by id.',
+                    '<code>action</code> + <code>method</code>: where and how form data is submitted.'
+                ]
+            }, {
+                type: 'exercise',
+                section: 'layout',
+                title: 'Practice: Group Tags and Attributes',
+                exercise: 'Create one mini page using: 2 block tags, 2 inline tags, one div, one span, and a form field that uses name, placeholder, and required.',
+                hint: 'After writing code, explain why each chosen tag is block or inline.'
             },
 
             // === SECTION: TEXT & HEADINGS ===
@@ -1116,7 +1223,7 @@
                 title: 'HTML Form Elements',
                 content: [
                     '<code>form</code>, <code>label</code>, <code>input</code>, <code>select</code>, <code>textarea</code>, and <code>button</code> are core form elements',
-                    '<code>fieldset</code> and <code>legend</code> help group related fields clearly',
+                    'Group related fields using clear labels and logical order',
                     'Use clear labels for better accessibility and user experience'
                 ]
             }, {
@@ -1124,21 +1231,17 @@
                 section: 'forms',
                 title: 'Form Elements Example',
                 code: `<form>
-    <fieldset>
-        <legend>Contact</legend>
+    <label for="name">Name</label>
+    <input id="name" name="name" type="text">
 
-        <label for="name">Name</label>
-        <input id="name" name="name" type="text">
+    <label for="topic">Topic</label>
+    <select id="topic" name="topic">
+        <option>Support</option>
+        <option>Sales</option>
+    </select>
 
-        <label for="topic">Topic</label>
-        <select id="topic" name="topic">
-            <option>Support</option>
-            <option>Sales</option>
-        </select>
-
-        <label for="message">Message</label>
-        <textarea id="message" name="message"></textarea>
-    </fieldset>
+    <label for="message">Message</label>
+    <textarea id="message" name="message"></textarea>
 
     <button type="submit">Send</button>
 </form>`
@@ -1298,6 +1401,119 @@
                 subtitle: 'Put it all together',
                 exercise: 'Create a complete personal webpage with:\n- A header with navigation\n- A main section about yourself\n- An image of you or something you like\n- A list of your hobbies\n- A contact form\n- A footer with copyright',
                 hint: 'Use semantic HTML and proper structure. Take your time!'
+            },
+
+            // === APPENDIX: USED TAGS & ATTRIBUTES ONLY ===
+            {
+                type: 'section',
+                title: 'Final Summary: Tags & Attributes Used Here',
+                subtitle: 'Only the tags/attributes used in this formation',
+                section: 'reference'
+            }, {
+                type: 'explain',
+                section: 'reference',
+                title: 'Used Tags (Part 1: Structure & Text)',
+                content: [
+                    '<code>!DOCTYPE html</code>: declares HTML5 document type.',
+                    '<code>html</code>: root element of the page.',
+                    '<code>head</code>: metadata container (not visible content).',
+                    '<code>meta</code>: metadata (like charset/viewport).',
+                    '<code>title</code>: browser tab/page title.',
+                    '<code>body</code>: all visible page content.',
+                    '<code>h1</code> to <code>h6</code>: heading levels from largest to smallest.',
+                    '<code>p</code>: paragraph text block.',
+                    '<code>b</code>: bold style text.',
+                    '<code>i</code>: italic style text.',
+                    '<code>u</code>: underlined text.',
+                    '<code>strong</code>: semantically important text.',
+                    '<code>em</code>: semantically emphasized text.',
+                    '<code>br</code>: line break inside content.',
+                    '<code>code</code>: inline code snippet.',
+                    '<code><!-- ... --></code>: developer comment, not displayed.'
+                ]
+            }, {
+                type: 'explain',
+                section: 'reference',
+                title: 'Used Tags (Part 2: Links, Media, Layout)',
+                content: [
+                    '<code>a</code>: creates a hyperlink.',
+                    '<code>img</code>: displays an image.',
+                    '<code>video</code>: embeds a video player.',
+                    '<code>audio</code>: embeds an audio player.',
+                    '<code>source</code>: provides media file alternatives for <code>video</code>/<code>audio</code>.',
+                    '<code>div</code>: generic block container.',
+                    '<code>span</code>: generic inline container.',
+                    '<code>header</code>: top/header section.',
+                    '<code>nav</code>: navigation links area.',
+                    '<code>main</code>: main page content area.',
+                    '<code>article</code>: self-contained content block.',
+                    '<code>footer</code>: bottom/footer section.'
+                ]
+            }, {
+                type: 'explain',
+                section: 'reference',
+                title: 'Used Tags (Part 3: Lists, Tables, Forms)',
+                content: [
+                    '<code>ul</code>: unordered list.',
+                    '<code>ol</code>: ordered list.',
+                    '<code>li</code>: list item inside <code>ul</code>/<code>ol</code>.',
+                    '<code>table</code>: table container.',
+                    '<code>tr</code>: table row.',
+                    '<code>th</code>: header cell in a table row.',
+                    '<code>td</code>: data cell in a table row.',
+                    '<code>form</code>: collects and submits user input.',
+                    '<code>label</code>: accessible label for input fields.',
+                    '<code>input</code>: one-line form control.',
+                    '<code>button</code>: clickable button (often submit).',
+                    '<code>select</code>: dropdown selector.',
+                    '<code>option</code>: one selectable choice in <code>select</code>.',
+                    '<code>textarea</code>: multi-line text field.'
+                ]
+            }, {
+                type: 'explain',
+                section: 'reference',
+                title: 'Used Attributes (Part 1)',
+                content: [
+                    '<code>lang</code>: language of the document.',
+                    '<code>charset</code>: character encoding (for example UTF-8).',
+                    '<code>name</code>: name/key for metadata or form value.',
+                    '<code>content</code>: value of a metadata entry.',
+                    '<code>href</code>: link destination URL.',
+                    '<code>src</code>: source file path/URL.',
+                    '<code>alt</code>: alternative image description text.',
+                    '<code>id</code>: unique element identifier.',
+                    '<code>class</code>: reusable class for styling/selection.',
+                    '<code>type</code>: type of input/button/source.'
+                ]
+            }, {
+                type: 'explain',
+                section: 'reference',
+                title: 'Used Attributes (Part 2)',
+                content: [
+                    '<code>for</code>: binds <code>label</code> to input by id.',
+                    '<code>value</code>: current/default value of a control.',
+                    '<code>action</code>: form submit URL.',
+                    '<code>method</code>: form submit method (<code>get</code>/<code>post</code>).',
+                    '<code>autocomplete</code>: enables/disables autofill hints.',
+                    '<code>required</code>: field must be filled before submit.',
+                    '<code>placeholder</code>: input hint text.',
+                    '<code>min</code> / <code>max</code>: minimum/maximum numeric value.',
+                    '<code>minlength</code>: minimum text length.',
+                    '<code>pattern</code>: validation regex pattern.',
+                    '<code>form</code>: links a control/button to a form id.',
+                    '<code>formaction</code>: per-button submit URL override.',
+                    '<code>formmethod</code>: per-button method override.',
+                    '<code>formnovalidate</code>: submit without browser validation.',
+                    '<code>width</code>: display width (used with media).',
+                    '<code>poster</code>: preview image before video plays.',
+                    '<code>controls</code>: shows built-in media controls.'
+                ]
+            }, {
+                type: 'exercise',
+                section: 'reference',
+                title: 'Reference Usage Tip',
+                exercise: 'When you forget a tag or attribute, come back to this final summary. Everything listed here is exactly what you used in this formation.',
+                hint: 'Choose tag by meaning first, then add only needed attributes.'
             }
         ];
 
@@ -1366,6 +1582,15 @@
             'HTML Attributes': 'خصائص HTML',
             'Attributes in Action': 'الخصائص عمليًا',
             'Practice: Add Attributes': 'تطبيق: أضف خصائص',
+            'HTML Display & Grouping': 'عرض HTML والتجميع',
+            'Inline vs block elements, div/span, and grouped tag knowledge': 'العناصر السطرية والكتلية وdiv/span ومعرفة المجموعات',
+            'HTML Inline vs Block': 'HTML Inline مقابل Block',
+            'Inline vs Block Example': 'مثال Inline مقابل Block',
+            'HTML Div and Span': 'Div وSpan في HTML',
+            'Div and Span Example': 'مثال Div وSpan',
+            'HTML Tags + Attributes Summary': 'ملخص وسوم HTML والخصائص',
+            'Common Attributes (One by One)': 'الخصائص الشائعة (واحدة تلو الأخرى)',
+            'Practice: Group Tags and Attributes': 'تطبيق: تجميع الوسوم والخصائص',
             'Text & Headings': 'النصوص والعناوين',
             'Organizing and styling your content': 'تنظيم وتنسيق المحتوى',
             'HTML Headings': 'عناوين HTML',
@@ -1430,6 +1655,22 @@
             'You have learned the fundamentals of HTML': 'لقد تعلمت أساسيات HTML',
             'Final Challenge': 'التحدي النهائي',
             'Put it all together': 'طبّق كل ما تعلمته',
+            'Final Summary: Tags & Attributes Used Here': 'الملخص النهائي: الوسوم والخصائص المستخدمة هنا',
+            'Only the tags/attributes used in this formation': 'فقط الوسوم/الخصائص المستخدمة في هذه الدورة',
+            'Used Tags (Part 1: Structure & Text)': 'الوسوم المستخدمة (الجزء 1: البنية والنص)',
+            'Used Tags (Part 2: Links, Media, Layout)': 'الوسوم المستخدمة (الجزء 2: الروابط والوسائط والتخطيط)',
+            'Used Tags (Part 3: Lists, Tables, Forms)': 'الوسوم المستخدمة (الجزء 3: القوائم والجداول والنماذج)',
+            'Used Attributes (Part 1)': 'الخصائص المستخدمة (الجزء 1)',
+            'Used Attributes (Part 2)': 'الخصائص المستخدمة (الجزء 2)',
+            'Reference Usage Tip': 'نصيحة استخدام المرجع',
+            'HTML Mega Reference': 'مرجع HTML الشامل',
+            '100+ tags and attributes cheat sheet': 'ورقة مرجعية لأكثر من 100 وسم وخاصية',
+            'Reference: Core Document & Text Tags (1-35)': 'مرجع: وسوم بنية المستند والنص (1-35)',
+            'Reference: Semantic, Layout, Table & Form Tags (36-80)': 'مرجع: الوسوم الدلالية والتخطيط والجداول والنماذج (36-80)',
+            'Reference: Media, Interactive & Metadata Tags (81-120)': 'مرجع: وسوم الوسائط والتفاعل والبيانات الوصفية (81-120)',
+            'Reference: Global Attributes (1-35)': 'مرجع: الخصائص العامة (1-35)',
+            'Reference: Form, Input, Link & Media Attributes (36-90)': 'مرجع: خصائص النماذج والحقول والروابط والوسائط (36-90)',
+            'How to Use This 100+ Reference': 'كيف تستخدم هذا المرجع (100+) ',
 
             'HTML is the language used to create <span class="accent">web pages</span>': 'HTML هي اللغة المستخدمة لإنشاء <span class="accent">صفحات الويب</span>',
             'It tells the browser what content to show': 'تخبر المتصفح بالمحتوى الذي يجب عرضه',
@@ -1456,6 +1697,33 @@
             'Common mistake: Forgetting quotes around attribute values. Always use quotes!': 'خطأ شائع: نسيان علامات الاقتباس حول قيمة الخاصية. استخدم الاقتباس دائمًا!',
             'Add an id attribute with value "main-title" to an h1 element.': 'أضف خاصية id بالقيمة "main-title" إلى عنصر h1.',
             'The format is: id="main-title"': 'الصيغة هي: id="main-title"',
+            'Block elements start on a new line and take full width by default (like <code>div</code>, <code>p</code>, <code>h1</code>, <code>section</code>).': 'العناصر الكتلية تبدأ في سطر جديد وتأخذ العرض كاملًا افتراضيًا (مثل <code>div</code> و<code>p</code> و<code>h1</code> و<code>section</code>).',
+            'Inline elements stay on the same line and use only needed width (like <code>span</code>, <code>a</code>, <code>strong</code>, <code>em</code>).': 'العناصر السطرية تبقى في نفس السطر وتأخذ فقط العرض المطلوب (مثل <code>span</code> و<code>a</code> و<code>strong</code> و<code>em</code>).',
+            'You can change behavior with CSS: <code>display: block</code>, <code>display: inline</code>, or <code>display: inline-block</code>.': 'يمكنك تغيير السلوك عبر CSS باستخدام: <code>display: block</code> أو <code>display: inline</code> أو <code>display: inline-block</code>.',
+            'Think of block elements as full-width shelves, and inline elements as books placed next to each other on the same shelf.': 'تخيل العناصر الكتلية كرفوف بعرض كامل، والعناصر السطرية ككتب موضوعة بجانب بعضها على نفس الرف.',
+            '<code>div</code> is a generic block container used to group larger sections of content.': '<code>div</code> حاوية كتلية عامة تُستخدم لتجميع أقسام أكبر من المحتوى.',
+            '<code>span</code> is a generic inline container used to style or target small parts of text.': '<code>span</code> حاوية سطرية عامة تُستخدم لتنسيق أو استهداف أجزاء صغيرة من النص.',
+            'Use <code>div</code> for layout groups and <code>span</code> for inline text highlights.': 'استخدم <code>div</code> لتجميعات التخطيط، واستخدم <code>span</code> لإبراز النص داخل السطر.',
+            'Rule of thumb: if it should break to a new line, start with div; if it should stay inside a sentence, use span.': 'قاعدة سريعة: إذا كان العنصر يجب أن يبدأ سطرًا جديدًا فابدأ بـ div، وإذا كان داخل جملة فاستعمل span.',
+            'Structure tags: <code>html</code>, <code>head</code>, <code>body</code>, <code>header</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>footer</code>.': 'وسوم البنية: <code>html</code> و<code>head</code> و<code>body</code> و<code>header</code> و<code>main</code> و<code>section</code> و<code>article</code> و<code>footer</code>.',
+            'Text tags: <code>h1-h6</code>, <code>p</code>, <code>strong</code>, <code>em</code>, <code>small</code>, <code>mark</code>.': 'وسوم النص: <code>h1-h6</code> و<code>p</code> و<code>strong</code> و<code>em</code> و<code>small</code> و<code>mark</code>.',
+            'Inline/media tags: <code>a</code>, <code>span</code>, <code>img</code>, <code>video</code>, <code>audio</code>, <code>code</code>.': 'وسوم السطر/الوسائط: <code>a</code> و<code>span</code> و<code>img</code> و<code>video</code> و<code>audio</code> و<code>code</code>.',
+            'List/table tags: <code>ul</code>, <code>ol</code>, <code>li</code>, <code>table</code>, <code>tr</code>, <code>th</code>, <code>td</code>.': 'وسوم القوائم/الجداول: <code>ul</code> و<code>ol</code> و<code>li</code> و<code>table</code> و<code>tr</code> و<code>th</code> و<code>td</code>.',
+            'Form tags: <code>form</code>, <code>label</code>, <code>input</code>, <code>select</code>, <code>textarea</code>, <code>button</code>.': 'وسوم النماذج: <code>form</code> و<code>label</code> و<code>input</code> و<code>select</code> و<code>textarea</code> و<code>button</code>.',
+            '<code>id</code>: unique identifier for one element.': '<code>id</code>: معرّف فريد لعنصر واحد.',
+            '<code>class</code>: reusable group name for CSS and JavaScript.': '<code>class</code>: اسم مجموعة قابل لإعادة الاستخدام في CSS وJavaScript.',
+            '<code>title</code>: extra hint text usually shown on hover.': '<code>title</code>: نص توضيحي إضافي يظهر غالبًا عند تمرير المؤشر.',
+            '<code>href</code>: destination URL used in links.': '<code>href</code>: رابط الوجهة المستخدم في الروابط.',
+            '<code>src</code>: source path used by images and media.': '<code>src</code>: مسار المصدر المستخدم للصور والوسائط.',
+            '<code>alt</code>: text alternative for images (accessibility).': '<code>alt</code>: نص بديل للصور (لدعم الوصول).',
+            '<code>name</code>: key sent with form data.': '<code>name</code>: المفتاح الذي يُرسل مع بيانات النموذج.',
+            '<code>value</code>: current or default value for form controls.': '<code>value</code>: القيمة الحالية أو الافتراضية لعناصر النموذج.',
+            '<code>required</code>: blocks submit if the field is empty.': '<code>required</code>: يمنع الإرسال إذا كان الحقل فارغًا.',
+            '<code>placeholder</code>: hint text displayed inside inputs.': '<code>placeholder</code>: نص إرشادي يظهر داخل حقول الإدخال.',
+            '<code>for</code>: connects <code>label</code> to input by id.': '<code>for</code>: يربط <code>label</code> بحقل الإدخال عبر id.',
+            '<code>action</code> + <code>method</code>: where and how form data is submitted.': '<code>action</code> + <code>method</code>: أين وكيف تُرسل بيانات النموذج.',
+            'Create one mini page using: 2 block tags, 2 inline tags, one div, one span, and a form field that uses name, placeholder, and required.': 'أنشئ صفحة مصغرة تحتوي على: وسمين كتليين، وسمين سطريين، عنصر div واحد، عنصر span واحد، وحقل نموذج يستخدم name وplaceholder وrequired.',
+            'After writing code, explain why each chosen tag is block or inline.': 'بعد كتابة الكود، اشرح لماذا كل وسم اخترته يعتبر كتليًا أو سطريًا.',
             'HTML has <span class="accent">6 levels</span> of headings: h1 to h6': 'HTML يحتوي على <span class="accent">6 مستويات</span> من العناوين: من h1 إلى h6',
             '<code>h1</code> is the largest and most important': '<code>h1</code> هو الأكبر والأهم',
             'Use headings to create a <span class="accent">hierarchy</span> of content': 'استخدم العناوين لإنشاء <span class="accent">تسلسل هرمي</span> للمحتوى',
@@ -1523,7 +1791,7 @@
             'Use <code>method="get"</code> for simple queries and <code>method="post"</code> for sensitive or large data': 'استخدم <code>method="get"</code> للاستعلامات البسيطة و<code>method="post"</code> للبيانات الحساسة أو الكبيرة.',
             'Set <code>action</code> to the server endpoint that processes form data': 'اجعل <code>action</code> يشير إلى نقطة الخادم التي تعالج بيانات النموذج.',
             '<code>form</code>, <code>label</code>, <code>input</code>, <code>select</code>, <code>textarea</code>, and <code>button</code> are core form elements': 'العناصر الأساسية للنموذج هي: <code>form</code> و<code>label</code> و<code>input</code> و<code>select</code> و<code>textarea</code> و<code>button</code>.',
-            '<code>fieldset</code> and <code>legend</code> help group related fields clearly': 'يساعد <code>fieldset</code> و<code>legend</code> في تجميع الحقول المرتبطة بشكل واضح.',
+            'Group related fields using clear labels and logical order': 'قم بتجميع الحقول ذات الصلة باستخدام تسميات واضحة وترتيب منطقي.',
             'Use clear labels for better accessibility and user experience': 'استخدم تسميات واضحة لتحسين سهولة الوصول وتجربة المستخدم.',
             'Create a simple login form with username and password fields.': 'أنشئ نموذج تسجيل دخول بسيطًا بحقل اسم مستخدم وكلمة مرور.',
             'Use type="password" for the password field to hide characters.': 'استخدم type="password" لإخفاء أحرف كلمة المرور.',
@@ -1550,7 +1818,78 @@
             'You can add text, links, images, lists, tables, and forms': 'يمكنك إضافة نصوص وروابط وصور وقوائم وجداول ونماذج',
             'You know the basics of semantic HTML': 'تعرف أساسيات HTML الدلالي',
             'Create a complete personal webpage with:\n- A header with navigation\n- A main section about yourself\n- An image of you or something you like\n- A list of your hobbies\n- A contact form\n- A footer with copyright': 'أنشئ صفحة شخصية كاملة تحتوي على:\n- ترويسة مع التنقل\n- قسم رئيسي عنك\n- صورة لك أو لشيء تحبه\n- قائمة هواياتك\n- نموذج تواصل\n- تذييل بحقوق النشر',
-            'Use semantic HTML and proper structure. Take your time!': 'استخدم HTML الدلالي وبنية صحيحة. خذ وقتك!'
+            'Use semantic HTML and proper structure. Take your time!': 'استخدم HTML الدلالي وبنية صحيحة. خذ وقتك!',
+            '<code>!DOCTYPE html</code>: declares HTML5 document type.': '<code>!DOCTYPE html</code>: يعرّف نوع مستند HTML5.',
+            '<code>html</code>: root element of the page.': '<code>html</code>: العنصر الجذر للصفحة.',
+            '<code>head</code>: metadata container (not visible content).': '<code>head</code>: حاوية البيانات الوصفية (ليست محتوى مرئيًا).',
+            '<code>meta</code>: metadata (like charset/viewport).': '<code>meta</code>: بيانات وصفية (مثل charset وviewport).',
+            '<code>title</code>: browser tab/page title.': '<code>title</code>: عنوان تبويب/صفحة المتصفح.',
+            '<code>body</code>: all visible page content.': '<code>body</code>: كل المحتوى المرئي في الصفحة.',
+            '<code>h1</code> to <code>h6</code>: heading levels from largest to smallest.': '<code>h1</code> إلى <code>h6</code>: مستويات العناوين من الأكبر إلى الأصغر.',
+            '<code>p</code>: paragraph text block.': '<code>p</code>: كتلة نص فقرة.',
+            '<code>b</code>: bold style text.': '<code>b</code>: نص بخط عريض.',
+            '<code>i</code>: italic style text.': '<code>i</code>: نص بخط مائل.',
+            '<code>u</code>: underlined text.': '<code>u</code>: نص مسطر.',
+            '<code>strong</code>: semantically important text.': '<code>strong</code>: نص مهم دلاليًا.',
+            '<code>em</code>: semantically emphasized text.': '<code>em</code>: نص مؤكد دلاليًا.',
+            '<code>br</code>: line break inside content.': '<code>br</code>: كسر سطر داخل المحتوى.',
+            '<code>code</code>: inline code snippet.': '<code>code</code>: مقطع كود داخل السطر.',
+            '<code><!-- ... --></code>: developer comment, not displayed.': '<code><!-- ... --></code>: تعليق للمطور لا يظهر في الصفحة.',
+            '<code>a</code>: creates a hyperlink.': '<code>a</code>: ينشئ رابطًا تشعبيًا.',
+            '<code>img</code>: displays an image.': '<code>img</code>: يعرض صورة.',
+            '<code>video</code>: embeds a video player.': '<code>video</code>: يضمّن مشغّل فيديو.',
+            '<code>audio</code>: embeds an audio player.': '<code>audio</code>: يضمّن مشغّل صوت.',
+            '<code>source</code>: provides media file alternatives for <code>video</code>/<code>audio</code>.': '<code>source</code>: يوفر ملفات وسائط بديلة لـ <code>video</code>/<code>audio</code>.',
+            '<code>div</code>: generic block container.': '<code>div</code>: حاوية كتلية عامة.',
+            '<code>span</code>: generic inline container.': '<code>span</code>: حاوية سطرية عامة.',
+            '<code>header</code>: top/header section.': '<code>header</code>: قسم الترويسة العلوي.',
+            '<code>nav</code>: navigation links area.': '<code>nav</code>: منطقة روابط التنقل.',
+            '<code>main</code>: main page content area.': '<code>main</code>: منطقة المحتوى الرئيسي للصفحة.',
+            '<code>article</code>: self-contained content block.': '<code>article</code>: كتلة محتوى مستقلة.',
+            '<code>footer</code>: bottom/footer section.': '<code>footer</code>: قسم التذييل السفلي.',
+            '<code>ul</code>: unordered list.': '<code>ul</code>: قائمة غير مرتبة.',
+            '<code>ol</code>: ordered list.': '<code>ol</code>: قائمة مرتبة.',
+            '<code>li</code>: list item inside <code>ul</code>/<code>ol</code>.': '<code>li</code>: عنصر قائمة داخل <code>ul</code>/<code>ol</code>.',
+            '<code>table</code>: table container.': '<code>table</code>: حاوية الجدول.',
+            '<code>tr</code>: table row.': '<code>tr</code>: صف في الجدول.',
+            '<code>th</code>: header cell in a table row.': '<code>th</code>: خلية عنوان في صف الجدول.',
+            '<code>td</code>: data cell in a table row.': '<code>td</code>: خلية بيانات في صف الجدول.',
+            '<code>form</code>: collects and submits user input.': '<code>form</code>: يجمع مدخلات المستخدم ويرسلها.',
+            '<code>label</code>: accessible label for input fields.': '<code>label</code>: تسمية متاحة لحقول الإدخال.',
+            '<code>input</code>: one-line form control.': '<code>input</code>: عنصر نموذج أحادي السطر.',
+            '<code>button</code>: clickable button (often submit).': '<code>button</code>: زر قابل للنقر (غالبًا للإرسال).',
+            '<code>select</code>: dropdown selector.': '<code>select</code>: قائمة اختيار منسدلة.',
+            '<code>option</code>: one selectable choice in <code>select</code>.': '<code>option</code>: خيار واحد داخل <code>select</code>.',
+            '<code>textarea</code>: multi-line text field.': '<code>textarea</code>: حقل نص متعدد الأسطر.',
+            '<code>lang</code>: language of the document.': '<code>lang</code>: لغة المستند.',
+            '<code>charset</code>: character encoding (for example UTF-8).': '<code>charset</code>: ترميز الأحرف (مثل UTF-8).',
+            '<code>name</code>: name/key for metadata or form value.': '<code>name</code>: اسم/مفتاح للبيانات الوصفية أو قيمة النموذج.',
+            '<code>content</code>: value of a metadata entry.': '<code>content</code>: قيمة إدخال البيانات الوصفية.',
+            '<code>href</code>: link destination URL.': '<code>href</code>: رابط وجهة الارتباط.',
+            '<code>src</code>: source file path/URL.': '<code>src</code>: مسار/رابط ملف المصدر.',
+            '<code>alt</code>: alternative image description text.': '<code>alt</code>: نص بديل لوصف الصورة.',
+            '<code>id</code>: unique element identifier.': '<code>id</code>: معرّف فريد للعنصر.',
+            '<code>class</code>: reusable class for styling/selection.': '<code>class</code>: فئة قابلة لإعادة الاستخدام للتنسيق/الاستهداف.',
+            '<code>type</code>: type of input/button/source.': '<code>type</code>: نوع الحقل/الزر/المصدر.',
+            '<code>for</code>: binds <code>label</code> to input by id.': '<code>for</code>: يربط <code>label</code> بحقل الإدخال عبر id.',
+            '<code>value</code>: current/default value of a control.': '<code>value</code>: القيمة الحالية/الافتراضية للعنصر.',
+            '<code>action</code>: form submit URL.': '<code>action</code>: رابط إرسال النموذج.',
+            '<code>method</code>: form submit method (<code>get</code>/<code>post</code>).': '<code>method</code>: طريقة إرسال النموذج (<code>get</code>/<code>post</code>).',
+            '<code>autocomplete</code>: enables/disables autofill hints.': '<code>autocomplete</code>: يفعّل/يعطّل اقتراحات الإكمال التلقائي.',
+            '<code>required</code>: field must be filled before submit.': '<code>required</code>: يجب تعبئة الحقل قبل الإرسال.',
+            '<code>placeholder</code>: input hint text.': '<code>placeholder</code>: نص إرشادي داخل حقل الإدخال.',
+            '<code>min</code> / <code>max</code>: minimum/maximum numeric value.': '<code>min</code> / <code>max</code>: أقل/أعلى قيمة رقمية.',
+            '<code>minlength</code>: minimum text length.': '<code>minlength</code>: الحد الأدنى لطول النص.',
+            '<code>pattern</code>: validation regex pattern.': '<code>pattern</code>: نمط تحقق باستخدام تعبير منتظم.',
+            '<code>form</code>: links a control/button to a form id.': '<code>form</code>: يربط عنصرًا/زرًا بمعرّف نموذج.',
+            '<code>formaction</code>: per-button submit URL override.': '<code>formaction</code>: تغيير رابط الإرسال لكل زر.',
+            '<code>formmethod</code>: per-button method override.': '<code>formmethod</code>: تغيير طريقة الإرسال لكل زر.',
+            '<code>formnovalidate</code>: submit without browser validation.': '<code>formnovalidate</code>: إرسال بدون تحقق المتصفح.',
+            '<code>width</code>: display width (used with media).': '<code>width</code>: عرض العرض (يستخدم مع الوسائط).',
+            '<code>poster</code>: preview image before video plays.': '<code>poster</code>: صورة معاينة قبل تشغيل الفيديو.',
+            '<code>controls</code>: shows built-in media controls.': '<code>controls</code>: يعرض أدوات التحكم المدمجة للوسائط.',
+            'When you forget a tag or attribute, come back to this final summary. Everything listed here is exactly what you used in this formation.': 'عندما تنسى وسمًا أو خاصية، ارجع إلى هذا الملخص النهائي. كل ما هنا هو بالضبط ما استخدمته في هذه الدورة.',
+            'Choose tag by meaning first, then add only needed attributes.': 'اختر الوسم حسب المعنى أولًا، ثم أضف الخصائص التي تحتاجها فقط.'
         };
 
         function t(text) {
@@ -1711,8 +2050,8 @@
       }
     }
 
-    function getSectionNumber(section) {
-            const sections = ['start', 'basics', 'text', 'links', 'media', 'lists', 'forms', 'semantic'];
+        function getSectionNumber(section) {
+                        const sections = ['start', 'basics', 'layout', 'text', 'links', 'media', 'lists', 'forms', 'semantic', 'reference'];
       const num = sections.indexOf(section);
       return num > 0 ? num : '';
     }
