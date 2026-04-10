@@ -1230,15 +1230,35 @@
 		}
 
 		function accentCode(code) {
-			return code
-				.replace(/&/g, '&amp;')
-				.replace(/</g, '&lt;')
-				.replace(/>/g, '&gt;')
-                .replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, '<span class="value">$1</span>')
-				.replace(/(\/\/[^\n]*)/g, '<span class="comment">$1</span>')
-				.replace(/(\/\*[\s\S]*?\*\/)/g, '<span class="comment">$1</span>')
-				.replace(/\b(const|let|var|function|return|if|else|for|while|switch|case|break|continue|class|extends|import|export|from|new|this|true|false|null|undefined)\b/g, '<span class="accent">$1</span>')
-				.replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="unit">$1</span>');
+            const tokens = [];
+
+            const stash = (type, value) => {
+                const key = `__RC_TOKEN_${tokens.length}__`;
+                tokens.push({
+                    key,
+                    type,
+                    value
+                });
+                return key;
+            };
+
+            let escaped = code
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;');
+
+            escaped = escaped.replace(/("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)/g, (match) => stash('value', match));
+            escaped = escaped.replace(/(\/\/[^\n]*|\/\*[\s\S]*?\*\/)/g, (match) => stash('comment', match));
+
+            escaped = escaped
+                .replace(/\b(const|let|var|function|return|if|else|for|while|switch|case|break|continue|class|extends|import|export|from|new|this|true|false|null|undefined)\b/g, '<span class="accent">$1</span>')
+                .replace(/\b(\d+(?:\.\d+)?)\b/g, '<span class="unit">$1</span>');
+
+            tokens.forEach((token) => {
+                escaped = escaped.replace(token.key, `<span class="${token.type}">${token.value}</span>`);
+            });
+
+            return escaped;
 		}
 
 		function updateNav() {

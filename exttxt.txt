@@ -1,0 +1,13 @@
+🧱 Essential Extensions (Must install) 1. 
+🌐 Live Server Live Server 👉 Runs your HTML in real-time in the browser Auto reload on save Very important for frontend dev 
+2. 
+✨ Prettier – Code Formatter Prettier 👉 Automatically formats HTML / CSS / JS Makes
+code clean and consistent Fixes indentation automatically
+ 3. 
+🧠 ESLint ESLint 👉 Finds JS errors before running code Detects bugs early Helps write professional JavaScript 🎨 HTML + CSS helpers 
+4. CSS Peek CSS Peek 👉 Jump from HTML class → CSS definition
+instantly 
+5. IntelliSense for CSS class names IntelliSense for CSS class names 👉 Auto-suggests CSS classes in HTML 6. Auto Rename Tag Auto Rename Tag 👉 If you change
+<div> → automatically updates closing tag ⚡ JavaScript productivity 7. JavaScript (ES6) snippets JavaScript (ES6) code snippets 👉 Quick shortcuts for JS code (functions, loops, etc.) 8. Path Intellisense Path Intellisense 👉 Auto-completes file paths in imports
+    🎯 Optional but powerful 9. GitLens GitLens 👉 Shows who changed what in your code 10. Color Highlight Color Highlight 👉 Shows colors directly in CSS (like #ff0000) 🚀 Minimal setup (if you want simple) If you only install 3: Live Server Prettier
+    ESLint 👉 That’s enough for 90% of frontend development

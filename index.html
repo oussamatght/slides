@@ -897,6 +897,48 @@
                 hint: 'You can use the full URL or a local file path for the src attribute.'
             },
 
+            // === SECTION: HTML MEDIA ===
+            {
+                type: 'section',
+                title: 'HTML Media',
+                subtitle: 'Embedding video and audio in web pages',
+                section: 'media'
+            }, {
+                type: 'explain',
+                section: 'media',
+                title: 'HTML Media',
+                content: [
+                    'HTML media elements let you embed <span class="accent">video</span> and <span class="accent">audio</span> directly in a page',
+                    'Use <code>controls</code> so users can play, pause, and adjust volume',
+                    'Always include fallback text for older browsers'
+                ],
+                analogy: 'Media tags are built-in players that make your page interactive without extra plugins.'
+            }, {
+                type: 'code',
+                section: 'media',
+                title: 'HTML Video',
+                code: `<video controls width="640" poster="cover.jpg">
+  <source src="movie.mp4" type="video/mp4">
+  <source src="movie.webm" type="video/webm">
+  Your browser does not support the video tag.
+</video>`
+            }, {
+                type: 'code',
+                section: 'media',
+                title: 'HTML Audio',
+                code: `<audio controls>
+  <source src="song.mp3" type="audio/mpeg">
+  <source src="song.ogg" type="audio/ogg">
+  Your browser does not support the audio element.
+</audio>`
+            }, {
+                type: 'exercise',
+                section: 'media',
+                title: 'Practice: Add Video and Audio',
+                exercise: 'Embed one video and one audio file in your page with controls and fallback text.',
+                hint: 'Use multiple <source> tags to support more browsers.'
+            },
+
             // === SECTION: LISTS ===
             {
                 type: 'section',
@@ -1051,6 +1093,58 @@
             },
 
             {
+                type: 'explain',
+                section: 'forms',
+                title: 'HTML Form Attributes',
+                content: [
+                    'Form attributes control submission behavior: <code>action</code>, <code>method</code>, <code>autocomplete</code>, <code>novalidate</code>',
+                    'Use <code>method="get"</code> for simple queries and <code>method="post"</code> for sensitive or large data',
+                    'Set <code>action</code> to the server endpoint that processes form data'
+                ]
+            }, {
+                type: 'code',
+                section: 'forms',
+                title: 'Form Attributes Example',
+                code: `<form action="/register" method="post" autocomplete="on">
+    <input type="text" name="username" required>
+    <input type="email" name="email" required>
+    <button type="submit">Register</button>
+</form>`
+            }, {
+                type: 'explain',
+                section: 'forms',
+                title: 'HTML Form Elements',
+                content: [
+                    '<code>form</code>, <code>label</code>, <code>input</code>, <code>select</code>, <code>textarea</code>, and <code>button</code> are core form elements',
+                    '<code>fieldset</code> and <code>legend</code> help group related fields clearly',
+                    'Use clear labels for better accessibility and user experience'
+                ]
+            }, {
+                type: 'code',
+                section: 'forms',
+                title: 'Form Elements Example',
+                code: `<form>
+    <fieldset>
+        <legend>Contact</legend>
+
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text">
+
+        <label for="topic">Topic</label>
+        <select id="topic" name="topic">
+            <option>Support</option>
+            <option>Sales</option>
+        </select>
+
+        <label for="message">Message</label>
+        <textarea id="message" name="message"></textarea>
+    </fieldset>
+
+    <button type="submit">Send</button>
+</form>`
+            },
+
+            {
                 type: 'exercise',
                 section: 'forms',
                 title: 'Practice: Login Form',
@@ -1062,7 +1156,7 @@
             {
                 type: 'explain',
                 section: 'forms',
-                title: 'Input Types',
+                title: 'HTML Input Types',
                 content: [
                     'Inputs can be many types: text, password, email, number',
                     '<code>type="checkbox"</code> for multiple choices',
@@ -1083,6 +1177,44 @@
 
 <label><input type="radio" name="gender"> Male</label>
 <label><input type="radio" name="gender"> Female</label>`
+            }, {
+                type: 'explain',
+                section: 'forms',
+                title: 'HTML Input Attributes',
+                content: [
+                    'Common input attributes include <code>placeholder</code>, <code>required</code>, <code>minlength</code>, <code>maxlength</code>, <code>min</code>, <code>max</code>, and <code>pattern</code>',
+                    'Attributes help validate user input before submitting the form',
+                    '<code>readonly</code> keeps value visible but uneditable, while <code>disabled</code> excludes input from submission'
+                ]
+            }, {
+                type: 'code',
+                section: 'forms',
+                title: 'Input Attributes Example',
+                code: `<input type="text" name="fullname" placeholder="Full name" required minlength="3">
+<input type="email" name="email" required>
+<input type="number" name="age" min="18" max="60">
+<input type="password" name="pin" pattern="[0-9]{4}" title="4 digits">`
+            }, {
+                type: 'explain',
+                section: 'forms',
+                title: 'Input Form Attributes',
+                content: [
+                    'Form-related input attributes include <code>form</code>, <code>formaction</code>, <code>formmethod</code>, <code>formenctype</code>, <code>formnovalidate</code>, and <code>formtarget</code>',
+                    'These attributes let submit buttons use different submit destinations or behaviors',
+                    'You can place a submit button outside the form and still connect it using <code>form</code>'
+                ]
+            }, {
+                type: 'code',
+                section: 'forms',
+                title: 'Input Form Attributes Example',
+                code: `<form id="profileForm" action="/save-profile" method="post">
+  <input type="text" name="username" required>
+</form>
+
+<button type="submit" form="profileForm">Save</button>
+<button type="submit" form="profileForm" formaction="/save-draft" formmethod="post" formnovalidate>
+  Save Draft
+</button>`
             },
 
             {
@@ -1256,6 +1388,11 @@
             'HTML Images': 'صور HTML',
             'Adding Images': 'إضافة الصور',
             'Practice: Add an Image': 'تطبيق: أضف صورة',
+            'HTML Media': 'وسائط HTML',
+            'Embedding video and audio in web pages': 'إدراج الفيديو والصوت في صفحات الويب',
+            'HTML Video': 'فيديو HTML',
+            'HTML Audio': 'صوت HTML',
+            'Practice: Add Video and Audio': 'تطبيق: أضف فيديو وصوت',
             'Lists & Tables': 'القوائم والجداول',
             'Organizing information clearly': 'تنظيم المعلومات بوضوح',
             'Unordered Lists': 'القوائم غير المرتبة',
@@ -1270,10 +1407,19 @@
             'HTML Forms': 'نماذج HTML',
             'Collecting user input': 'جمع مدخلات المستخدم',
             'Form Basics': 'أساسيات النماذج',
+            'HTML Form Attributes': 'خصائص نموذج HTML',
+            'Form Attributes Example': 'مثال خصائص النموذج',
+            'HTML Form Elements': 'عناصر نموذج HTML',
+            'Form Elements Example': 'مثال عناصر النموذج',
             'Basic Form': 'نموذج أساسي',
             'Practice: Login Form': 'تطبيق: نموذج تسجيل الدخول',
+            'HTML Input Types': 'أنواع حقول الإدخال في HTML',
             'Input Types': 'أنواع الحقول',
             'Different Inputs': 'حقول مختلفة',
+            'HTML Input Attributes': 'خصائص حقول الإدخال في HTML',
+            'Input Attributes Example': 'مثال خصائص الإدخال',
+            'Input Form Attributes': 'خصائص ربط الإدخال بالنموذج',
+            'Input Form Attributes Example': 'مثال خصائص ربط الإدخال',
             'Practice: Survey Form': 'تطبيق: نموذج استبيان',
             'Semantic HTML': 'HTML الدلالي',
             'Writing meaningful code': 'كتابة كود ذو معنى',
@@ -1345,6 +1491,12 @@
             'Emphasize alt text. It helps visually impaired users understand images and displays if the image fails to load.': 'أكد على نص alt؛ يساعد ضعاف البصر ويظهر عند فشل تحميل الصورة.',
             'Find an image online and add it to your page. Write a descriptive alt text.': 'ابحث عن صورة عبر الإنترنت وأضفها لصفحتك مع نص alt وصفي.',
             'You can use the full URL or a local file path for the src attribute.': 'يمكنك استخدام رابط كامل أو مسار ملف محلي في خاصية src.',
+            'HTML media elements let you embed <span class="accent">video</span> and <span class="accent">audio</span> directly in a page': 'عناصر الوسائط في HTML تتيح لك تضمين <span class="accent">الفيديو</span> و<span class="accent">الصوت</span> مباشرة داخل الصفحة.',
+            'Use <code>controls</code> so users can play, pause, and adjust volume': 'استخدم <code>controls</code> ليتمكن المستخدم من التشغيل والإيقاف والتحكم بالصوت.',
+            'Always include fallback text for older browsers': 'أضف دائمًا نصًا بديلًا للمتصفحات القديمة.',
+            'Media tags are built-in players that make your page interactive without extra plugins.': 'وسوم الوسائط مشغلات مدمجة تجعل صفحتك تفاعلية دون إضافات خارجية.',
+            'Embed one video and one audio file in your page with controls and fallback text.': 'أدرج ملف فيديو وملف صوت في صفحتك مع أدوات التحكم والنص البديل.',
+            'Use multiple <source> tags to support more browsers.': 'استخدم عدة وسوم <source> لدعم عدد أكبر من المتصفحات.',
             'Unordered lists show items with <span class="accent">bullet points</span>': 'القوائم غير المرتبة تعرض العناصر بنقاط <span class="accent">bullet</span>',
             'Use <code>ul</code> for the list container': 'استخدم <code>ul</code> كحاوية للقائمة',
             'Use <code>li</code> for each list item': 'استخدم <code>li</code> لكل عنصر في القائمة',
@@ -1367,11 +1519,23 @@
             'The <code>form</code> element wraps all form controls': 'عنصر <code>form</code> يحيط بكل عناصر النموذج',
             'Each input needs a <code>name</code> attribute': 'كل حقل input يحتاج خاصية <code>name</code>',
             'A form is like a paper questionnaire. Each input is a blank line where users write their answers.': 'النموذج مثل استبيان ورقي؛ كل input سطر يكتب فيه المستخدم إجابته.',
+            'Form attributes control submission behavior: <code>action</code>, <code>method</code>, <code>autocomplete</code>, <code>novalidate</code>': 'خصائص النموذج تتحكم بسلوك الإرسال مثل: <code>action</code> و<code>method</code> و<code>autocomplete</code> و<code>novalidate</code>.',
+            'Use <code>method="get"</code> for simple queries and <code>method="post"</code> for sensitive or large data': 'استخدم <code>method="get"</code> للاستعلامات البسيطة و<code>method="post"</code> للبيانات الحساسة أو الكبيرة.',
+            'Set <code>action</code> to the server endpoint that processes form data': 'اجعل <code>action</code> يشير إلى نقطة الخادم التي تعالج بيانات النموذج.',
+            '<code>form</code>, <code>label</code>, <code>input</code>, <code>select</code>, <code>textarea</code>, and <code>button</code> are core form elements': 'العناصر الأساسية للنموذج هي: <code>form</code> و<code>label</code> و<code>input</code> و<code>select</code> و<code>textarea</code> و<code>button</code>.',
+            '<code>fieldset</code> and <code>legend</code> help group related fields clearly': 'يساعد <code>fieldset</code> و<code>legend</code> في تجميع الحقول المرتبطة بشكل واضح.',
+            'Use clear labels for better accessibility and user experience': 'استخدم تسميات واضحة لتحسين سهولة الوصول وتجربة المستخدم.',
             'Create a simple login form with username and password fields.': 'أنشئ نموذج تسجيل دخول بسيطًا بحقل اسم مستخدم وكلمة مرور.',
             'Use type="password" for the password field to hide characters.': 'استخدم type="password" لإخفاء أحرف كلمة المرور.',
             'Inputs can be many types: text, password, email, number': 'حقول الإدخال لها أنواع متعددة: text وpassword وemail وnumber',
             '<code>type="checkbox"</code> for multiple choices': '<code>type="checkbox"</code> للاختيارات المتعددة',
             '<code>type="radio"</code> for single choice from options': '<code>type="radio"</code> لاختيار واحد من عدة خيارات',
+            'Common input attributes include <code>placeholder</code>, <code>required</code>, <code>minlength</code>, <code>maxlength</code>, <code>min</code>, <code>max</code>, and <code>pattern</code>': 'من خصائص الإدخال الشائعة: <code>placeholder</code> و<code>required</code> و<code>minlength</code> و<code>maxlength</code> و<code>min</code> و<code>max</code> و<code>pattern</code>.',
+            'Attributes help validate user input before submitting the form': 'تساعد الخصائص على التحقق من المدخلات قبل إرسال النموذج.',
+            '<code>readonly</code> keeps value visible but uneditable, while <code>disabled</code> excludes input from submission': '<code>readonly</code> يبقي القيمة ظاهرة دون تعديل، بينما <code>disabled</code> يستبعد الحقل من الإرسال.',
+            'Form-related input attributes include <code>form</code>, <code>formaction</code>, <code>formmethod</code>, <code>formenctype</code>, <code>formnovalidate</code>, and <code>formtarget</code>': 'خصائص ربط الإدخال بالنموذج تشمل: <code>form</code> و<code>formaction</code> و<code>formmethod</code> و<code>formenctype</code> و<code>formnovalidate</code> و<code>formtarget</code>.',
+            'These attributes let submit buttons use different submit destinations or behaviors': 'تسمح هذه الخصائص لأزرار الإرسال باستخدام وجهات أو سلوكيات إرسال مختلفة.',
+            'You can place a submit button outside the form and still connect it using <code>form</code>': 'يمكنك وضع زر الإرسال خارج النموذج وربطه باستخدام <code>form</code>.',
             'Create a feedback form with: name (text), email, rating (1-5 number), and a checkbox for "Subscribe to newsletter".': 'أنشئ نموذج ملاحظات يحتوي على: الاسم (text)، البريد، التقييم (1-5)، وcheckbox للاشتراك بالنشرة.',
             'Use appropriate input types for each field.': 'استخدم نوع input المناسب لكل حقل.',
             'Semantic elements describe their <span class="accent">meaning</span> to browsers and developers': 'العناصر الدلالية توضّح <span class="accent">المعنى</span> للمتصفح والمطور',
@@ -1548,7 +1712,7 @@
     }
 
     function getSectionNumber(section) {
-      const sections = ['start', 'basics', 'text', 'links', 'lists', 'forms', 'semantic'];
+            const sections = ['start', 'basics', 'text', 'links', 'media', 'lists', 'forms', 'semantic'];
       const num = sections.indexOf(section);
       return num > 0 ? num : '';
     }
