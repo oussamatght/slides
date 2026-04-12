@@ -524,378 +524,330 @@
     <script>
         const slides = [{
                 type: 'title',
-                title: 'React Tutorial',
-                subtitle: 'From React Home to Custom Hooks',
-                section: 'start'
+                title: 'Complete React Course for Beginners',
+                subtitle: 'Master React from Basics to Advanced Patterns',
+                section: 'intro'
             }, {
-                type: 'lesson',
-                section: 'fundamentals',
-                title: 'React Home',
-                explain: 'React is a JavaScript library for building reusable user interfaces with components.',
-                code: `import React from "react";\n\nfunction App() {\n  return <h1>React Home</h1>;\n}`,
-                exercise: 'Create a simple React app and render a Home heading.',
-                hint: 'Use a function component and return JSX.'
-            }, {
-                type: 'lesson',
-                section: 'fundamentals',
-                title: 'React Intro',
-                explain: 'React uses a virtual DOM and component model to update UI efficiently.',
-                code: `const root = ReactDOM.createRoot(document.getElementById("root"));\nroot.render(<App />);`,
-                exercise: 'Explain in one sentence why virtual DOM helps performance.',
-                hint: 'Focus on minimal DOM updates.'
-            }, {
-                type: 'lesson',
-                section: 'fundamentals',
-                title: 'React Get Started',
-                explain: 'Use Vite or Create React App to bootstrap quickly and start development.',
-                code: `npm create vite@latest my-react-app -- --template react\ncd my-react-app\nnpm install\nnpm run dev`,
-                exercise: 'Create a new React project and run it locally.',
-                hint: 'Prefer Vite for faster startup.'
-            }, {
-                type: 'lesson',
-                section: 'fundamentals',
-                title: 'React First App',
-                explain: 'Your first app usually starts with one App component and a few child components.',
-                code: `function App() {\n  return <p>My first React app!</p>;\n}`,
-                exercise: 'Create a First App message with your name.',
-                hint: 'Put it inside App component JSX.'
-            }, {
-                type: 'lesson',
-                section: 'fundamentals',
-                title: 'React Render HTML',
-                explain: 'React renders JSX that becomes real HTML in the browser.',
-                code: `function App() {\n  return (\n    <main>\n      <h2>Hello</h2>\n      <p>Rendered by React</p>\n    </main>\n  );\n}`,
-                exercise: 'Render a heading + paragraph + button using JSX.',
-                hint: 'Return one parent element.'
-            }, {
-                type: 'lesson',
-                section: 'fundamentals',
-                title: 'React ES6',
-                explain: 'Modern React relies heavily on ES6 features like arrow functions, destructuring, and modules.',
-                code: `const Welcome = ({ name }) => <h1>Hello {name}</h1>;\nexport default Welcome;`,
-                exercise: 'Use destructuring in a React component props parameter.',
-                hint: 'function Card({ title }) { ... }'
-            },
-
-            {
                 type: 'section',
-                title: 'JSX & Components',
-                subtitle: 'Building blocks of React UI',
-                section: 'jsx'
+                title: 'Introduction & Setup',
+                subtitle: 'Understanding React and Getting Started',
+                section: 'setup'
             }, {
                 type: 'lesson',
-                section: 'jsx',
-                title: 'React JSX Intro',
-                explain: 'JSX is a syntax extension that lets you write HTML-like code in JavaScript.',
-                code: `const el = <h1>JSX Intro</h1>;`,
-                exercise: 'Write JSX for a card with title and description.',
-                hint: 'Use className, not class.'
+                section: 'setup',
+                title: 'What is React?',
+                explain: 'React is a JavaScript library created by Facebook for building user interfaces. It uses a component-based architecture where UI is broken into small, reusable pieces.',
+                code: '// REACT WAY (Declarative):\nreturn <h1>Counter: {count}</h1>;',
+                exercise: 'Explain the difference between declarative and imperative programming.',
+                hint: 'Declarative: describe WHAT you want. Imperative: describe HOW to do it.'
             }, {
                 type: 'lesson',
-                section: 'jsx',
-                title: 'React JSX Expressions',
-                explain: 'Use curly braces {} in JSX to embed JavaScript expressions.',
-                code: `const name = "Aya";\nreturn <p>Welcome {name}</p>;`,
-                exercise: 'Display current year in JSX.',
-                hint: 'Use {new Date().getFullYear()}.'
+                section: 'setup',
+                title: 'Why React Matters',
+                explain: 'React is crucial in modern web development. Companies like Netflix, Instagram, Uber, and Airbnb use React. React skills make you highly employable.',
+                code: '// React is used at:\n// - Netflix, Airbnb, Uber Eats, Shopify\n// Learning React gives you:\n// - High-paying job opportunities\n// - Modern web development understanding',
+                exercise: 'Research 3 companies using React.',
+                hint: 'Check job postings and company tech stacks.'
             }, {
                 type: 'lesson',
-                section: 'jsx',
-                title: 'React JSX Attributes',
-                explain: 'Attributes in JSX look like HTML but follow JS naming (e.g., className).',
-                code: `return <img src="/logo.png" alt="Logo" className="logo" />;`,
-                exercise: 'Create a button with type and className attributes.',
-                hint: 'className="btn"'
+                section: 'setup',
+                title: 'Setting Up Your Environment',
+                explain: 'Before coding, install Node.js (includes npm). Node.js is a JavaScript runtime. npm is a package manager.',
+                code: '// Step 1: Download Node.js from nodejs.org\n// Step 2: Verify\nnode --version\nnpm --version\n\n// Step 3: Create React project\nnpm create vite@latest my-app -- --template react',
+                exercise: 'Install Node.js and verify with node --version.',
+                hint: 'Download from nodejs.org. Choose LTS version.'
             }, {
                 type: 'lesson',
-                section: 'jsx',
-                title: 'React JSX If Statements',
-                explain: 'Use if, ternary, or && to conditionally render elements.',
-                code: `return isLoggedIn ? <Dashboard /> : <Login />;`,
-                exercise: 'Show “Admin” only if isAdmin is true.',
-                hint: 'Use && for simple conditions.'
+                section: 'setup',
+                title: 'Your First React App',
+                explain: 'The App.jsx file is your first component. It is a JavaScript function that returns JSX. When you save, the browser auto-reloads.',
+                code: '// src/App.jsx\nfunction App() {\n  return (\n    <div className="App">\n      <h1>Welcome to React!</h1>\n      <button>Click me</button>\n    </div>\n  )\n}',
+                exercise: 'Modify App.jsx: change the title and add a description.',
+                hint: 'Edit the tags. Save and see changes instantly.'
             }, {
-                type: 'lesson',
-                section: 'components',
-                title: 'React Components',
-                explain: 'Components are reusable UI units. Compose small components into big screens.',
-                code: `function Button() {\n  return <button>Click</button>;\n}`,
-                exercise: 'Create Header, Main, Footer components.',
-                hint: 'Render them in App.'
-            }, {
-                type: 'lesson',
-                section: 'components',
-                title: 'React Class',
-                explain: 'Class components are older but still useful to understand legacy code.',
-                code: `class Welcome extends React.Component {\n  render() {\n    return <h1>Hello</h1>;\n  }\n}`,
-                exercise: 'Convert a function component to class component.',
-                hint: 'Use render() method.'
-            }, {
-                type: 'lesson',
-                section: 'components',
-                title: 'React Props',
-                explain: 'Props pass data from parent to child components.',
-                code: `function User({ name }) {\n  return <p>{name}</p>;\n}\n\n<User name="Sara" />`,
-                exercise: 'Pass title and subtitle props into Hero component.',
-                hint: 'Use attributes on component tag.'
-            }, {
-                type: 'lesson',
-                section: 'components',
-                title: 'React Props Destructuring',
-                explain: 'Destructure props directly for cleaner component signatures.',
-                code: `function Card({ title, text }) {\n  return <article><h3>{title}</h3><p>{text}</p></article>;\n}`,
-                exercise: 'Destructure 3 props in one component.',
-                hint: 'function X({a,b,c})'
-            }, {
-                type: 'lesson',
-                section: 'components',
-                title: 'React Props Children',
-                explain: 'children lets components wrap nested JSX content.',
-                code: `function Panel({ children }) {\n  return <div className="panel">{children}</div>;\n}\n\n<Panel><p>Hello</p></Panel>`,
-                exercise: 'Build a wrapper component using children.',
-                hint: 'Render {children} inside container.'
-            },
-
-            {
                 type: 'section',
-                title: 'Interaction & Forms',
-                subtitle: 'Events, lists, and form handling',
+                title: 'Components & JSX',
+                subtitle: 'The Building Blocks of React',
+                section: 'components'
+            }, {
+                type: 'lesson',
+                section: 'components',
+                title: 'What Are Components?',
+                explain: 'Components are reusable pieces of UI. Think of them like LEGO blocks. Each component is a function that returns JSX.',
+                code: 'function Button() {\n  return <button>Click Me</button>;\n}\n\nfunction App() {\n  return (\n    <div>\n      <Button />\n      <Button />\n      <Button />\n    </div>\n  );\n}',
+                exercise: 'Create 3 components: Header, Main, Footer.',
+                hint: 'Each is a function with capital letter.'
+            }, {
+                type: 'lesson',
+                section: 'components',
+                title: 'JSX Basics',
+                explain: 'JSX looks like HTML but is JavaScript. Use JavaScript expressions in {} curly braces. Must return single parent element.',
+                code: 'const name = "Ahmed";\nconst age = 25;\n\nreturn (\n  <div className="profile">\n    <h1>Welcome, {name}!</h1>\n    <p>Age: {age}</p>\n  </div>\n);',
+                exercise: 'Write JSX with variables and className.',
+                hint: 'Use {} for expressions. Use className not class.'
+            }, {
+                type: 'lesson',
+                section: 'components',
+                title: 'Styling in React',
+                explain: 'React offers: CSS files (common), inline styles, CSS Modules, or CSS-in-JS. Inline styles use camelCase.',
+                code: '// Method 1: External CSS\nimport "./Button.css";\n<button className="btn">Click</button>\n\n// Method 2: Inline Styles\nconst style = { padding: "10px", backgroundColor: "#007bff" };\n<button style={style}>Click</button>',
+                exercise: 'Create component with CSS and inline styles.',
+                hint: 'Import CSS at top. Use camelCase for inline.'
+            }, {
+                type: 'section',
+                title: 'Props - Passing Data',
+                subtitle: 'Communication Between Components',
+                section: 'props'
+            }, {
+                type: 'lesson',
+                section: 'props',
+                title: 'Understanding Props',
+                explain: 'Props pass data from parent to child. Props are read-only. Child cannot modify them. One-way flow makes data predictable.',
+                code: 'function App() {\n  return <UserCard name="Ahmed" role="Developer" />\n}\n\nfunction UserCard(props) {\n  return (\n    <div>\n      <h2>{props.name}</h2>\n      <p>Role: {props.role}</p>\n    </div>\n  );\n}',
+                exercise: 'Create component with name, age, city props.',
+                hint: 'Use <Card name="X" age="Y" city="Z" />'
+            }, {
+                type: 'lesson',
+                section: 'props',
+                title: 'Props Destructuring',
+                explain: 'Destructure props in parameters for cleaner code. Shows exactly what props a component needs.',
+                code: '// Before:\nfunction UserCard(props) {\n  return <h2>{props.name}</h2>;\n}\n\n// After (BETTER!):\nfunction UserCard({ name, age, city }) {\n  return (\n    <div>\n      <h2>{name}</h2>\n      <p>Age: {age}, City: {city}</p>\n    </div>\n  );\n}',
+                exercise: 'Rewrite component with destructuring.',
+                hint: 'function Component({prop1, prop2}) { ... }'
+            }, {
+                type: 'lesson',
+                section: 'props',
+                title: 'Special Prop: Children',
+                explain: 'children receives content between opening/closing tags. Allows creating wrapper components.',
+                code: 'function Card({ title, children }) {\n  return (\n    <div className="card">\n      <h2>{title}</h2>\n      <div>{children}</div>\n    </div>\n  );\n}\n\n<Card title="Profile">\n  <p>Name: Ahmed</p>\n  <button>Edit</button>\n</Card>',
+                exercise: 'Create wrapper component (Box, Container).',
+                hint: 'Render {children} inside template.'
+            }, {
+                type: 'lesson',
+                section: 'props',
+                title: 'Passing Functions as Props',
+                explain: 'Pass functions to children as event handlers. Child calls function to communicate back to parent.',
+                code: 'function App() {\n  const handleDelete = (id) => console.log("Deleting:", id);\n  return <Item id={1} onDelete={handleDelete} />;\n}\n\nfunction Item({ id, onDelete }) {\n  return (\n    <div>\n      <span>Item {id}</span>\n      <button onClick={() => onDelete(id)}>Delete</button>\n    </div>\n  );\n}',
+                exercise: 'Create button that calls function from parent.',
+                hint: 'Destructure function from props.'
+            }, {
+                type: 'section',
+                title: 'Rendering - Dynamic UIs',
+                subtitle: 'Conditionals & Lists',
+                section: 'rendering'
+            }, {
+                type: 'lesson',
+                section: 'rendering',
+                title: 'Conditional Rendering',
+                explain: 'Show/hide elements based on conditions. Use ternary, &&, or if/else. Key to dynamic interfaces.',
+                code: '// Method 1: Ternary\n{isLoggedIn ? <p>Welcome!</p> : <p>Login</p>}\n\n// Method 2: Logical AND\n{isAdmin && <button>Delete</button>}\n\n// Method 3: if statement\nlet msg;\nif (status === "loading") msg = <p>Loading...</p>;\nreturn msg;',
+                exercise: 'Create component showing different content by role.',
+                hint: 'Use: {role === "admin" ? <AdminView /> : <UserView />}'
+            }, {
+                type: 'lesson',
+                section: 'rendering',
+                title: 'List Rendering with map()',
+                explain: 'Render arrays using map(). Each item needs unique key prop. Never use index as key.',
+                code: 'function UsersList() {\n  const users = [\n    { id: 1, name: "Ahmed" },\n    { id: 2, name: "Sara" },\n    { id: 3, name: "Ali" }\n  ];\n  \n  return (\n    <div>\n      {users.map((user) => (\n        <div key={user.id}>\n          <h3>{user.name}</h3>\n        </div>\n      ))}\n    </div>\n  );\n}',
+                exercise: 'Render list of 5 items using map().',
+                hint: 'Use: {array.map((item) => <Component key={item.id} />)}'
+            }, {
+                type: 'lesson',
+                section: 'rendering',
+                title: 'Key Prop Explained',
+                explain: 'Key helps React identify changed items. Use unique IDs. Never use index. Without proper keys, bugs occur when reordering.',
+                code: '// BAD: Using index\n{todos.map((todo, idx) => <li key={idx}>{todo}</li>)}\n\n// GOOD: Using ID\n{todos.map((todo) => <li key={todo.id}>{todo.text}</li>)}\n\n// Why? If you delete/reorder, animations and form state break.',
+                exercise: 'Identify why using index as key is problematic.',
+                hint: 'Think: what if you delete the first item?'
+            }, {
+                type: 'section',
+                title: 'State - Making Apps Interactive',
+                subtitle: 'useState Hook for Component State',
+                section: 'state'
+            }, {
+                type: 'lesson',
+                section: 'state',
+                title: 'What is State?',
+                explain: 'State is data managed internally by a component. Unlike props (from parent), state is created within component. When state changes, React re-renders.',
+                code: '// Props: from parent (read-only)\nfunction Greeting({ name }) { return <h1>Hello {name}</h1>; }\n\n// State: owned by component (changeable)\nimport { useState } from "react";\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={() => setCount(count + 1)}>+</button>\n    </div>\n  );\n}',
+                exercise: 'Explain: What happens when state changes?',
+                hint: 'State change â†’ Re-render â†’ New UI'
+            }, {
+                type: 'lesson',
+                section: 'state',
+                title: 'Introduction to useState',
+                explain: 'useState is a React Hook. Returns [currentValue, functionToUpdate]. Call setState to update state and trigger re-render.',
+                code: 'import { useState } from "react";\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  \n  return (\n    <div>\n      <h1>Count: {count}</h1>\n      <button onClick={() => setCount(count + 1)}>+</button>\n      <button onClick={() => setCount(count - 1)}>-</button>\n      <button onClick={() => setCount(0)}>Reset</button>\n    </div>\n  );\n}',
+                exercise: 'Create component using useState to toggle boolean.',
+                hint: 'const [isOpen, setIsOpen] = useState(false);'
+            }, {
+                type: 'lesson',
+                section: 'state',
+                title: 'Updating State with Inputs',
+                explain: 'Connect inputs to state using value and onChange. value displays current state. onChange updates state. "Controlled component".',
+                code: 'function SearchBox() {\n  const [search, setSearch] = useState("");\n  \n  return (\n    <div>\n      <input\n        value={search}\n        onChange={(e) => setSearch(e.target.value)}\n        placeholder="Search..."\n      />\n      <p>Searching for: {search}</p>\n    </div>\n  );\n}',
+                exercise: 'Create form input displaying real-time user input.',
+                hint: 'Use value={state} and onChange={(e) => setState(e.target.value)}'
+            }, {
+                type: 'lesson',
+                section: 'state',
+                title: 'Working with Object State',
+                explain: 'State can be objects or arrays. When updating, create new object. Use spread operator. Prevents bugs.',
+                code: 'function UserProfile() {\n  const [user, setUser] = useState({name: "", email: "", age: ""});\n  \n  const handleChange = (e) => {\n    const { name, value } = e.target;\n    setUser({ ...user, [name]: value });  // Create new object\n  };\n  \n  return (\n    <input name="name" value={user.name} onChange={handleChange} />\n  );\n}',
+                exercise: 'Create object state with multiple properties.',
+                hint: 'Use: {...state, property: newValue}'
+            }, {
+                type: 'lesson',
+                section: 'state',
+                title: 'Working with Array State',
+                explain: 'Arrays need special handling. Never push() directly. Create new arrays with spread, filter(), or map().',
+                code: 'function TodoApp() {\n  const [todos, setTodos] = useState([]);\n  \n  const add = (text) => setTodos([...todos, {id: Date.now(), text}]);\n  const remove = (id) => setTodos(todos.filter(t => t.id !== id));\n  const toggle = (id) => setTodos(todos.map(t => t.id === id ? {...t, done: !t.done} : t));\n  \n  return <div>{/* ... */}</div>;\n}',
+                exercise: 'Create array state with add, remove, modify.',
+                hint: 'Add: [...array, item]. Remove: filter(). Update: map()'
+            }, {
+                type: 'section',
+                title: 'Context API',
+                subtitle: 'Avoiding Prop Drilling',
+                section: 'context'
+            }, {
+                type: 'lesson',
+                section: 'context',
+                title: 'The Prop Drilling Problem',
+                explain: 'Prop drilling passes props through many layers. Example: App â†’ Layout â†’ Sidebar â†’ Menu â†’ Button. Messy! Context solves this.',
+                code: '// PROP DRILLING\nApp â†’ Layout(theme) â†’ Sidebar(theme) â†’ Menu(theme) â†’ MenuItem\n\n// SOLUTION: CONTEXT\n// Use directly in MenuItem without drilling!',
+                exercise: 'Identify prop drilling in your components.',
+                hint: 'Look for props passed through multiple levels.'
+            }, {
+                type: 'lesson',
+                section: 'context',
+                title: 'Creating and Using Context',
+                explain: 'Create context with createContext(). Wrap with Provider. Use useContext to access anywhere without drilling.',
+                code: 'import { createContext, useState, useContext } from "react";\n\nconst ThemeContext = createContext();\n\nfunction ThemeProvider({ children }) {\n  const [theme, setTheme] = useState("light");\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\nfunction MenuItem() {\n  const { theme } = useContext(ThemeContext);\n  return <button className={theme}>Menu</button>;\n}',
+                exercise: 'Create UserContext and access in multiple components.',
+                hint: 'createContext â†’ Provider â†’ useContext'
+            }, {
+                type: 'section',
+                title: 'Forms & Validation',
+                subtitle: 'Handling User Input',
                 section: 'forms'
             }, {
                 type: 'lesson',
                 section: 'forms',
-                title: 'React Events',
-                explain: 'React events use camelCase handlers like onClick and onChange.',
-                code: `function App() {\n  const handleClick = () => alert("Clicked");\n  return <button onClick={handleClick}>Click</button>;\n}`,
-                exercise: 'Create button that increases counter on click.',
-                hint: 'Attach onClick to button.'
+                title: 'Form Handling Basics',
+                explain: 'Forms collect input. Use controlled components synced to state. Prevent default. Validate. Process submission.',
+                code: 'function LoginForm() {\n  const [email, setEmail] = useState("");\n  const [password, setPassword] = useState("");\n  const [error, setError] = useState("");\n  \n  const handleSubmit = (e) => {\n    e.preventDefault();\n    if (!email || !password) { setError("Required!"); return; }\n    console.log("Logging in:", { email, password });\n  };\n  \n  return <form onSubmit={handleSubmit}>{/* ... */}</form>;\n}',
+                exercise: 'Build registration form: name, email, password.',
+                hint: 'Use controlled inputs, validate, show errors.'
             }, {
                 type: 'lesson',
                 section: 'forms',
-                title: 'React Conditionals',
-                explain: 'Conditionally render UI based on state or props.',
-                code: `return loading ? <Spinner /> : <Content />;`,
-                exercise: 'Show “Loading...” for 2 seconds, then show content.',
-                hint: 'Use state boolean.'
+                title: 'Different Input Types',
+                explain: 'Inputs vary: text, email, password, checkbox, radio, select, textarea. Different handling for each.',
+                code: 'function Form() {\n  const [form, setForm] = useState({name: "", role: "user", newsletter: false});\n  \n  const handleText = (e) => setForm({...form, [e.target.name]: e.target.value});\n  const handleCheck = (e) => setForm({...form, [e.target.name]: e.target.checked});\n  \n  return (\n    <div>\n      <input name="name" onChange={handleText} />\n      <select name="role" onChange={handleText}>\n        <option>User</option><option>Admin</option>\n      </select>\n      <input type="checkbox" name="newsletter" onChange={handleCheck} />\n    </div>\n  );\n}',
+                exercise: 'Create form with all input types.',
+                hint: 'Text/select use value. Checkbox uses checked.'
             }, {
-                type: 'lesson',
-                section: 'forms',
-                title: 'React Lists',
-                explain: 'Render arrays with map() and provide stable key props.',
-                code: `const items = ["A", "B", "C"];\nreturn <ul>{items.map((i) => <li key={i}>{i}</li>)}</ul>;`,
-                exercise: 'Render a todo array as list items.',
-                hint: 'Each li needs key.'
-            }, {
-                type: 'lesson',
-                section: 'forms',
-                title: 'React Forms',
-                explain: 'Controlled components keep form inputs synced with React state.',
-                code: `const [name, setName] = useState("");\n<input value={name} onChange={(e) => setName(e.target.value)} />`,
-                exercise: 'Create controlled input for username.',
-                hint: 'Use value + onChange.'
-            }, {
-                type: 'lesson',
-                section: 'forms',
-                title: 'React Forms Submit',
-                explain: 'Handle submit with onSubmit and prevent default refresh.',
-                code: `const onSubmit = (e) => {\n  e.preventDefault();\n  console.log("submitted");\n};`,
-                exercise: 'Log form data on submit.',
-                hint: 'Use e.preventDefault().'
-            }, {
-                type: 'lesson',
-                section: 'forms',
-                title: 'React Textarea',
-                explain: 'Textarea is controlled the same way as input with value and onChange.',
-                code: `const [msg, setMsg] = useState("");\n<textarea value={msg} onChange={(e) => setMsg(e.target.value)} />`,
-                exercise: 'Build a feedback textarea with live character count.',
-                hint: 'Use msg.length.'
-            }, {
-                type: 'lesson',
-                section: 'forms',
-                title: 'React Select',
-                explain: 'Use select with value/onChange to keep selected option in state.',
-                code: `const [role, setRole] = useState("user");\n<select value={role} onChange={(e) => setRole(e.target.value)}>\n  <option value="user">User</option>\n  <option value="admin">Admin</option>\n</select>`,
-                exercise: 'Create language selector (EN/AR/FR).',
-                hint: 'Store selected option in state.'
-            }, {
-                type: 'lesson',
-                section: 'forms',
-                title: 'React Multiple Inputs',
-                explain: 'Use one state object for multiple fields and update by input name.',
-                code: `const [form, setForm] = useState({ email: "", password: "" });\nconst onChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });`,
-                exercise: 'Handle name + email + phone with one onChange handler.',
-                hint: 'Use computed property [e.target.name].'
-            }, {
-                type: 'lesson',
-                section: 'forms',
-                title: 'React Checkbox',
-                explain: 'Checkboxes are controlled with checked and onChange.',
-                code: `const [accepted, setAccepted] = useState(false);\n<input type="checkbox" checked={accepted} onChange={(e) => setAccepted(e.target.checked)} />`,
-                exercise: 'Disable submit button until checkbox is checked.',
-                hint: 'Use accepted state in button disabled prop.'
-            }, {
-                type: 'lesson',
-                section: 'forms',
-                title: 'React Radio',
-                explain: 'Radio buttons share same name; state tracks selected value.',
-                code: `const [plan, setPlan] = useState("basic");\n<input type="radio" value="basic" checked={plan === "basic"} onChange={(e) => setPlan(e.target.value)} />`,
-                exercise: 'Create radio options for payment method.',
-                hint: 'Compare state to each radio value.'
-            },
-
-            {
                 type: 'section',
-                title: 'Advanced React',
-                subtitle: 'Architecture, routing, styling, and performance',
-                section: 'advanced'
+                title: 'Routing',
+                subtitle: 'Building Single Page Apps',
+                section: 'routing'
             }, {
                 type: 'lesson',
-                section: 'advanced',
-                title: 'React Portals',
-                explain: 'Portals render children into a different DOM node, useful for modals.',
-                code: `return createPortal(<Modal />, document.getElementById("modal-root"));`,
-                exercise: 'Create modal using React Portal.',
-                hint: 'Use createPortal from react-dom.'
+                section: 'routing',
+                title: 'Understanding SPA',
+                explain: 'Single Page Apps load once, then JS displays content. No reloads. React Router watches URL and renders component. Fast!',
+                code: '// Traditional: /home â†’ reload, /about â†’ reload (SLOW)\n// SPA: /home â†’ show Home (instant), /about â†’ show About (instant)\n\nimport { BrowserRouter, Routes, Route } from "react-router-dom";\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <Routes>\n        <Route path="/" element={<Home />} />\n        <Route path="/about" element={<About />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}',
+                exercise: 'Explain why SPA navigation is faster.',
+                hint: 'What gets reloaded in each case?'
             }, {
                 type: 'lesson',
-                section: 'advanced',
-                title: 'React Suspense',
-                explain: 'Suspense shows fallback UI while lazy components are loading.',
-                code: `const Dashboard = React.lazy(() => import("./Dashboard"));\n<Suspense fallback={<p>Loading...</p>}><Dashboard /></Suspense>`,
-                exercise: 'Lazy-load one page with Suspense fallback.',
-                hint: 'Combine React.lazy + Suspense.'
+                section: 'routing',
+                title: 'Setting Up React Router',
+                explain: 'Install react-router-dom. Wrap with BrowserRouter. Define Routes. Use Link (no page reload).',
+                code: '// npm install react-router-dom\n\nimport { BrowserRouter, Routes, Route, Link } from "react-router-dom";\n\nfunction App() {\n  return (\n    <BrowserRouter>\n      <nav><Link to="/">Home</Link><Link to="/about">About</Link></nav>\n      <Routes>\n        <Route path="/" element={<Home />} />\n        <Route path="/about" element={<About />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}\n\nfunction Home() { return <h1>Home</h1>; }\nfunction About() { return <h1>About</h1>; }',
+                exercise: 'Create app with 3 routes and Link navigation.',
+                hint: 'npm install, then BrowserRouter, Routes, Route, Link.'
             }, {
                 type: 'lesson',
-                section: 'advanced',
-                title: 'React CSS Styling',
-                explain: 'You can style React with regular CSS files and className.',
-                code: `import "./App.css";\nreturn <h1 className="title">Styled</h1>;`,
-                exercise: 'Style a card component with external CSS file.',
-                hint: 'Use className="card".'
+                section: 'routing',
+                title: 'Dynamic Routes',
+                explain: 'Routes can have parameters like /user/:id. useParams() gets the parameter value.',
+                code: 'import { Routes, Route, useParams, Link } from "react-router-dom";\n\nfunction App() {\n  return (\n    <Routes>\n      <Route path="/" element={<UsersList />} />\n      <Route path="/user/:id" element={<UserDetail />} />\n    </Routes>\n  );\n}\n\nfunction UsersList() {\n  const users = [{id: 1, name: "Ahmed"}, {id: 2, name: "Sara"}];\n  return users.map(u => <Link key={u.id} to={"/user/" + u.id}>{u.name}</Link>);\n}\n\nfunction UserDetail() {\n  const { id } = useParams();\n  return <h1>User #{id}</h1>;\n}',
+                exercise: 'Create products route with :productId parameter.',
+                hint: 'Use useParams() to get parameter from URL.'
             }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'React CSS Modules',
-                explain: 'CSS Modules scope styles locally and prevent naming collisions.',
-                code: `import styles from "./Button.module.css";\n<button className={styles.primary}>Save</button>`,
-                exercise: 'Convert one component style to CSS Modules.',
-                hint: 'Filename must be *.module.css.'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'React CSS-in-JS',
-                explain: 'CSS-in-JS libraries define styles directly in components.',
-                code: `const Button = styled.button\`\n  background: #7c3aed;\n  color: white;\n\`;`,
-                exercise: 'Create one styled button component.',
-                hint: 'Try styled-components or emotion.'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'React Router',
-                explain: 'React Router enables client-side navigation between views.',
-                code: `<Routes>\n  <Route path="/" element={<Home />} />\n  <Route path="/about" element={<About />} />\n</Routes>`,
-                exercise: 'Set up Home and About routes.',
-                hint: 'Wrap app in BrowserRouter.'
-            }, {
-                type: 'lesson',
-                section: 'advanced',
-                title: 'React Transitions',
-                explain: 'Transitions improve UX by animating enter/exit states.',
-                code: `<CSSTransition in={open} timeout={300} classNames="fade" unmountOnExit>\n  <div>Animated</div>\n</CSSTransition>`,
-                exercise: 'Animate a panel opening/closing.',
-                hint: 'Use react-transition-group.'
-            },
-
-            {
                 type: 'section',
-                title: 'React Hooks',
-                subtitle: 'State and side-effects in function components',
-                section: 'hooks'
+                title: 'Performance & Optimization',
+                subtitle: 'Building Fast React Apps',
+                section: 'performance'
             }, {
                 type: 'lesson',
-                section: 'hooks',
-                title: 'What is Hooks?',
-                explain: 'Hooks let you use state and lifecycle features in function components.',
-                code: `function Counter() {\n  const [count, setCount] = useState(0);\n  return <button onClick={() => setCount(count + 1)}>{count}</button>;\n}`,
-                exercise: 'Explain why hooks replaced many class use cases.',
-                hint: 'Focus on simpler function components.'
+                section: 'performance',
+                title: 'Understanding Re-renders',
+                explain: 'Components re-render when props/state change. useMemo caches computed values to avoid expensive recalculations.',
+                code: 'import { useState, useMemo } from "react";\n\nfunction DataTable() {\n  const [data, setData] = useState([]);\n  const [sort, setSort] = useState("name");\n  \n  // Without useMemo: filter+sort every render (SLOW)\n  // const processed = data.filter(...).sort(...);\n  \n  // With useMemo: only when dependencies change  \n  const processed = useMemo(() => {\n    return data.filter(x => x).sort(x => x);\n  }, [data, sort]);\n  \n  return <table>{/* ... */}</table>;\n}',
+                exercise: 'Identify unnecessary re-renders in component.',
+                hint: 'Use console.log and React DevTools.'
             }, {
                 type: 'lesson',
-                section: 'hooks',
-                title: 'React useState',
-                explain: 'useState stores local component state and triggers rerender when updated.',
-                code: `const [open, setOpen] = useState(false);`,
-                exercise: 'Toggle menu open/closed with useState.',
-                hint: 'setOpen((prev) => !prev)'
+                section: 'performance',
+                title: 'useMemo Hook',
+                explain: 'useMemo caches expensive computation results. Only recomputes when dependencies change.',
+                code: 'const processed = useMemo(() => {\n  console.log("Computing...");\n  \n  let result = data.filter(item => item.name.includes(search));\n  result.sort((a, b) => (a[sortBy] > b[sortBy] ? 1 : -1));\n  \n  return result;\n}, [data, search, sortBy]);  // Recompute only if these change',
+                exercise: 'Use useMemo to optimize expensive computation.',
+                hint: 'Identify expensive work, wrap with useMemo.'
+            }, {
+                type: 'section',
+                title: 'Advanced State - useReducer',
+                subtitle: 'Complex State Management',
+                section: 'advanced-state'
             }, {
                 type: 'lesson',
-                section: 'hooks',
-                title: 'React useContext',
-                explain: 'useContext reads shared values from React Context without prop drilling.',
-                code: `const theme = useContext(ThemeContext);`,
-                exercise: 'Create ThemeContext and read current theme in child.',
-                hint: 'Wrap tree with Provider.'
+                section: 'advanced-state',
+                title: 'useReducer for Complex Logic',
+                explain: 'useState for simple state. useReducer for complex updates. Reducer specifies state transitions.',
+                code: 'import { useReducer } from "react";\n\nfunction reducer(state, action) {\n  switch(action.type) {\n    case "ADD": return [...state, action.payload];\n    case "REMOVE": return state.filter(t => t.id !== action.payload);\n    case "TOGGLE": return state.map(t => t.id === action.payload ? {...t, done: !t.done} : t);\n    default: return state;\n  }\n}\n\nconst [todos, dispatch] = useReducer(reducer, []);\n\ndispatch({ type: "ADD", payload: newTodo });\ndispatch({ type: "REMOVE", payload: id });',
+                exercise: 'Decide: useState or useReducer for 3 scenarios.',
+                hint: 'useState: simple. useReducer: complex interdependent state.'
+            }, {
+                type: 'section',
+                title: 'Complete Todo App Project',
+                subtitle: 'Building a Real Application',
+                section: 'project'
             }, {
                 type: 'lesson',
-                section: 'hooks',
-                title: 'React useRef',
-                explain: 'useRef stores mutable values and accesses DOM nodes without rerendering.',
-                code: `const inputRef = useRef(null);\ninputRef.current.focus();`,
-                exercise: 'Auto-focus an input on component mount.',
-                hint: 'Use ref attribute + useEffect.'
+                section: 'project',
+                title: 'Todo App - Full Example',
+                explain: 'This project combines: components, props, state, forms, lists, filtering. Build a complete working Todo app.',
+                code: 'import { useState, useMemo } from "react";\n\nfunction TodoApp() {\n  const [todos, setTodos] = useState([]);\n  const [input, setInput] = useState("");\n  const [filter, setFilter] = useState("all");\n  \n  const filtered = useMemo(() => {\n    if (filter === "active") return todos.filter(t => !t.done);\n    if (filter === "done") return todos.filter(t => t.done);\n    return todos;\n  }, [todos, filter]);\n  \n  return (\n    <div>\n      <input value={input} onChange={(e) => setInput(e.target.value)} />\n      <button onClick={() => {setTodos([...todos, {id: Date.now(), text: input, done: false}]); setInput("");}}>Add</button>\n      <div>{filtered.map(t => <TodoItem key={t.id} todo={t} />)}</div>\n    </div>\n  );\n}',
+                exercise: 'Build Todo app: add, delete, toggle, filter.',
+                hint: 'Store in localStorage using JSON.stringify/parse.'
             }, {
-                type: 'lesson',
-                section: 'hooks',
-                title: 'React useReducer',
-                explain: 'useReducer handles complex state transitions with reducer functions.',
-                code: `const [state, dispatch] = useReducer(reducer, { count: 0 });\ndispatch({ type: "inc" });`,
-                exercise: 'Build counter reducer with increment/decrement/reset.',
-                hint: 'Switch on action.type.'
-            }, {
-                type: 'lesson',
-                section: 'hooks',
-                title: 'React useCallback',
-                explain: 'useCallback memoizes function references to avoid unnecessary re-renders.',
-                code: `const onSave = useCallback(() => {\n  // save logic\n}, [id]);`,
-                exercise: 'Memoize click handler passed to child component.',
-                hint: 'Wrap handler with useCallback.'
-            }, {
-                type: 'lesson',
-                section: 'hooks',
-                title: 'React useMemo',
-                explain: 'useMemo memoizes expensive computed values.',
-                code: `const filtered = useMemo(() => items.filter(i => i.active), [items]);`,
-                exercise: 'Memoize sorted list from large dataset.',
-                hint: 'Use useMemo for derived values.'
-            }, {
-                type: 'lesson',
-                section: 'hooks',
-                title: 'React Custom Hooks',
-                explain: 'Custom hooks extract reusable logic into plain functions starting with use.',
-                code: `function useToggle(initial = false) {\n  const [value, setValue] = useState(initial);\n  const toggle = () => setValue(v => !v);\n  return [value, toggle];\n}`,
-                exercise: 'Build custom hook useFetch(url).',
-                hint: 'Return { data, loading, error }.'
-            },
-
-            {
                 type: 'challenge',
-                title: 'React Final Challenge',
-                subtitle: 'Build a mini product dashboard',
-                exercise: 'Create a React app with Router, one form, one list, one API fetch, and at least 2 hooks (useState + one more).',
-                hint: 'Suggested pages: Home, Products, Settings.'
+                title: 'Final Challenge',
+                subtitle: 'Advanced Todo App Project',
+                exercise: 'Create enhanced Todo app with: add/delete/toggle, filter by status, categories/tags, priority levels, due dates, local storage, dark/light theme (Context), animations.',
+                hint: 'Context for theme, useReducer for state, useMemo for filtering, localStorage for persistence.'
             }, {
                 type: 'final',
-                title: 'React Course Completed 🎉',
-                subtitle: 'You covered core React + Hooks + routing/styling patterns',
+                title: 'React Mastery Complete!',
+                subtitle: 'You have learned React from Basics to Advanced!',
                 content: [
-                    'You learned all key React tutorial topics listed in this course',
-                    'You practiced JSX, components, forms, events, and conditional rendering',
-                    'You explored advanced topics: Suspense, Portals, Router, and transitions',
-                    'You now understand hooks from useState to custom hooks'
+                    'Components & JSX - Built reusable UI pieces',
+                    'Props - Passed data between components',
+                    'State - Made interactive applications',
+                    'Conditional & List Rendering - Dynamic UIs',
+                    'Forms & Validation - Handled user input',
+                    'Context API - Shared global data',
+                    'Routing - Built single-page apps',
+                    'Performance - Optimized with useMemo',
+                    'useReducer - Complex state management',
+                    'Real Projects - Built Todo application',
+                    '',
+                    'Next Steps: Build more projects, explore libraries (Next.js, Redux, TailwindCSS), contribute to open source!'
                 ]
             }
         ];
-
         const container = document.getElementById('slidesContainer');
         const prevBtn = document.getElementById('prevBtn');
         const nextBtn = document.getElementById('nextBtn');
@@ -1240,7 +1192,157 @@
                     value
                 });
                 return key;
-            };
+   ,            'Complete React Course for Beginners': 'Ø¯ÙˆØ±Ø© React Ø§Ù„Ø´Ø§Ù…Ù„Ø© Ù„Ù„Ù…Ø¨ØªØ¯Ø¦ÙŠÙ†',
+            'Master React from Basics to Advanced Patterns': 'Ø£ØªÙ‚Ù† React Ù…Ù† Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ§Øª Ø¥Ù„Ù‰ Ø§Ù„Ø£Ù†Ù…Ø§Ø· Ø§Ù„Ù…ØªÙ‚Ø¯Ù…Ø©',
+            'Introduction & Setup': 'Ø§Ù„Ù…Ù‚Ø¯Ù…Ø© ÙˆØ§Ù„Ø¥Ø¹Ø¯Ø§Ø¯',
+            'Understanding React and Getting Started': 'ÙÙ‡Ù… React ÙˆØ§Ù„Ø¨Ø¯Ø¡ Ø¨Ù‡',
+            'What is React?': 'Ù…Ø§ Ù‡Ùˆ ReactØŸ',
+            'React is a JavaScript library created by Facebook for building user interfaces. It uses a component-based architecture where UI is broken into small, reusable pieces.': 'React Ù‡ÙŠ Ù…ÙƒØªØ¨Ø© JavaScript Ø£Ù†Ø´Ø£ØªÙ‡Ø§ Facebook Ù„Ø¨Ù†Ø§Ø¡ ÙˆØ§Ø¬Ù‡Ø§Øª Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…. ØªØ³ØªØ®Ø¯Ù… Ø¨Ù†ÙŠØ© ØªØ¹ØªÙ…Ø¯ Ø¹Ù„Ù‰ Ø§Ù„Ù…ÙƒÙˆÙ†Ø§Øª Ø­ÙŠØ« ØªÙÙ‚Ø³Ù‘Ù… Ø§Ù„ÙˆØ§Ø¬Ù‡Ø© Ø¥Ù„Ù‰ Ù‚Ø·Ø¹ ØµØºÙŠØ±Ø© ÙˆÙ‚Ø§Ø¨Ù„Ø© Ù„Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù….',
+            'Explain the difference between declarative and imperative programming.': 'Ø§Ø´Ø±Ø­ Ø§Ù„ÙØ±Ù‚ Ø¨ÙŠÙ† Ø§Ù„Ø¨Ø±Ù…Ø¬Ø© Ø§Ù„Ø¥Ø¹Ù„Ø§Ù†ÙŠØ© ÙˆØ§Ù„Ø­ØªÙ…ÙŠØ©.',
+            'Declarative: describe WHAT you want. Imperative: describe HOW to do it.': 'Ø§Ù„Ø¥Ø¹Ù„Ø§Ù†ÙŠØ©: ØµÙÙ Ù…Ø§Ø°Ø§ ØªØ±ÙŠØ¯. Ø§Ù„Ø­ØªÙ…ÙŠØ©: ØµÙÙ ÙƒÙŠÙÙŠØ© Ø§Ù„Ù‚ÙŠØ§Ù… Ø¨Ø°Ù„Ùƒ.',
+            'Why React Matters': 'Ù„Ù…Ø§Ø°Ø§ React Ù…Ù‡Ù…Ø©',
+            'React is crucial in modern web development. Companies like Netflix, Instagram, Uber, and Airbnb use React. React skills make you highly employable.': 'React Ø­Ø§Ø³Ù…Ø© ÙÙŠ ØªØ·ÙˆÙŠØ± Ø§Ù„ÙˆÙŠØ¨ Ø§Ù„Ø­Ø¯ÙŠØ«. Ø´Ø±ÙƒØ§Øª Ù…Ø«Ù„ Netflix ÙˆInstagram ÙˆUber ÙˆAirbnb ØªØ³ØªØ®Ø¯Ù… React. Ù…Ù‡Ø§Ø±Ø§Øª React ØªØ¬Ø¹Ù„Ùƒ Ù…Ø·Ù„ÙˆØ¨Ù‹Ø§ Ø¬Ø¯Ù‹Ø§ ÙÙŠ Ø§Ù„Ø³ÙˆÙ‚.',
+            'Research 3 companies using React.': 'Ø§Ø¨Ø­Ø« Ø¹Ù† 3 Ø´Ø±ÙƒØ§Øª ØªØ³ØªØ®Ø¯Ù… React.',
+            'Check job postings and company tech stacks.': 'ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ÙˆØ¸Ø§Ø¦Ù Ø§Ù„Ù…Ø¹Ø±ÙˆØ¶Ø© ÙˆØ£ÙƒÙˆØ§Ù… Ø§Ù„ØªÙƒÙ†ÙˆÙ„ÙˆØ¬ÙŠØ§.',
+            'Setting Up Your Environment': 'Ø¥Ø¹Ø¯Ø§Ø¯ Ø¨ÙŠØ¦ØªÙƒ',
+            'Before coding, install Node.js (includes npm). Node.js is a JavaScript runtime. npm is a package manager.': 'Ù‚Ø¨Ù„ Ø§Ù„Ø¨Ø¯Ø¡ Ø¨Ø§Ù„Ø¨Ø±Ù…Ø¬Ø©ØŒ Ø«Ø¨Ù‘Øª Node.js (ÙŠØªØ¶Ù…Ù† npm). Node.js Ù‡ÙŠ Ø¨ÙŠØ¦Ø© ØªØ´ØºÙŠÙ„ JavaScript. npm Ù‡Ùˆ Ù…Ø¯ÙŠØ± Ø­Ø²Ù….',
+            'Install Node.js and verify with node --version.': 'Ø«Ø¨Ù‘Øª Node.js ØªØ­Ù‚Ù‚ Ù…Ù† Ø§Ù„ØªØ«Ø¨ÙŠØª Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… node --version.',
+            'Download from nodejs.org. Choose LTS version.': 'Ø­Ù…Ù‘Ù„ Ù…Ù† nodejs.org ÙˆØ§Ø®ØªØ± Ø¥ØµØ¯Ø§Ø±Ø© LTS.',
+            'Your First React App': 'ØªØ·Ø¨ÙŠÙ‚Ùƒ Ø§Ù„Ø£ÙˆÙ„ ÙÙŠ React',
+            'The App.jsx file is your first component. It is a JavaScript function that returns JSX. When you save, the browser auto-reloads.': 'Ù…Ù„Ù App.jsx Ù‡Ùˆ Ù…ÙƒÙˆÙ†Ùƒ Ø§Ù„Ø£ÙˆÙ„. Ø¥Ù†Ù‡Ø§ Ø¯Ø§Ù„Ø© JavaScript ØªÙØ±Ø¬Ø¹ JSX. Ø¹Ù†Ø¯ Ø§Ù„Ø­ÙØ¸ØŒ ÙŠØ¹ÙŠØ¯ Ø§Ù„Ù…ØªØµÙØ­ Ø§Ù„ØªØ­Ø¯ÙŠØ« ØªÙ„Ù‚Ø§Ø¦ÙŠÙ‹Ø§.',
+            'Modify App.jsx: change the title and add a description.': 'Ø¹Ø¯Ù‘Ù„ App.jsx: ØºÙŠÙ‘Ø± Ø§Ù„Ø¹Ù†ÙˆØ§Ù† ÙˆØ£Ø¶Ù ÙˆØµÙÙ‹Ø§.',
+            'Edit the tags. Save and see changes instantly.': 'Ø¹Ø¯Ù‘Ù„ Ø§Ù„ÙˆØ³ÙˆÙ…. Ø§Ø­ÙØ¸ ÙˆØ´Ø§Ù‡Ø¯ Ø§Ù„ØªØºÙŠÙŠØ±Ø§Øª ÙÙˆØ±Ù‹Ø§.',
+            'Components & JSX': 'Ø§Ù„Ù…ÙƒÙˆÙ†Ø§Øª ÙˆJSX',
+            'The Building Blocks of React': 'Ù„Ø¨Ù†Ø§Øª React Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ©',
+            'What Are Components?': 'Ù…Ø§ Ù‡ÙŠ Ø§Ù„Ù…ÙƒÙˆÙ†Ø§ØªØŸ',
+            'Components are reusable pieces of UI. Think of them like LEGO blocks. Each component is a function that returns JSX.': 'Ø§Ù„Ù…ÙƒÙˆÙ†Ø§Øª Ù‡ÙŠ Ù‚Ø·Ø¹ ÙˆØ§Ø¬Ù‡Ø© Ù…Ø³ØªØ®Ø¯Ù… Ù‚Ø§Ø¨Ù„Ø© Ù„Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø§Ø³ØªØ®Ø¯Ø§Ù…. ÙÙƒÙ‘Ø± ÙÙŠÙ‡Ø§ ÙƒÙ‚Ø·Ø¹ LEGO. ÙƒÙ„ Ù…ÙƒÙˆÙ† Ù‡Ùˆ Ø¯Ø§Ù„Ø© ØªÙØ±Ø¬Ø¹ JSX.',
+            'Create 3 components: Header, Main, Footer.': 'Ø£Ù†Ø´Ø¦ 3 Ù…ÙƒÙˆÙ†Ø§Øª: Header ÙˆMain ÙˆFooter.',
+            'Each is a function with capital letter.': 'ÙƒÙ„ ÙˆØ§Ø­Ø¯ Ù‡Ùˆ Ø¯Ø§Ù„Ø© Ø¨Ø§Ø³Ù… ÙŠØ¨Ø¯Ø£ Ø¨Ø­Ø±Ù ÙƒØ¨ÙŠØ±.',
+            'JSX Basics': 'Ø£Ø³Ø§Ø³ÙŠØ§Øª JSX',
+            'JSX looks like HTML but is JavaScript. Use JavaScript expressions in {} curly braces. Must return single parent element.': 'JSX ØªØ¨Ø¯Ùˆ Ù…Ø«Ù„ HTML Ù„ÙƒÙ†Ù‡Ø§ JavaScript. Ø§Ø³ØªØ®Ø¯Ù… ØªØ¹Ø§Ø¨ÙŠØ± JavaScript Ø¯Ø§Ø®Ù„ {} Ø£Ù‚ÙˆØ§Ø³ Ù…Ø¹Ù‚ÙˆÙØ©. ÙŠØ¬Ø¨ Ø£Ù† ØªÙØ±Ø¬Ø¹ Ø¹Ù†ØµØ±Ù‹Ø§ Ø£Ø¨Ù‹Ø§ ÙˆØ§Ø­Ø¯Ù‹Ø§.',
+            'Write JSX with variables and className.': 'Ø§ÙƒØªØ¨ JSX Ù…Ø¹ Ù…ØªØºÙŠØ±Ø§Øª ÙˆØ§Ø³ØªØ®Ø¯Ù… className.',
+            'Use {} for expressions. Use className not class.': 'Ø§Ø³ØªØ®Ø¯Ù… {} Ù„Ù„ØªØ¹Ø§Ø¨ÙŠØ±. Ø§Ø³ØªØ®Ø¯Ù… className ÙˆÙ„ÙŠØ³ class.',
+            'Styling in React': 'Ø§Ù„ØªÙ†Ø³ÙŠÙ‚ ÙÙŠ React',
+            'React offers: CSS files (common), inline styles, CSS Modules, or CSS-in-JS. Inline styles use camelCase.': 'ØªÙˆÙØ± React Ø®ÙŠØ§Ø±Ø§Øª: Ù…Ù„ÙØ§Øª CSS (Ø§Ù„Ø´Ø§Ø¦Ø¹Ø©) Ø£Ùˆ Ø£Ù†Ù…Ø§Ø· Ù…Ø¶Ù…Ù†Ø© Ø£Ùˆ CSS Modules Ø£Ùˆ CSS-in-JS. Ø§Ù„Ø£Ù†Ù…Ø§Ø· Ø§Ù„Ù…Ø¶Ù…Ù†Ø© ØªØ³ØªØ®Ø¯Ù… camelCase.',
+            'Create component with CSS and inline styles.': 'Ø£Ù†Ø´Ø¦ Ù…ÙƒÙˆÙ†Ù‹Ø§ Ù…Ø¹ CSS ÙˆØ§Ù„Ø£Ù†Ù…Ø§Ø· Ø§Ù„Ù…Ø¶Ù…Ù†Ø©.',
+            'Import CSS at top. Use camelCase for inline.': 'Ø§Ø³ØªÙˆØ±Ø¯ CSS ÙÙŠ Ø§Ù„Ø£Ø¹Ù„Ù‰. Ø§Ø³ØªØ®Ø¯Ù… camelCase Ù„Ù„Ø£Ù†Ù…Ø§Ø· Ø§Ù„Ù…Ø¶Ù…Ù†Ø©.',
+            'Props - Passing Data': 'Props - ØªÙ…Ø±ÙŠØ± Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª',
+            'Communication Between Components': 'Ø§Ù„ØªÙˆØ§ØµÙ„ Ø¨ÙŠÙ† Ø§Ù„Ù…ÙƒÙˆÙ†Ø§Øª',
+            'Understanding Props': 'ÙÙ‡Ù… Props',
+            'Props pass data from parent to child. Props are read-only. Child cannot modify them. One-way flow makes data predictable.': 'ØªÙ…Ø±Ø± Props Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ù…Ù† Ø§Ù„Ø£Ø¨ Ø¥Ù„Ù‰ Ø§Ù„Ø§Ø¨Ù†. Props Ù„Ù„Ù‚Ø±Ø§Ø¡Ø© ÙÙ‚Ø·. Ø§Ù„Ø§Ø¨Ù† Ù„Ø§ ÙŠÙ…ÙƒÙ†Ù‡ ØªØ¹Ø¯ÙŠÙ„Ù‡Ø§. Ø§Ù„ØªØ¯ÙÙ‚ Ø£Ø­Ø§Ø¯ÙŠ Ø§Ù„Ø§ØªØ¬Ø§Ù‡ ÙŠØ¬Ø¹Ù„ Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª ÙŠÙ…ÙƒÙ† Ø§Ù„ØªÙ†Ø¨Ø¤ Ø¨Ù‡Ø§.',
+            'Create component with name, age, city props.': 'Ø£Ù†Ø´Ø¦ Ù…ÙƒÙˆÙ†Ù‹Ø§ Ù…Ø¹ props Ù„Ù„Ø§Ø³Ù… ÙˆØ§Ù„Ø¹Ù…Ø± ÙˆØ§Ù„Ù…Ø¯ÙŠÙ†Ø©.',
+            'Use <Card name="X" age="Y" city="Z" />': 'Ø§Ø³ØªØ®Ø¯Ù… <Card name="X" age="Y" city="Z" />',
+            'Props Destructuring': 'ØªÙÙƒÙŠÙƒ Props',
+            'Destructure props in parameters for cleaner code. Shows exactly what props a component needs.': 'ÙÙƒÙ‘Ùƒ props ÙÙŠ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„Ø§Øª Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ ÙƒÙˆØ¯ Ø£Ù†Ø¸Ù. ÙŠÙˆØ¶Ø­ Ø¨Ø§Ù„Ø¶Ø¨Ø· Ù…Ø§ ÙŠØ­ØªØ§Ø¬Ù‡ Ø§Ù„Ù…ÙƒÙˆÙ† Ù…Ù† props.',
+            'Rewrite component with destructuring.': 'Ø£Ø¹Ø¯ ÙƒØªØ§Ø¨Ø© Ø§Ù„Ù…ÙƒÙˆÙ† Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„ØªÙÙƒÙŠÙƒ.',
+            'function Component({prop1, prop2}) { ... }': 'function Component({prop1, prop2}) { ... }',
+            'Special Prop: Children': 'Props Ø§Ù„Ø®Ø§Øµ: Children',
+            'children receives content between opening/closing tags. Allows creating wrapper components.': 'ÙŠØ³ØªÙ‚Ø¨Ù„ children Ø§Ù„Ù…Ø­ØªÙˆÙ‰ Ø¨ÙŠÙ† ÙˆØ³ÙˆÙ… Ø§Ù„ÙØªØ­ ÙˆØ§Ù„Ø¥ØºÙ„Ø§Ù‚. ÙŠØ³Ù…Ø­ Ø¨Ø¥Ù†Ø´Ø§Ø¡ Ù…ÙƒÙˆÙ†Ø§Øª wrapper.',
+            'Create wrapper component (Box, Container).': 'Ø£Ù†Ø´Ø¦ Ù…ÙƒÙˆÙ† wrapper (Box Ø£Ùˆ Container).',
+            'Render {children} inside template.': 'Ø§Ø¹Ø±Ø¶ {children} Ø¯Ø§Ø®Ù„ Ø§Ù„Ù‚Ø§Ù„Ø¨.',
+            'Passing Functions as Props': 'ØªÙ…Ø±ÙŠØ± Ø§Ù„Ø¯ÙˆØ§Ù„ ÙƒÙ€ Props',
+            'Pass functions to children as event handlers. Child calls function to communicate back to parent.': 'Ù…Ø±Ù‘Ø± Ø§Ù„Ø¯ÙˆØ§Ù„ Ù„Ù„Ù…ÙƒÙˆÙ†Ø§Øª Ø§Ù„ÙØ±Ø¹ÙŠØ© ÙƒÙ…Ø¹Ø§Ù„Ø¬Ø§Øª Ø£Ø­Ø¯Ø§Ø«. ÙŠØ³ØªØ¯Ø¹ÙŠ Ø§Ù„Ø§Ø¨Ù† Ø§Ù„Ø¯Ø§Ù„Ø© Ù„Ù„ØªÙˆØ§ØµÙ„ Ù…Ø¹ Ø§Ù„Ø£Ø¨.',
+            'Create button that calls function from parent.': 'Ø£Ù†Ø´Ø¦ Ø²Ø±Ù‹Ø§ ÙŠØ³ØªØ¯Ø¹ÙŠ Ø¯Ø§Ù„Ø© Ù…Ù† Ø§Ù„Ø£Ø¨.',
+            'Destructure function from props.': 'ÙÙƒÙ‘Ùƒ Ø§Ù„Ø¯Ø§Ù„Ø© Ù…Ù† props.',
+            'Rendering - Dynamic UIs': 'Ø§Ù„Ø¹Ø±Ø¶ - ÙˆØ§Ø¬Ù‡Ø§Øª Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠØ©',
+            'Conditionals & Lists': 'Ø§Ù„Ø´Ø±ÙˆØ· ÙˆØ§Ù„Ù‚ÙˆØ§Ø¦Ù…',
+            'Conditional Rendering': 'Ø§Ù„Ø¹Ø±Ø¶ Ø§Ù„Ø´Ø±Ø·ÙŠ',
+            'Show/hide elements based on conditions. Use ternary, &&, or if/else. Key to dynamic interfaces.': 'Ø§Ø¹Ø±Ø¶/Ø£Ø®ÙÙ Ø§Ù„Ø¹Ù†Ø§ØµØ± Ø¨Ù†Ø§Ø¡Ù‹ Ø¹Ù„Ù‰ Ø§Ù„Ø´Ø±ÙˆØ·. Ø§Ø³ØªØ®Ø¯Ù… Ø§Ù„Ø¹Ø§Ù…Ù„ Ø§Ù„Ø«Ù„Ø§Ø«ÙŠ Ø£Ùˆ && Ø£Ùˆ if/else. Ù…ÙØªØ§Ø­ Ø§Ù„ÙˆØ§Ø¬Ù‡Ø§Øª Ø§Ù„Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠØ©.',
+            'Create component showing different content by role.': 'Ø£Ù†Ø´Ø¦ Ù…ÙƒÙˆÙ†Ù‹Ø§ ÙŠØ¹Ø±Ø¶ Ù…Ø­ØªÙˆÙ‰ Ù…Ø®ØªÙ„ÙÙ‹Ø§ Ø­Ø³Ø¨ Ø§Ù„Ø¯ÙˆØ±.',
+            'Use: {role === "admin" ? <AdminView /> : <UserView />}': 'Ø§Ø³ØªØ®Ø¯Ù…: {role === "admin" ? <AdminView /> : <UserView />}',
+            'List Rendering with map()': 'Ø¹Ø±Ø¶ Ø§Ù„Ù‚ÙˆØ§Ø¦Ù… Ù…Ø¹ map()',
+            'Render arrays using map(). Each item needs unique key prop. Never use index as key.': 'Ø§Ø¹Ø±Ø¶ Ø§Ù„Ù…ØµÙÙˆÙØ§Øª Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… map(). ÙƒÙ„ Ø¹Ù†ØµØ± ÙŠØ­ØªØ§Ø¬ Ù…ÙØªØ§Ø­Ù‹Ø§ ÙØ±ÙŠØ¯Ù‹Ø§. Ù„Ø§ ØªØ³ØªØ®Ø¯Ù… Ø§Ù„ÙÙ‡Ø±Ø³ Ø£Ø¨Ø¯Ù‹Ø§.',
+            'Render list of 5 items using map().': 'Ø§Ø¹Ø±Ø¶ Ù‚Ø§Ø¦Ù…Ø© Ù…Ù† 5 Ø¹Ù†Ø§ØµØ± Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… map().',
+            'Use: {array.map((item) => <Component key={item.id} />)}': 'Ø§Ø³ØªØ®Ø¯Ù…: {array.map((item) => <Component key={item.id} />)}',
+            'Key Prop Explained': 'Ø´Ø±Ø­ Ù…ÙØªØ§Ø­ Prop',
+            'Key helps React identify changed items. Use unique IDs. Never use index. Without proper keys, bugs occur when reordering.': 'ÙŠØ³Ø§Ø¹Ø¯ Key Ø§Ù„Ù…ÙØªØ§Ø­ React Ø¹Ù„Ù‰ ØªØ­Ø¯ÙŠØ¯ Ø§Ù„Ø¹Ù†Ø§ØµØ± Ø§Ù„Ù…ØªØºÙŠØ±Ø©. Ø§Ø³ØªØ®Ø¯Ù… Ù…Ø¹Ø±Ù‘ÙØ§Øª ÙØ±ÙŠØ¯Ø©. Ù„Ø§ ØªØ³ØªØ®Ø¯Ù… Ø§Ù„ÙÙ‡Ø±Ø³. Ø¨Ø¯ÙˆÙ† Ù…ÙØ§ØªÙŠØ­ ØµØ­ÙŠØ­Ø© ØªØ­Ø¯Ø« Ø£Ø®Ø·Ø§Ø¡ Ø¹Ù†Ø¯ Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„ØªØ±ØªÙŠØ¨.',
+            'Identify why using index as key is problematic.': 'Ø­Ø¯Ù‘Ø¯ Ù„Ù…Ø§Ø°Ø§ Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„ÙÙ‡Ø±Ø³ ÙƒÙ…ÙØªØ§Ø­ Ù…Ø´ÙƒÙ„Ø©.',
+            'Think: what if you delete the first item?': 'ÙÙƒÙ‘Ø±: Ù…Ø§Ø°Ø§ Ø¥Ø°Ø§ Ø­Ø°ÙØª Ø§Ù„Ø¹Ù†ØµØ± Ø§Ù„Ø£ÙˆÙ„ØŸ',
+            'State - Making Apps Interactive': 'Ø§Ù„Ø­Ø§Ù„Ø© - Ø¬Ø¹Ù„ Ø§Ù„ØªØ·Ø¨ÙŠÙ‚Ø§Øª ØªÙØ§Ø¹Ù„ÙŠØ©',
+            'useState Hook for Component State': 'useState Hook Ù„Ø­Ø§Ù„Ø© Ø§Ù„Ù…ÙƒÙˆÙ†',
+            'What is State?': 'Ù…Ø§ Ù‡ÙŠ Ø§Ù„Ø­Ø§Ù„Ø©ØŸ',
+            'State is data managed internally by a component. Unlike props (from parent), state is created within component. When state changes, React re-renders.': 'Ø§Ù„Ø­Ø§Ù„Ø© Ù‡ÙŠ Ø¨ÙŠØ§Ù†Ø§Øª ØªÙØ¯Ø§Ø± Ø¯Ø§Ø®Ù„ Ø§Ù„Ù…ÙƒÙˆÙ†. Ø¹Ù„Ù‰ Ø¹ÙƒØ³ props (Ø§Ù„ØªÙŠ ØªØ£ØªÙŠ Ù…Ù† Ø§Ù„Ø£Ø¨)ØŒ ØªÙÙ†Ø´Ø£ Ø§Ù„Ø­Ø§Ù„Ø© Ø¯Ø§Ø®Ù„ Ø§Ù„Ù…ÙƒÙˆÙ†. Ø¹Ù†Ø¯ ØªØºÙŠÙŠØ± Ø§Ù„Ø­Ø§Ù„Ø© ÙŠØ¹ÙŠØ¯ React Ø§Ù„Ø¹Ø±Ø¶.',
+            'Explain: What happens when state changes?': 'Ø§Ø´Ø±Ø­: Ù…Ø§Ø°Ø§ ÙŠØ­Ø¯Ø« Ø¹Ù†Ø¯ ØªØºÙŠÙŠØ± Ø§Ù„Ø­Ø§Ù„Ø©ØŸ',
+            'State change â†’ Re-render â†’ New UI': 'ØªØºÙŠÙŠØ± Ø§Ù„Ø­Ø§Ù„Ø© â†’ Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø¹Ø±Ø¶ â†’ ÙˆØ§Ø¬Ù‡Ø© Ø¬Ø¯ÙŠØ¯Ø©',
+            'Introduction to useState': 'Ù…Ù‚Ø¯Ù…Ø© Ø¥Ù„Ù‰ useState',
+            'useState is a React Hook. Returns [currentValue, functionToUpdate]. Call setState to update state and trigger re-render.': 'useState Ù‡ÙŠ React Hook. ØªÙØ±Ø¬Ø¹ [currentValue ÙˆfunctionToUpdate]. Ø§Ø³ØªØ¯Ø¹Ù setState Ù„ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø­Ø§Ù„Ø© ÙˆØªØ´ØºÙŠÙ„ Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø¹Ø±Ø¶.',
+            'Create component using useState to toggle boolean.': 'Ø£Ù†Ø´Ø¦ Ù…ÙƒÙˆÙ†Ù‹Ø§ Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… useState Ù„ØªØ¨Ø¯ÙŠÙ„ Ù‚ÙŠÙ…Ø© Ù…Ù†Ø·Ù‚ÙŠØ©.',
+            'const [isOpen, setIsOpen] = useState(false);': 'const [isOpen, setIsOpen] = useState(false);',
+            'Updating State with Inputs': 'ØªØ­Ø¯ÙŠØ« Ø§Ù„Ø­Ø§Ù„Ø© Ù…Ù† Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª',
+            'Connect inputs to state using value and onChange. value displays current state. onChange updates state. "Controlled component".': 'Ø§Ø±Ø¨Ø· Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª Ø¨Ø§Ù„Ø­Ø§Ù„Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… value ÙˆonChange. ÙŠØ¹Ø±Ø¶ value Ø§Ù„Ø­Ø§Ù„Ø© Ø§Ù„Ø­Ø§Ù„ÙŠØ©. ÙŠØ­Ø¯Ù‘Ø« onChange Ø§Ù„Ø­Ø§Ù„Ø©. "Ù…ÙƒÙˆÙ† Ù…ÙØªØ­ÙƒÙŽÙ‘Ù… Ø¨Ù‡".',
+            'Create form input displaying real-time user input.': 'Ø£Ù†Ø´Ø¦ Ù…Ø¯Ø®Ù„ Ù†Ù…ÙˆØ°Ø¬ ÙŠØ¹Ø±Ø¶ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù… ÙÙŠ Ø§Ù„ÙˆÙ‚Øª Ø§Ù„ÙØ¹Ù„ÙŠ.',
+            'Use value={state} and onChange={(e) => setState(e.target.value)}': 'Ø§Ø³ØªØ®Ø¯Ù… value={state} ÙˆonChange={(e) => setState(e.target.value)}',
+            'Working with Object State': 'Ø§Ù„Ø¹Ù…Ù„ Ù…Ø¹ Ø­Ø§Ù„Ø© Ø§Ù„ÙƒØ§Ø¦Ù†',
+            'State can be objects or arrays. When updating, create new object. Use spread operator. Prevents bugs.': 'ÙŠÙ…ÙƒÙ† Ø£Ù† ØªÙƒÙˆÙ† Ø§Ù„Ø­Ø§Ù„Ø© ÙƒØ§Ø¦Ù†Ø§Øª Ø£Ùˆ Ù…ØµÙÙˆÙØ§Øª. Ø¹Ù†Ø¯ Ø§Ù„ØªØ­Ø¯ÙŠØ« Ø£Ù†Ø´Ø¦ ÙƒØ§Ø¦Ù†Ù‹Ø§ Ø¬Ø¯ÙŠØ¯Ù‹Ø§. Ø§Ø³ØªØ®Ø¯Ù… Ø¹Ø§Ù…Ù„ Ø§Ù„Ø§Ù†ØªØ´Ø§Ø±. ÙŠÙ…Ù†Ø¹ Ø§Ù„Ø£Ø®Ø·Ø§Ø¡.',
+            'Create object state with multiple properties.': 'Ø£Ù†Ø´Ø¦ Ø­Ø§Ù„Ø© ÙƒØ§Ø¦Ù† Ù…Ø¹ Ø®ØµØ§Ø¦Øµ Ù…ØªØ¹Ø¯Ø¯Ø©.',
+            'Use: {...state, property: newValue}': 'Ø§Ø³ØªØ®Ø¯Ù…: {...state, property: newValue}',
+            'Working with Array State': 'Ø§Ù„Ø¹Ù…Ù„ Ù…Ø¹ Ø­Ø§Ù„Ø© Ø§Ù„Ù…ØµÙÙˆÙØ©',
+            'Arrays need special handling. Never push() directly. Create new arrays with spread, filter(), or map().': 'ØªØ­ØªØ§Ø¬ Ø§Ù„Ù…ØµÙÙˆÙØ§Øª Ø¥Ù„Ù‰ Ù…Ø¹Ø§Ù„Ø¬Ø© Ø®Ø§ØµØ©. Ù„Ø§ ØªØ³ØªØ®Ø¯Ù… push() Ù…Ø¨Ø§Ø´Ø±Ø©. Ø£Ù†Ø´Ø¦ Ù…ØµÙÙˆÙØ§Øª Ø¬Ø¯ÙŠØ¯Ø© Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… Ø§Ù„Ø§Ù†ØªØ´Ø§Ø± Ø£Ùˆ filter() Ø£Ùˆ map().',
+            'Create array state with add, remove, modify.': 'Ø£Ù†Ø´Ø¦ Ø­Ø§Ù„Ø© Ù…ØµÙÙˆÙØ© Ù…Ø¹ Ø¥Ø¶Ø§ÙØ© ÙˆØ­Ø°Ù ÙˆØªØ¹Ø¯ÙŠÙ„.',
+            'Add: [...array, item]. Remove: filter(). Update: map()': 'Ø¥Ø¶Ø§ÙØ©: [...array, item]. Ø­Ø°Ù: filter(). ØªØ­Ø¯ÙŠØ«: map()',
+            'Context API': 'Context API',
+            'Avoiding Prop Drilling': 'ØªØ¬Ù†Ø¨ ØªÙ…Ø±ÙŠØ± Props Ø¹Ø¨Ø± Ø§Ù„Ù…Ø³ØªÙˆÙŠØ§Øª',
+            'The Prop Drilling Problem': 'Ù…Ø´ÙƒÙ„Ø© ØªÙ…Ø±ÙŠØ± Props Ø¹Ø¨Ø± Ø§Ù„Ù…Ø³ØªÙˆÙŠØ§Øª',
+            'Prop drilling passes props through many layers. Example: App â†’ Layout â†’ Sidebar â†’ Menu â†’ Button. Messy! Context solves this.': 'ÙŠÙ…Ø±Ù‘ ØªÙ…Ø±ÙŠØ± Props Ø¹Ø¨Ø± Ø§Ù„Ù…Ø³ØªÙˆÙŠØ§Øª Ø§Ù„Ø¨ÙŠØ§Ù†Ø§Øª Ø¹Ø¨Ø± Ø·Ø¨Ù‚Ø§Øª ÙƒØ«ÙŠØ±Ø©. Ù…Ø«Ø§Ù„: App â†’ Layout â†’ Sidebar â†’ Menu â†’ Button. ÙÙˆØ¶ÙˆÙŠ! Context ÙŠØ­Ù„ Ù‡Ø°Ø§.',
+            'Identify prop drilling in your components.': 'Ø­Ø¯Ù‘Ø¯ ØªÙ…Ø±ÙŠØ± Props Ø¹Ø¨Ø± Ø§Ù„Ù…Ø³ØªÙˆÙŠØ§Øª ÙÙŠ Ù…ÙƒÙˆÙ†Ø§ØªÙƒ.',
+            'Look for props passed through multiple levels.': 'Ø§Ø¨Ø­Ø« Ø¹Ù† props ØªÙÙ…Ø±Ù‘Ø± Ø¹Ø¨Ø± Ù…Ø³ØªÙˆÙŠØ§Øª Ù…ØªØ¹Ø¯Ø¯Ø©.',
+            'Creating and Using Context': 'Ø¥Ù†Ø´Ø§Ø¡ ÙˆØ§Ø³ØªØ®Ø¯Ø§Ù… Context',
+            'Create context with createContext(). Wrap with Provider. Use useContext to access anywhere without drilling.': 'Ø£Ù†Ø´Ø¦ context Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… createContext(). Ù„ÙÙ‘ Ø¨Ù€ Provider. Ø§Ø³ØªØ®Ø¯Ù… useContext Ù„Ù„ÙˆØµÙˆÙ„ Ù…Ù† Ø£ÙŠ Ù…ÙƒØ§Ù† Ø¨Ø¯ÙˆÙ† ØªÙ…Ø±ÙŠØ±.',
+            'Create UserContext and access in multiple components.': 'Ø£Ù†Ø´Ø¦ UserContext ÙˆØ§Ù…ÙƒÙ† Ø§Ù„ÙˆØµÙˆÙ„ Ø¥Ù„ÙŠÙ‡ Ù…Ù† Ø¹Ø¯Ø© Ù…ÙƒÙˆÙ†Ø§Øª.',
+            'createContext â†’ Provider â†’ useContext': 'createContext â†’ Provider â†’ useContext',
+            'Forms & Validation': 'Ø§Ù„Ù†Ù…Ø§Ø°Ø¬ ÙˆØ§Ù„ØªØ­Ù‚Ù‚',
+            'Handling User Input': 'Ø§Ù„ØªØ¹Ø§Ù…Ù„ Ù…Ø¹ Ø¥Ø¯Ø®Ø§Ù„ Ø§Ù„Ù…Ø³ØªØ®Ø¯Ù…',
+            'Form Handling Basics': 'Ø£Ø³Ø§Ø³ÙŠØ§Øª Ø§Ù„ØªØ¹Ø§Ù…Ù„ Ù…Ø¹ Ø§Ù„Ù†Ù…Ø§Ø°Ø¬',
+            'Forms collect input. Use controlled components synced to state. Prevent default. Validate. Process submission.': 'ØªØ¬Ù…Ù‘Ø¹ Ø§Ù„Ù†Ù…Ø§Ø°Ø¬ Ø§Ù„Ø¥Ø¯Ø®Ø§Ù„. Ø§Ø³ØªØ®Ø¯Ù… Ù…ÙƒÙˆÙ†Ø§Øª Ù…ÙØªØ­ÙƒÙŽÙ‘Ù… Ø¨Ù‡Ø§ Ù…ØªØ²Ø§Ù…Ù†Ø© Ù…Ø¹ Ø§Ù„Ø­Ø§Ù„Ø©. Ø§Ù…Ù†Ø¹ Ø§Ù„Ø³Ù„ÙˆÙƒ Ø§Ù„Ø§ÙØªØ±Ø§Ø¶ÙŠ. ØªØ­Ù‚Ù‚. Ù…Ø¹Ø§Ù„Ø¬Ø© Ø§Ù„Ø¥Ø±Ø³Ø§Ù„.',
+            'Build registration form: name, email, password.': 'Ø§Ø¨Ù†Ù Ù†Ù…ÙˆØ°Ø¬ ØªØ³Ø¬ÙŠÙ„: Ø§Ø³Ù… ÙˆØ¨Ø±ÙŠØ¯ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ ÙˆÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ±.',
+            'Use controlled inputs, validate, show errors.': 'Ø§Ø³ØªØ®Ø¯Ù… Ù…Ø¯Ø®Ù„Ø§Øª Ù…ÙØªØ­ÙƒÙŽÙ‘Ù… Ø¨Ù‡Ø§ ØªØ­Ù‚Ù‚ ÙˆØ£Ø¸Ù‡Ø± Ø§Ù„Ø£Ø®Ø·Ø§Ø¡.',
+            'Different Input Types': 'Ø£Ù†ÙˆØ§Ø¹ Ù…Ø®ØªÙ„ÙØ© Ù…Ù† Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª',
+            'Inputs vary: text, email, password, checkbox, radio, select, textarea. Different handling for each.': 'ØªØ®ØªÙ„Ù Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª: Ù†Øµ ÙˆØ¨Ø±ÙŠØ¯ Ø¥Ù„ÙƒØªØ±ÙˆÙ†ÙŠ ÙˆÙƒÙ„Ù…Ø© Ù…Ø±ÙˆØ± ÙˆØ§Ø®ØªÙŠØ§Ø± ÙˆØ²Ø± Ø§Ø®ØªÙŠØ§Ø± ÙˆØ§Ø®ØªÙŠØ§Ø± Ùˆ textarea. Ù…Ø¹Ø§Ù„Ø¬Ø© Ù…Ø®ØªÙ„ÙØ© Ù„ÙƒÙ„ ÙˆØ§Ø­Ø¯.',
+            'Create form with all input types.': 'Ø£Ù†Ø´Ø¦ Ù†Ù…ÙˆØ°Ø¬Ù‹Ø§ Ù…Ø¹ Ø¬Ù…ÙŠØ¹ Ø£Ù†ÙˆØ§Ø¹ Ø§Ù„Ù…Ø¯Ø®Ù„Ø§Øª.',
+            'Text/select use value. Checkbox uses checked.': 'Ø§Ù„Ù†Øµ ÙˆØ§Ù„Ø§Ø®ØªÙŠØ§Ø± ÙŠØ³ØªØ®Ø¯Ù…Ø§Ù† value. Ø§Ù„Ø§Ø®ØªÙŠØ§Ø± ÙŠØ³ØªØ®Ø¯Ù… checked.',
+            'Routing': 'Ø§Ù„ØªÙˆØ¬ÙŠÙ‡',
+            'Building Single Page Apps': 'Ø¨Ù†Ø§Ø¡ ØªØ·Ø¨ÙŠÙ‚Ø§Øª ØµÙØ­Ø© ÙˆØ§Ø­Ø¯Ø©',
+            'Understanding SPA': 'ÙÙ‡Ù… ØªØ·Ø¨ÙŠÙ‚Ø§Øª Ø§Ù„ØµÙØ­Ø© Ø§Ù„ÙˆØ§Ø­Ø¯Ø©',
+            'Single Page Apps load once, then JS displays content. No reloads. React Router watches URL and renders component. Fast!': 'ØªØ­Ù…Ù‘Ù„ ØªØ·Ø¨ÙŠÙ‚Ø§Øª Ø§Ù„ØµÙØ­Ø© Ø§Ù„ÙˆØ§Ø­Ø¯Ø© Ù…Ø±Ø© ÙˆØ§Ø­Ø¯Ø© Ø«Ù… ÙŠØ¹Ø±Ø¶ JS Ø§Ù„Ù…Ø­ØªÙˆÙ‰. Ø¨Ø¯ÙˆÙ† Ø¥Ø¹Ø§Ø¯Ø© ØªØ­Ù…ÙŠÙ„. React Router ÙŠØ±Ø§Ù‚Ø¨ Ø§Ù„Ø±Ø§Ø¨Ø· ÙˆÙŠØ¹Ø±Ø¶ Ø§Ù„Ù…ÙƒÙˆÙ†. Ø³Ø±ÙŠØ¹!',
+            'Explain why SPA navigation is faster.': 'Ø§Ø´Ø±Ø­ Ù„Ù…Ø§Ø°Ø§ Ù…Ù„Ø§Ø­Ø© SPA Ø£Ø³Ø±Ø¹.',
+            'What gets reloaded in each case?': 'Ù…Ø§Ø°Ø§ ÙŠØªÙ… Ø¥Ø¹Ø§Ø¯Ø© ØªØ­Ù…ÙŠÙ„Ù‡ ÙÙŠ ÙƒÙ„ Ø­Ø§Ù„Ø©ØŸ',
+            'Setting Up React Router': 'Ø¥Ø¹Ø¯Ø§Ø¯ React Router',
+            'Install react-router-dom. Wrap with BrowserRouter. Define Routes. Use Link (no page reload).': 'Ø«Ø¨Ù‘Øª react-router-dom. Ù„ÙÙ‘ Ø¨Ù€ BrowserRouter. Ø¹Ø±Ù‘Ù Routes. Ø§Ø³ØªØ®Ø¯Ù… Link (Ø¨Ø¯ÙˆÙ† Ø¥Ø¹Ø§Ø¯Ø© ØªØ­Ù…ÙŠÙ„ Ø§Ù„ØµÙØ­Ø©).',
+            'Create app with 3 routes and Link navigation.': 'Ø£Ù†Ø´Ø¦ ØªØ·Ø¨ÙŠÙ‚Ù‹Ø§ Ø¨Ù€ 3 Ø·Ø±Ù‚ ÙˆÙ…Ù„Ø§Ø­Ø© Link.',
+            'npm install, then BrowserRouter, Routes, Route, Link.': 'npm install Ø«Ù… BrowserRouter ÙˆRoutes ÙˆRoute ÙˆLink.',
+            'Dynamic Routes': 'Ø·Ø±Ù‚ Ø¯ÙŠÙ†Ø§Ù…ÙŠÙƒÙŠØ©',
+            'Routes can have parameters like /user/:id. useParams() gets the parameter value.': 'ÙŠÙ…ÙƒÙ† Ù„Ù„Ø·Ø±Ù‚ Ø£Ù† ÙŠÙƒÙˆÙ† Ù„Ù‡Ø§ Ù…Ø¹Ø§Ù…Ù„Ø§Øª Ù…Ø«Ù„ /user/:id. ÙŠØ­ØµÙ„ useParams() Ø¹Ù„Ù‰ Ù‚ÙŠÙ…Ø© Ø§Ù„Ù…Ø¹Ø§Ù…Ù„.',
+            'Create products route with :productId parameter.': 'Ø£Ù†Ø´Ø¦ Ø·Ø±ÙŠÙ‚Ø© Ù…Ù†ØªØ¬Ø§Øª Ù…Ø¹ Ù…Ø¹Ø§Ù…Ù„ :productId.',
+            'Use useParams() to get parameter from URL.': 'Ø§Ø³ØªØ®Ø¯Ù… useParams() Ù„Ù„Ø­ØµÙˆÙ„ Ø¹Ù„Ù‰ Ø§Ù„Ù…Ø¹Ø§Ù…Ù„ Ù…Ù† Ø§Ù„Ø±Ø§Ø¨Ø·.',
+            'Performance & Optimization': 'Ø§Ù„Ø£Ø¯Ø§Ø¡ ÙˆØ§Ù„ØªØ­Ø³ÙŠÙ†',
+            'Building Fast React Apps': 'Ø¨Ù†Ø§Ø¡ ØªØ·Ø¨ÙŠÙ‚Ø§Øª React Ø³Ø±ÙŠØ¹Ø©',
+            'Understanding Re-renders': 'ÙÙ‡Ù… Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø¹Ø±Ø¶',
+            'Components re-render when props/state change. useMemo caches computed values to avoid expensive recalculations.': 'ØªØ¹ÙŠØ¯ Ø§Ù„Ù…ÙƒÙˆÙ†Ø§Øª Ø§Ù„Ø¹Ø±Ø¶ Ø¹Ù†Ø¯ ØªØºÙŠÙŠØ± props Ø£Ùˆ state. ØªØ­ÙØ¸ useMemo Ø§Ù„Ù‚ÙŠÙ… Ø§Ù„Ù…Ø­Ø³ÙˆØ¨Ø© Ù„ØªØ¬Ù†Ø¨ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…ÙƒÙ„ÙØ©.',
+            'Identify unnecessary re-renders in component.': 'Ø­Ø¯Ù‘Ø¯ Ø¥Ø¹Ø§Ø¯Ø© Ø§Ù„Ø¹Ø±Ø¶ ØºÙŠØ± Ø§Ù„Ø¶Ø±ÙˆØ±ÙŠØ© ÙÙŠ Ø§Ù„Ù…ÙƒÙˆÙ†.',
+            'Use console.log and React DevTools.': 'Ø§Ø³ØªØ®Ø¯Ù… console.log ÙˆReact DevTools.',
+            'useMemo Hook': 'useMemo Hook',
+            'useMemo caches expensive computation results. Only recomputes when dependencies change.': 'ØªØ­ÙØ¸ useMemo Ù†ØªØ§Ø¦Ø¬ Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…ÙƒÙ„ÙØ©. ØªØ¹ÙŠØ¯ Ø§Ù„Ø­Ø³Ø§Ø¨ ÙÙ‚Ø· Ø¹Ù†Ø¯ ØªØºÙŠÙŠØ± Ø§Ù„ØªØ¨Ø¹ÙŠØ§Øª.',
+            'Use useMemo to optimize expensive computation.': 'Ø§Ø³ØªØ®Ø¯Ù… useMemo Ù„ØªØ­Ø³ÙŠÙ† Ø§Ù„Ø­Ø³Ø§Ø¨Ø§Øª Ø§Ù„Ù…ÙƒÙ„ÙØ©.',
+            'Identify expensive work, wrap with useMemo.': 'Ø­Ø¯Ù‘Ø¯ Ø§Ù„Ø¹Ù…Ù„ Ø§Ù„Ù…ÙƒÙ„Ù Ù„ÙÙ‘Ù‡ Ø¨Ù€ useMemo.',
+            'Advanced State - useReducer': 'Ø§Ù„Ø­Ø§Ù„Ø© Ø§Ù„Ù…ØªÙ‚Ø¯Ù…Ø© - useReducer',
+            'Complex State Management': 'Ø¥Ø¯Ø§Ø±Ø© Ø§Ù„Ø­Ø§Ù„Ø© Ø§Ù„Ù…Ø¹Ù‚Ø¯Ø©',
+            'useReducer for Complex Logic': 'useReducer Ù„Ù„Ù…Ù†Ø·Ù‚ Ø§Ù„Ù…Ø¹Ù‚Ø¯',
+            'useState for simple state. useReducer for complex updates. Reducer specifies state transitions.': 'Ø§Ø³ØªØ®Ø¯Ù… useState Ù„Ù„Ø­Ø§Ù„Ø© Ø§Ù„Ø¨Ø³ÙŠØ·Ø©. useReducer Ù„Ù„ØªØ­Ø¯ÙŠØ«Ø§Øª Ø§Ù„Ù…Ø¹Ù‚Ø¯Ø©. ÙŠØ­Ø¯Ù‘Ø¯ Reducer Ø§Ù†ØªÙ‚Ø§Ù„Ø§Øª Ø§Ù„Ø­Ø§Ù„Ø©.',
+            'Decide: useState or useReducer for 3 scenarios.': 'Ù‚Ø±Ù‘Ø±: useState Ø£Ùˆ useReducer Ù„Ù€ 3 Ø³ÙŠÙ†Ø§Ø±ÙŠÙˆÙ‡Ø§Øª.',
+            'useState: simple. useReducer: complex interdependent state.': 'useState: Ø¨Ø³ÙŠØ·. useReducer: Ø­Ø§Ù„Ø© Ù…Ø¹Ù‚Ø¯Ø© Ù…ØªØ±Ø§Ø¨Ø·Ø©.',
+            'Complete Todo App Project': 'Ù…Ø´Ø±ÙˆØ¹ ØªØ·Ø¨ÙŠÙ‚ Todo Ø§Ù„ÙƒØ§Ù…Ù„',
+            'Building a Real Application': 'Ø¨Ù†Ø§Ø¡ ØªØ·Ø¨ÙŠÙ‚ Ø­Ù‚ÙŠÙ‚ÙŠ',
+            'Todo App - Full Example': 'ØªØ·Ø¨ÙŠÙ‚ Todo - Ù…Ø«Ø§Ù„ ÙƒØ§Ù…Ù„',
+            'This project combines: components, props, state, forms, lists, filtering. Build a complete working Todo app.': 'ÙŠØ¬Ù…Ù‘Ø¹ Ù‡Ø°Ø§ Ø§Ù„Ù…Ø´Ø±ÙˆØ¹: Ø§Ù„Ù…ÙƒÙˆÙ†Ø§Øª ÙˆProps ÙˆØ§Ù„Ø­Ø§Ù„Ø© ÙˆØ§Ù„Ù†Ù…Ø§Ø°Ø¬ ÙˆØ§Ù„Ù‚ÙˆØ§Ø¦Ù… ÙˆØ§Ù„ØªØµÙÙŠØ©. Ø§Ø¨Ù†Ù ØªØ·Ø¨ÙŠÙ‚ Todo Ø¹Ø§Ù…Ù„ ÙƒØ§Ù…Ù„.',
+            'Build Todo app: add, delete, toggle, filter.': 'Ø§Ø¨Ù†Ù ØªØ·Ø¨ÙŠÙ‚ Todo: Ø¥Ø¶Ø§ÙØ© ÙˆØ­Ø°Ù ÙˆØªØ¨Ø¯ÙŠÙ„ ÙˆØªØµÙÙŠØ©.',
+            'Store in localStorage using JSON.stringify/parse.': 'Ø®Ø²Ù‘Ù† ÙÙŠ localStorage Ø¨Ø§Ø³ØªØ®Ø¯Ø§Ù… JSON.stringify/parse.',
+            'Final Challenge': 'Ø§Ù„ØªØ­Ø¯ÙŠ Ø§Ù„Ù†Ù‡Ø§Ø¦ÙŠ',
+            'Advanced Todo App Project': 'Ù…Ø´Ø±ÙˆØ¹ ØªØ·Ø¨ÙŠÙ‚ Todo Ø§Ù„Ù…ØªÙ‚Ø¯Ù…',
+            'Create enhanced Todo app with: add/delete/toggle, filter by status, categories/tags, priority levels, due dates, local storage, dark/light theme (Context), animations.': 'Ø£Ù†Ø´Ø¦ ØªØ·Ø¨ÙŠÙ‚ Todo Ù…Ø­Ø³Ù‘Ù†Ù‹Ø§ Ù…Ø¹: Ø¥Ø¶Ø§ÙØ© ÙˆØ­Ø°Ù ÙˆØªØ¨Ø¯ÙŠÙ„ ÙˆØªØµÙÙŠØ© Ø­Ø³Ø¨ Ø§Ù„Ø­Ø§Ù„Ø© ÙˆØ§Ù„ÙØ¦Ø§Øª ÙˆØ§Ù„Ø¹Ù„Ø§Ù…Ø§Øª ÙˆÙ…Ø³ØªÙˆÙŠØ§Øª Ø§Ù„Ø£ÙˆÙ„ÙˆÙŠØ© ÙˆØªÙˆØ§Ø±ÙŠØ® Ø§Ù„Ø§Ø³ØªØ­Ù‚Ø§Ù‚ ÙˆØ§Ù„ØªØ®Ø²ÙŠÙ† Ø§Ù„Ù…Ø­Ù„ÙŠ ÙˆØ§Ù„Ù…Ø¸Ù‡Ø± Ø§Ù„ÙØ§ØªØ­ ÙˆØ§Ù„ØºØ§Ù…Ù‚ ÙˆØ§Ù„Ø±Ø³ÙˆÙ… Ø§Ù„Ù…ØªØ­Ø±ÙƒØ©.',
+            'Context for theme, useReducer for state, useMemo for filtering, localStorage for persistence.': 'Ø§Ø³ØªØ®Ø¯Ù… Context Ù„Ù„Ù…Ø¸Ù‡Ø± ÙˆuseReducer Ù„Ù„Ø­Ø§Ù„Ø© ÙˆuseMemo Ù„Ù„ØªØµÙÙŠØ© ÙˆÙ„ocalStorage Ù„Ù„Ø­ÙØ¸.',
+            'React Mastery Complete!': 'Ø£ØªÙ…Ù‘ Ø¥ØªÙ‚Ø§Ù† React!',
+            'You have learned React from Basics to Advanced!': 'Ù„Ù‚Ø¯ ØªØ¹Ù„Ù…Øª React Ù…Ù† Ø§Ù„Ø£Ø³Ø§Ø³ÙŠØ§Øª Ø¥Ù„Ù‰ Ø§Ù„Ù…ØªÙ‚Ø¯Ù…!',
+         };
 
             let escaped = code
                 .replace(/&/g, '&amp;')
