@@ -96,6 +96,29 @@
         .slide-content {
             max-width: 900px;
             width: 100%;
+            max-height: calc(100vh - 12rem);
+            overflow-y: auto;
+            padding-right: 0.35rem;
+        }
+        
+        .slide-content::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        .slide-content::-webkit-scrollbar-track {
+            background: linear-gradient(180deg, rgba(15, 23, 42, 0.18), rgba(30, 41, 59, 0.22));
+            border-radius: 999px;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, rgba(167, 139, 250, 0.9), rgba(251, 191, 36, 0.88));
+            border-radius: 999px;
+            border: 2px solid rgba(15, 23, 42, 0.55);
+            box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.18) inset;
+        }
+        
+        .slide-content::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #a78bfa, #fbbf24);
         }
         
         .slide-number {
@@ -1556,6 +1579,7 @@ transition: transform 0.3s ease,
                 practice: 'Practice',
                 handsOn: 'Hands-on Exercise',
                 hint: 'Hint',
+                coachTip: 'Extra Tip',
                 finalChallenge: 'Final Challenge',
                 finalProject: 'Final Project',
                 realAnalogy: 'Real-world Analogy',
@@ -1569,6 +1593,7 @@ transition: transform 0.3s ease,
                 practice: 'تطبيق',
                 handsOn: 'تمرين عملي',
                 hint: 'تلميح',
+                coachTip: 'نصيحة إضافية',
                 finalChallenge: 'التحدي النهائي',
                 finalProject: 'المشروع النهائي',
                 realAnalogy: 'تشبيه من الواقع',
@@ -1774,9 +1799,173 @@ transition: transform 0.3s ease,
             'Use the cascade to your advantage - base styles first, then overrides!': 'استفد من الـ cascade: ابدأ بالأنماط الأساسية ثم أضف التعديلات!'
         };
 
+        const sectionCoachTips = {
+            basics: {
+                en: 'Example: a class like .warning can be reused on many elements, while an ID should be unique.',
+                ar: 'مثال: يمكن تكرار class مثل .warning على عدة عناصر، بينما يجب أن يكون الـ ID فريدًا.'
+            },
+            colors: {
+                en: 'Example: use hex for brand colors, rgba for overlays, and gradients for modern hero sections.',
+                ar: 'مثال: استخدم Hex لألوان العلامة التجارية، وrgba للتغطيات، والتدرجات للهيدر الحديث.'
+            },
+            boxmodel: {
+                en: 'Example: padding adds space inside a card, while margin separates that card from the next one.',
+                ar: 'مثال: padding يضيف مساحة داخل البطاقة، بينما margin يباعد بينها وبين البطاقة التالية.'
+            },
+            typography: {
+                en: 'Example: pair a bold heading font with a readable body font and keep line-height comfortable.',
+                ar: 'مثال: امزج خطًا عريضًا للعناوين مع خط واضح للنص، وحافظ على line-height مريح.'
+            },
+            layout: {
+                en: 'Example: fixed headers and sticky sidebars help users keep navigation in view.',
+                ar: 'مثال: الهيدر الثابت والـ sidebar اللاصق يساعدان المستخدم على إبقاء التنقل ظاهرًا.'
+            },
+            flexbox: {
+                en: 'Example: Flexbox is great for navbars, button rows, and simple centering without hacks.',
+                ar: 'مثال: Flexbox ممتاز لشريط التنقل وصفوف الأزرار والتوسيط البسيط بدون حيل.'
+            },
+            grid: {
+                en: 'Example: CSS Grid is perfect for dashboards, galleries, and any layout with rows and columns.',
+                ar: 'مثال: CSS Grid مثالي للوحة التحكم والمعارض وكل تخطيط يجمع الصفوف والأعمدة.'
+            },
+            responsive: {
+                en: 'Example: start with one mobile column, then expand to 2 or 3 columns with media queries.',
+                ar: 'مثال: ابدأ بعمود واحد على الهاتف، ثم وسّع إلى عمودين أو ثلاثة عبر media queries.'
+            },
+            animations: {
+                en: 'Example: use transitions for hover effects and keyframes for repeating motion.',
+                ar: 'مثال: استخدم transitions لتأثيرات hover وkeyframes للحركات المتكررة.'
+            }
+        };
+
+        const sectionExampleCodes = {
+            basics: {
+                title: 'More example code',
+                code: `/* Reusable class */
+.warning {
+    color: #ef4444;
+    font-weight: 700;
+}
+
+/* Unique ID */
+#logo {
+    background: #2563eb;
+    color: white;
+}`,
+                arTitle: 'مثال كود إضافي'
+            },
+            colors: {
+                title: 'More example code',
+                code: `:root {
+    --brand: #7c3aed;
+    --surface: rgba(15, 23, 42, 0.72);
+}
+
+.hero {
+    background: linear-gradient(135deg, var(--brand), #22d3ee);
+    color: white;
+}`,
+                arTitle: 'مثال كود إضافي'
+            },
+            boxmodel: {
+                title: 'More example code',
+                code: `.card {
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 1px solid #334155;
+    border-radius: 12px;
+}`,
+                arTitle: 'مثال كود إضافي'
+            },
+            typography: {
+                title: 'More example code',
+                code: `body {
+    font-family: 'Space Grotesk', sans-serif;
+    line-height: 1.7;
+}
+
+h1 {
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: -0.03em;
+}`,
+                arTitle: 'مثال كود إضافي'
+            },
+            layout: {
+                title: 'More example code',
+                code: `header {
+    position: sticky;
+    top: 0;
+}
+
+.sidebar {
+    position: fixed;
+    right: 0;
+    top: 0;
+}`,
+                arTitle: 'مثال كود إضافي'
+            },
+            flexbox: {
+                title: 'More example code',
+                code: `.nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}`,
+                arTitle: 'مثال كود إضافي'
+            },
+            grid: {
+                title: 'More example code',
+                code: `.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}`,
+                arTitle: 'مثال كود إضافي'
+            },
+            responsive: {
+                title: 'More example code',
+                code: `img {
+    max-width: 100%;
+    height: auto;
+}
+
+@media (min-width: 768px) {
+    .cards { grid-template-columns: repeat(2, 1fr); }
+}`,
+                arTitle: 'مثال كود إضافي'
+            },
+            animations: {
+                title: 'More example code',
+                code: `@keyframes floatUp {
+    from { transform: translateY(0); }
+    to { transform: translateY(-8px); }
+}
+
+.card:hover {
+    animation: floatUp 0.3s ease forwards;
+}`,
+                arTitle: 'مثال كود إضافي'
+            }
+        };
+
         function t(text) {
             if (currentLang !== 'ar') return text;
             return arMap[text] || text;
+        }
+
+        function coachTip(section) {
+            const tip = sectionCoachTips[section];
+            return tip ? tip[currentLang] : '';
+        }
+
+        function exampleCodeFor(section) {
+            return sectionExampleCodes[section] || null;
         }
 
         function localizeSlide(slide) {
@@ -1822,6 +2011,9 @@ transition: transform 0.3s ease,
         }
 
         function renderSlideContent(slide, index) {
+            const tip = slide.section ? coachTip(slide.section) : '';
+            const example = slide.section ? exampleCodeFor(slide.section) : null;
+
             switch (slide.type) {
                 case 'title':
                     return `
@@ -1841,6 +2033,18 @@ transition: transform 0.3s ease,
                             <p class="slide-number">${uiText[currentLang].section} ${getSectionNumber(slide.section)}</p>
                             <h1 class="section-title">${slide.title}</h1>
                             <p class="section-subtitle">${slide.subtitle}</p>
+                            ${tip ? `
+                                <div class="demo-box" style="max-width: 760px; margin: 1.5rem auto 0; text-align: left;">
+                                    <p class="analogy-label">${uiText[currentLang].coachTip}</p>
+                                    <p style="margin: 0; color: #e2e8f0;">${tip}</p>
+                                </div>
+                            ` : ''}
+                            ${example ? `
+                                <div class="code-block" style="max-width: 760px; margin: 1.25rem auto 0; text-align: left;">
+                                    <p class="analogy-label" style="margin-top: 0;">${currentLang === 'ar' ? example.arTitle : example.title}</p>
+                                    <pre style="margin: 0;"><code>${accentCSS(example.code)}</code></pre>
+                                </div>
+                            ` : ''}
                         </div>
                     `;
 
