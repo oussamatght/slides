@@ -1,0 +1,2516 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>البرمجة كائنية التوجه - POO (Java)</title>
+
+    <!-- MathJax Configuration -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [
+                    ['$', '$'],
+                    ['\\(', '\\)'],
+                    ['$$', '$$'],
+                    ['\\[', '\\]']
+                ],
+                displayMath: []
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+         :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --bg-main: #f8fafc;
+            --bg-white: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --code-bg: #1e293b;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+        /* Hero Section */
+        
+        .hero {
+            background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #3b82f6 100%);
+            color: white;
+            padding: 100px 20px 80px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width=\"100\" height=\"100\" xmlns=\"http://www.w3.org/2000/svg\"><defs><pattern id=\"grid\" width=\"40\" height=\"40\" patternUnits=\"userSpaceOnUse\"><path d=\"M 40 0 L 0 0 0 40\" fill=\"none\" stroke=\"rgba(255,255,255,0.05)\" stroke-width=\"1\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23grid)\" /></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+        
+        .hero-meta {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+            font-size: 1.1rem;
+        }
+        
+        .hero-meta span {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 25px;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+        }
+        /* Navigation */
+        
+        .nav-bar {
+            background: var(--bg-white);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+        
+        .nav-link:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        /* Main Container */
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        /* Section Styles */
+        
+        .section {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 50px;
+            margin-bottom: 40px;
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 4px solid var(--primary-color);
+            display: inline-block;
+        }
+        
+        .section-subtitle {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 35px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .section-subtitle::before {
+            content: '◆';
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        .section-subheading {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin: 25px 0 15px;
+        }
+        /* Content Text */
+        
+        .content-text {
+            font-size: 1.1rem;
+            line-height: 2;
+            color: var(--text-primary);
+            margin-bottom: 20px;
+        }
+        
+        .content-text strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        /* Lists */
+        
+        ul,
+        ol {
+            margin: 20px 0;
+            padding-right: 30px;
+        }
+        
+        li {
+            margin: 12px 0;
+            font-size: 1.05rem;
+            line-height: 1.9;
+        }
+        
+        li strong {
+            color: var(--primary-color);
+        }
+        /* Tables */
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        thead {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+            color: white;
+        }
+        
+        th,
+        td {
+            padding: 18px 20px;
+            text-align: right;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        th {
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        tbody tr:hover {
+            background: #f1f5f9;
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        /* Code Blocks */
+        
+        .code-container {
+            background: var(--code-bg);
+            border-radius: 12px;
+            margin: 30px 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .code-header {
+            background: #334155;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .code-dots {
+            display: flex;
+            gap: 6px;
+        }
+        
+        .code-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .dot-red {
+            background: #ef4444;
+        }
+        
+        .dot-yellow {
+            background: #eab308;
+        }
+        
+        .dot-green {
+            background: #22c55e;
+        }
+        
+        pre {
+            padding: 25px;
+            overflow-x: auto;
+            margin: 0;
+        }
+        
+        code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #e2e8f0;
+        }
+        /* Syntax Highlighting */
+        
+        .keyword {
+            color: #c084fc;
+            font-weight: 600;
+        }
+        
+        .class-name {
+            color: #7dd3fc;
+        }
+        
+        .type {
+            color: #fb923c;
+        }
+        
+        .string {
+            color: #86efac;
+        }
+        
+        .comment {
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        .method {
+            color: #fbbf24;
+        }
+        
+        .number {
+            color: #f472b6;
+        }
+        /* Inline Code */
+        
+        p code,
+        li code {
+            background: #f1f5f9;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            color: var(--primary-dark);
+            border: 1px solid var(--border-color);
+        }
+        /* Info Boxes */
+        
+        .info-box {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-right: 5px solid var(--primary-color);
+            padding: 25px 30px;
+            margin: 25px 0;
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .info-box.success {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-right-color: var(--secondary-color);
+        }
+        
+        .info-box.warning {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            border-right-color: var(--accent-color);
+        }
+        
+        .info-box-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+        
+        .info-box.success .info-box-title {
+            color: var(--secondary-color);
+        }
+        
+        .info-box.warning .info-box-title {
+            color: var(--accent-color);
+        }
+        /* Feature Grid */
+        
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 35px 0;
+        }
+        
+        .feature-card {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 28px;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h4 {
+            font-size: 1.3rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+        
+        .feature-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        /* Exercise Section */
+        
+        .exercise-section {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px solid var(--accent-color);
+            border-radius: 16px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .exercise-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #92400e;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .exercise-number {
+            background: var(--accent-color);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 1.3rem;
+        }
+        
+        .exercise-question {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .solution-toggle {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin: 20px 0;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .solution-toggle:hover {
+            background: #059669;
+            transform: scale(1.05);
+        }
+        
+        .solution-content {
+            display: none;
+            background: white;
+            border: 2px solid var(--secondary-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 20px;
+            animation: slideDown 0.4s ease;
+        }
+        
+        .solution-content.active {
+            display: block;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Diagram/Image Container */
+        
+        .diagram-container {
+            background: white;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 35px 0;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .diagram-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        
+        .diagram-caption {
+            margin-top: 15px;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+        /* Comparison Cards */
+        
+        .comparison-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin: 35px 0;
+        }
+        
+        .comparison-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            border-top: 5px solid var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .comparison-card.procedural {
+            border-top-color: #ef4444;
+        }
+        
+        .comparison-card.oop {
+            border-top-color: var(--secondary-color);
+        }
+        
+        .comparison-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        /* Footer */
+        
+        footer {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            color: white;
+            padding: 50px 20px;
+            text-align: center;
+            margin-top: 80px;
+        }
+        
+        footer p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero h2 {
+                font-size: 1.3rem;
+            }
+            .section {
+                padding: 30px 20px;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .nav-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .comparison-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        /* Scroll to Top Button */
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--primary-color);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        
+        .scroll-top.visible {
+            display: flex;
+        }
+        
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-5px);
+        }
+        /* Print Styles */
+        
+        @media print {
+            .nav-bar,
+            .scroll-top,
+            .solution-toggle {
+                display: none;
+            }
+            .section {
+                break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>البرمجة كائنية التوجه</h1>
+            <h2>Programmation Orientée Objet - Langage JAVA</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 20px;">وحدة تعليمية شاملة للمستوى الجامعي الثاني</p>
+
+            <div class="hero-meta">
+                <span>📚 C. IGHILAZA</span>
+                <span>📚 R. ABERBOUR</span>
+                <span>📚 B.KADRI</span>
+                <span>📚 D.ZAOUCHE</span>
+            </div>
+
+            <div style="margin-top: 40px; font-size: 1.1rem; opacity: 0.95;">
+                <p>🏛️ USTHB - جامعة العلوم والتكنولوجيا هواري بومدين</p>
+                <p style="margin-top: 10px;">🎯 قسم الإلكتروني والإعلام الآلي - المستوى الثاني</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="#introduction" class="nav-link">📖 المقدمة</a>
+            <a href="#concepts" class="nav-link">🔷 المفاهيم الأساسية</a>
+            <a href="#implementation" class="nav-link">💻 التنفيذ العملي</a>
+            <a href="#exercises-s1" class="nav-link">✍️ سلسلة تمارين 1</a>
+            <a href="#exercises-s2" class="nav-link">✍️ سلسلة تمارين 2</a>
+            <a href="#exercises-s3" class="nav-link">✍️ سلسلة تمارين 3</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <!-- Introduction Section -->
+        <section id="introduction" class="section">
+            <h2 class="section-title">مقدمة في البرمجة كائنية التوجه</h2>
+
+            <h3 class="section-subtitle">لماذا البرمجة كائنية التوجه؟</h3>
+
+            <div class="content-text">
+                <p>في عالم تطوير البرمجيات، توجد عدة <strong>أنماط برمجة</strong> مختلفة، كل منها له فلسفته وأساليبه الخاصة. دعنا نستكشف أهم هذه الأنماط:</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h4>البرمجة الإجرائية</h4>
+                    <p><strong>اللغات:</strong> Pascal, C, Fortran<br><br>
+                        <strong>الفلسفة:</strong> التركيز على العمليات والإجراءات<br>
+                        <strong>الهيكل:</strong> بيانات + إجراءات منفصلة</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">λ</div>
+                    <h4>البرمجة الوظيفية</h4>
+                    <p><strong>الفلسفة:</strong> التركيز على الدوال والتحويلات الرياضية<br><br> يتم التعامل مع البرنامج كسلسلة من التحويلات الرياضية</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h4>البرمجة كائنية التوجه (OOP)</h4>
+                    <p><strong>اللغات:</strong> C++, Java, Python, C#<br><br>
+                        <strong>الفلسفة:</strong> التركيز على البيانات والكائنات<br>
+                        <strong>الهيكل:</strong> كائنات تجمع البيانات والعمليات</p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">مقارنة بين النهج الإجرائي والنهج الكائني</h3>
+
+            <div class="comparison-container">
+                <div class="comparison-card procedural">
+                    <h3>❌ النهج الإجرائي</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>❓ ماذا يجب أن يفعل برنامجي؟</li>
+                        <li>🔄 التركيز على الخوارزميات</li>
+                        <li>📦 البيانات والعمليات منفصلة</li>
+                        <li>⚠️ صعوبة الصيانة والتطور</li>
+                        <li>🔁 تكرار الكود</li>
+                    </ul>
+                </div>
+
+                <div class="comparison-card oop">
+                    <h3>✅ النهج الكائني</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li>💡 مما يجب أن يتكون برنامجي؟</li>
+                        <li>🎯 التركيز على الكيانات</li>
+                        <li>🔗 البيانات والعمليات متكاملة</li>
+                        <li>✨ سهولة إعادة الاستخدام</li>
+                        <li>🛡️ أمان وحماية أفضل</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box success">
+                <div class="info-box-title">✅ مزايا البرمجة كائنية التوجه</div>
+                <ul>
+                    <li><strong>الموثوقية:</strong> برامج أكثر استقراراً وأقل عرضة للأخطاء</li>
+                    <li><strong>قابلية التطور:</strong> سهولة التعديل والإضافة دون تأثير على باقي النظام</li>
+                    <li><strong>إعادة الاستخدام:</strong> إمكانية وراثة وإعادة استخدام الكود (Héritage)</li>
+                    <li><strong>الأمان:</strong> التحكم في الوصول للبيانات عبر التغليف (Encapsulation)</li>
+                    <li><strong>تنظيم أفضل:</strong> تقسيم التعقيد إلى وحدات صغيرة وسهلة الفهم</li>
+                    <li><strong>نموذج واقعي:</strong> محاكاة العالم الحقيقي بشكل أفضل وأقرب للتفكير البشري</li>
+                </ul>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-title">⚠️ هل يجب نسيان لغة C؟</div>
+                <p><strong>لا!</strong> لن تنسى لغة C أبداً. ستحصل على <strong>اختيار</strong> بين عدة منهجيات برمجة، وستختار الأنسب حسب طبيعة المشروع.</p>
+            </div>
+        </section>
+
+        <!-- Basic Concepts Section -->
+        <section id="concepts" class="section">
+            <h2 class="section-title">المفاهيم الأساسية: الأصناف والكائنات</h2>
+
+            <h3 class="section-subtitle">المفهوم الأول: الصنف (Class)</h3>
+
+            <div class="content-text">
+                <p><strong>الصنف (Class)</strong> هو قالب أو نموذج يصف نوعاً معيناً من الكائنات. يجمع الصنف بين:</p>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">📐 تعريف الصنف</div>
+                <p style="font-size: 1.2rem; text-align: center; margin: 15px 0;">
+                    <strong>صنف = الهوية + الخصائص (Attributs) + السلوكيات (Méthodes)</strong>
+                </p>
+            </div>
+
+            <h4 class="section-subheading">مثال عملي: نظام إدارة مكتبة 📚</h4>
+
+            <div class="content-text">
+                <p>في مثال إدارة المكتبة، نحدد الأصناف التالية:</p>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>الصنف</th>
+                        <th>الخصائص (Attributs)</th>
+                        <th>السلوكيات (Méthodes)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Livre</strong> (كتاب)</td>
+                        <td>titre (عنوان)<br>auteur (مؤلف)</td>
+                        <td>afficher()<br>emprunter()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Employé</strong> (موظف)</td>
+                        <td>nom (اسم)<br>prénom (الاسم الأول)<br>statut (المنصب)</td>
+                        <td>travailler()<br>afficher()</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Lecteur</strong> (قارئ)</td>
+                        <td>nom<br>prénom</td>
+                        <td>lire()<br>rendreLivre()</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="section-subtitle">المفهوم الثاني: الكائن (Object)</h3>
+
+            <div class="content-text">
+                <p><strong>الكائن (Object)</strong> هو <strong>نسخة (instance)</strong> من صنف معين، أي قيمة محددة وملموسة من ذلك الصنف المجرد.</p>
+            </div>
+
+            <div class="info-box success">
+                <div class="info-box-title">🎯 تعريف الكائن</div>
+                <p style="font-size: 1.2rem; text-align: center; margin: 15px 0;">
+                    <strong>كائن = الهوية + الحالة + السلوك</strong>
+                </p>
+            </div>
+
+            <h4 class="section-subheading">أمثلة على إنشاء كائنات:</h4>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📕</div>
+                    <h4>من صنف Livre</h4>
+                    <p><code>livre1</code>: "Le Seigneur des Anneaux"<br>- J.R.R. Tolkien<br><br>
+                        <code>livre2</code>: "Programmation Java"<br>- M. Divay</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👩‍💼</div>
+                    <h4>من صنف Employé</h4>
+                    <p><code>emp1</code>: El-Atfal Dib Zahia<br>(Directrice)<br><br>
+                        <code>emp2</code>: Kateb Adel<br>(Bibliothécaire)</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👤</div>
+                    <h4>من صنف Lecteur</h4>
+                    <p><code>lec1</code>: Nedjoua Fella<br>(Lectrice)<br><br>
+                        <code>lec2</code>: Amber Moustache<br>(Lecteur)</p>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>الصنف (Class)</th>
+                        <th>الكائن (Object)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>نوع (Type)</td>
+                        <td>متغير (Variable)</td>
+                    </tr>
+                    <tr>
+                        <td>القالب / النموذج</td>
+                        <td>النسخة / المثيل</td>
+                    </tr>
+                    <tr>
+                        <td>التعريف العام والمجرد</td>
+                        <td>القيمة الخاصة والملموسة</td>
+                    </tr>
+                    <tr>
+                        <td><code>class Point</code></td>
+                        <td><code>p1</code>, <code>p2</code>, <code>p3</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>class Etudiant</code></td>
+                        <td><code>e1</code>, <code>e2</code>, ...</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="section-subtitle">بنية صنف في Java</h3>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <div class="code-dot dot-red"></div>
+                        <div class="code-dot dot-yellow"></div>
+                        <div class="code-dot dot-green"></div>
+                    </div>
+                    <span>Java Class Structure</span>
+                </div>
+                <pre><code><span class="keyword">class</span> <span class="class-name">NomClasse</span> {
+    <span class="comment">// 1. الخصائص (Attributs)</span>
+    <span class="type">type1</span> attribut1;
+    <span class="type">type2</span> attribut2;
+    
+    <span class="comment">// 2. المنشئ (Constructeur)</span>
+    <span class="class-name">NomClasse</span>(<span class="type">type1</span> param1, <span class="type">type2</span> param2) {
+        <span class="comment">// تهيئة الخصائص</span>
+    }
+    
+    <span class="comment">// 3. السلوكيات (Méthodes)</span>
+    <span class="type">typeRetour</span> <span class="method">nomMethode</span>(<span class="type">typeParam</span> param) {
+        <span class="comment">// تعليمات التنفيذ</span>
+    }
+}</code></pre>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">📝 قواعد مهمة</div>
+                <ul>
+                    <li>اسم الصنف يبدأ دائماً بـ <strong>حرف كبير</strong> (Convention)</li>
+                    <li>أسماء الخصائص والطرق تبدأ بـ <strong>حرف صغير</strong></li>
+                    <li>كل ملف Java يحتوي على صنف عام (<code>public class</code>) واحد على الأقل</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Implementation Section -->
+        <section id="implementation" class="section">
+            <h2 class="section-title">تنفيذ الأصناف في Java - أمثلة عملية</h2>
+
+            <h3 class="section-subtitle">مثال 1: صنف Point (نقطة)</h3>
+
+            <h4 class="section-subheading">📋 تحليل المتطلبات</h4>
+
+            <div class="content-text">
+                <p>نريد تمثيل نقطة في المستوى ثنائي الأبعاد:</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h4>الخصائص (Attributs)</h4>
+                    <p><code>x</code>: الإحداثي الأفقي (double)<br>
+                        <code>y</code>: الإحداثي العمودي (double)</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h4>السلوكيات (Méthodes)</h4>
+                    <p><code>initialiser()</code>: تهيئة الإحداثيات<br>
+                        <code>deplacer(a,b)</code>: نقل النقطة<br>
+                        <code>afficher()</code>: عرض الإحداثيات</p>
+                </div>
+            </div>
+
+            <h4 class="section-subheading">💻 الكود الكامل للصنف Point:</h4>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <div class="code-dot dot-red"></div>
+                        <div class="code-dot dot-yellow"></div>
+                        <div class="code-dot dot-green"></div>
+                    </div>
+                    <span>Point.java</span>
+                </div>
+                <pre><code><span class="keyword">public class</span> <span class="class-name">Point</span> {
+    <span class="comment">// الخصائص (Attributs)</span>
+    <span class="keyword">private double</span> x;
+    <span class="keyword">private double</span> y;
+    
+    <span class="comment">// المنشئ الافتراضي (Constructeur par défaut)</span>
+    <span class="keyword">public</span> <span class="class-name">Point</span>() {
+        <span class="keyword">this</span>.x = <span class="number">0</span>;
+        <span class="keyword">this</span>.y = <span class="number">0</span>;
+    }
+    
+    <span class="comment">// المنشئ ذو المعاملات (Constructeur paramétré)</span>
+    <span class="keyword">public</span> <span class="class-name">Point</span>(<span class="keyword">double</span> x, <span class="keyword">double</span> y) {
+        <span class="keyword">this</span>.x = x;
+        <span class="keyword">this</span>.y = y;
+    }
+    
+    <span class="comment">// طرق الوصول (Accesseurs - Getters)</span>
+    <span class="keyword">public double</span> <span class="method">getX</span>() { <span class="keyword">return</span> <span class="keyword">this</span>.x; }
+    <span class="keyword">public double</span> <span class="method">getY</span>() { <span class="keyword">return</span> <span class="keyword">this</span>.y; }
+    
+    <span class="comment">// طرق التعديل (Mutateurs - Setters)</span>
+    <span class="keyword">public void</span> <span class="method">setX</span>(<span class="keyword">double</span> x) { <span class="keyword">this</span>.x = x; }
+    <span class="keyword">public void</span> <span class="method">setY</span>(<span class="keyword">double</span> y) { <span class="keyword">this</span>.y = y; }
+    
+    <span class="comment">// طريقة النقل</span>
+    <span class="keyword">public void</span> <span class="method">deplacer</span>(<span class="keyword">double</span> a, <span class="keyword">double</span> b) {
+        <span class="keyword">this</span>.x += a;
+        <span class="keyword">this</span>.y += b;
+    }
+    
+    <span class="comment">// طريقة العرض</span>
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        System.out.println(<span class="string">"("</span> + x + <span class="string">", "</span> + y + <span class="string">")"</span>);
+    }
+}</code></pre>
+            </div>
+
+            <h4 class="section-subheading">🚀 صنف التنفيذ ProgPoint:</h4>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <div class="code-dot dot-red"></div>
+                        <div class="code-dot dot-yellow"></div>
+                        <div class="code-dot dot-green"></div>
+                    </div>
+                    <span>ProgPoint.java</span>
+                </div>
+                <pre><code><span class="keyword">public class</span> <span class="class-name">ProgPoint</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        <span class="comment">// إنشاء كائنين من نوع Point</span>
+        <span class="class-name">Point</span> p1 = <span class="keyword">new</span> <span class="class-name">Point</span>(<span class="number">5</span>, <span class="number">6</span>);
+        <span class="class-name">Point</span> p2 = <span class="keyword">new</span> <span class="class-name">Point</span>(-<span class="number">2</span>, -<span class="number">7</span>);
+        
+        System.out.print(<span class="string">"p1: "</span>);
+        p1.<span class="method">afficher</span>();  <span class="comment">// النتيجة: (5.0, 6.0)</span>
+        
+        System.out.print(<span class="string">"p2: "</span>);
+        p2.<span class="method">afficher</span>();  <span class="comment">// النتيجة: (-2.0, -7.0)</span>
+        
+        <span class="comment">// نقل النقطة p1</span>
+        p1.<span class="method">deplacer</span>(<span class="number">3</span>, <span class="number">4</span>);
+        System.out.print(<span class="string">"p1 بعد النقل: "</span>);
+        p1.<span class="method">afficher</span>();  <span class="comment">// النتيجة: (8.0, 10.0)</span>
+    }
+}</code></pre>
+            </div>
+
+            <h3 class="section-subtitle">مثال 2: صنف Cercle (دائرة)</h3>
+
+            <div class="code-container">
+                <div class="code-header">
+                    <div class="code-dots">
+                        <div class="code-dot dot-red"></div>
+                        <div class="code-dot dot-yellow"></div>
+                        <div class="code-dot dot-green"></div>
+                    </div>
+                    <span>Cercle.java</span>
+                </div>
+                <pre><code><span class="keyword">public class</span> <span class="class-name">Cercle</span> {
+    <span class="comment">// خصائص الدائرة</span>
+    <span class="keyword">private</span> <span class="class-name">Point</span> centre;
+    <span class="keyword">private double</span> rayon;
+    <span class="keyword">private</span> String couleur;
+    
+    <span class="comment">// المنشئ الأول</span>
+    <span class="keyword">public</span> <span class="class-name">Cercle</span>() {
+        <span class="keyword">this</span>.centre = <span class="keyword">new</span> <span class="class-name">Point</span>(<span class="number">0.0</span>, <span class="number">0.0</span>);
+        <span class="keyword">this</span>.rayon = <span class="number">2.0</span>;
+        <span class="keyword">this</span>.couleur = <span class="string">"rouge"</span>;
+    }
+    
+    <span class="comment">// المنشئ الثاني (التزيين - Surcharge)</span>
+    <span class="keyword">public</span> <span class="class-name">Cercle</span>(<span class="keyword">double</span> r, String c) {
+        <span class="keyword">this</span>.centre = <span class="keyword">new</span> <span class="class-name">Point</span>(<span class="number">1.0</span>, <span class="number">0.0</span>);
+        <span class="keyword">this</span>.rayon = r;
+        <span class="keyword">this</span>.couleur = c;
+    }
+    
+    <span class="comment">// طريقة النقل</span>
+    <span class="keyword">public void</span> <span class="method">deplacer</span>(<span class="keyword">double</span> a, <span class="keyword">double</span> b) {
+        <span class="keyword">this</span>.centre.<span class="method">deplacer</span>(a, b);
+    }
+    
+    <span class="comment">// حساب المساحة</span>
+    <span class="keyword">public double</span> <span class="method">surface</span>() {
+        <span class="keyword">return</span> Math.PI * rayon * rayon;
+    }
+}</code></pre>
+            </div>
+
+            <div class="info-box success">
+                <div class="info-box-title">💡 ملاحظة هامة حول التزيين (Surcharge)</div>
+                <p><strong>التزيين (Overloading)</strong> يسمح بتعريف عدة طرق بنفس الاسم في نفس الصنف، بشرط اختلاف المعاملات (عددها أو نوعها).</p>
+                <ul style="margin-top: 10px;">
+                    <li>يمكن تطبيق التزيين على <strong>المنشئات</strong> والطرق العادية</li>
+                    <li>المترجم يحدد الطريقة المناسبة عند الاستدعاء</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Exercises Series 1 -->
+        <section id="exercises-s1" class="section">
+            <h2 class="section-title">✍️ سلسلة التمارين رقم 1 - الأصناف والكائنات</h2>
+
+            <!-- Exercise 1 -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">1</span> تمرين صنف Point المتقدم
+                </h3>
+
+                <div class="exercise-question">
+                    <h4 style="color: #92400e; margin-bottom: 15px;"><strong>الأسئلة:</strong></h4>
+                    <ol>
+                        <li>عرّف صنف <strong>Point</strong> بإحداثيتين من نوع <code>double</code>، دون إضافة منشئ صريح</li>
+                        <li>أضف الطرق التالية:
+                            <ul>
+                                <li><code>getX()</code> و <code>getY()</code>: إرجاع الإحداثيات</li>
+                                <li><code>setX()</code> و <code>setY()</code>: تعديل الإحداثيات</li>
+                                <li><code>afficher()</code>: عرض خصائص النقطة</li>
+                                <li><code>milieu(Point p)</code>: إرجاع النقطة الوسطى بين نقطتين</li>
+                                <li><code>symetrie()</code>: إرجاع نظير النقطة بالنسبة للأصل</li>
+                                <li><code>egal(Point p)</code>: اختبار تساوي نقطتين</li>
+                                <li><code>procheDuCentre(Point p)</code>: مقارنة القرب من المركز</li>
+                            </ul>
+                        </li>
+                        <li>أنشئ صنف تنفيذ <strong>ProgPoint</strong> ينشئ نقطتين p1(5,6) و p2(-2,-7)، ويختبر جميع الطرق</li>
+                        <li>أضف منشئاً صريحاً للصنف Point واشرح التغييرات المطلوبة</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol1')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol1" class="solution-content">
+                    <h4 style="color: var(--secondary-color); margin-bottom: 20px; font-size: 1.3rem;">
+                        💻 حل التمرين 1 - الكود الكامل:
+                    </h4>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Point.java</span>
+                        </div>
+                        <pre><code><span class="keyword">public class</span> <span class="class-name">Point</span> {
+    <span class="comment">// الخصائص</span>
+    <span class="keyword">private double</span> x;
+    <span class="keyword">private double</span> y;
+
+    <span class="comment">// Getters</span>
+    <span class="keyword">public double</span> <span class="method">getX</span>() { <span class="keyword">return</span> x; }
+    <span class="keyword">public double</span> <span class="method">getY</span>() { <span class="keyword">return</span> y; }
+
+    <span class="comment">// Setters</span>
+    <span class="keyword">public void</span> <span class="method">setX</span>(<span class="keyword">double</span> x) { <span class="keyword">this</span>.x = x; }
+    <span class="keyword">public void</span> <span class="method">setY</span>(<span class="keyword">double</span> y) { <span class="keyword">this</span>.y = y; }
+
+    <span class="comment">// عرض الإحداثيات</span>
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        System.out.println(<span class="string">"("</span> + x + <span class="string">", "</span> + y + <span class="string">")"</span>);
+    }
+
+    <span class="comment">// حساب النقطة الوسطى</span>
+    <span class="keyword">public</span> <span class="class-name">Point</span> <span class="method">milieu</span>(<span class="class-name">Point</span> p) {
+        <span class="class-name">Point</span> m = <span class="keyword">new</span> <span class="class-name">Point</span>();
+        m.setX((x + p.x) / <span class="number">2</span>);
+        m.setY((y + p.y) / <span class="number">2</span>);
+        <span class="keyword">return</span> m;
+    }
+
+    <span class="comment">// نظير النقطة بالنسبة للأصل</span>
+    <span class="keyword">public</span> <span class="class-name">Point</span> <span class="method">symetrie</span>() {
+        <span class="keyword">return new</span> <span class="class-name">Point</span>(-x, -y);
+    }
+
+    <span class="comment">// اختبار التساوي</span>
+    <span class="keyword">public boolean</span> <span class="method">egal</span>(<span class="class-name">Point</span> p) {
+        <span class="keyword">return</span> (x == p.x && y == p.y);
+    }
+
+    <span class="comment">// المقارنة بالقرب من المركز</span>
+    <span class="keyword">public</span> <span class="class-name">Point</span> <span class="method">procheDuCentre</span>(<span class="class-name">Point</span> p) {
+        <span class="keyword">double</span> dist1 = Math.sqrt(x*x + y*y);
+        <span class="keyword">double</span> dist2 = Math.sqrt(p.x*p.x + p.y*p.y);
+        <span class="keyword">if</span> (dist1 <= dist2)
+            <span class="keyword">return this</span>;
+        <span class="keyword">else</span>
+            <span class="keyword">return</span> p;
+    }
+
+    <span class="comment">// المنشئ الصريح (يُضاف لاحقاً)</span>
+    <span class="keyword">public</span> <span class="class-name">Point</span>(<span class="keyword">double</span> x, <span class="keyword">double</span> y) {
+        <span class="keyword">this</span>.x = x;
+        <span class="keyword">this</span>.y = y;
+    }
+
+    <span class="comment">// المنشئ الافتراضي (يجب إضافته بعد إضافة المنشئ الصريح)</span>
+    <span class="keyword">public</span> <span class="class-name">Point</span>() {
+        <span class="keyword">this</span>.x = <span class="number">0</span>;
+        <span class="keyword">this</span>.y = <span class="number">0</span>;
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="code-container" style="margin-top: 25px;">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>ProgPoint.java</span>
+                        </div>
+                        <pre><code><span class="keyword">public class</span> <span class="class-name">ProgPoint</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        <span class="comment">// إنشاء النقطتين باستخدام المنشئ الصريح</span>
+        <span class="class-name">Point</span> p1 = <span class="keyword">new</span> <span class="class-name">Point</span>(<span class="number">5</span>, <span class="number">6</span>);
+        <span class="class-name">Point</span> p2 = <span class="keyword">new</span> <span class="class-name">Point</span>(-<span class="number">2</span>, -<span class="number">7</span>);
+
+        System.out.println(<span class="string">"=== النقطة الأولى ==="</span>);
+        System.out.print(<span class="string">"p1: "</span>);
+        p1.<span class="method">afficher</span>();
+
+        System.out.println(<span class="string">"\n=== النقطة الثانية ==="</span>);
+        System.out.print(<span class="string">"p2: "</span>);
+        p2.<span class="method">afficher</span>();
+
+        <span class="comment">// النقطة الوسطى</span>
+        <span class="class-name">Point</span> milieu = p1.<span class="method">milieu</span>(p2);
+        System.out.print(<span class="string">"\nالنقطة الوسطى: "</span>);
+        milieu.<span class="method">afficher</span>();
+        <span class="comment">// النتيجة: (1.5, -0.5)</span>
+
+        <span class="comment">// نظير النقطة p1</span>
+        <span class="class-name">Point</span> sym = p1.<span class="method">symetrie</span>();
+        System.out.print(<span class="string">"\nنظير p1: "</span>);
+        sym.<span class="method">afficher</span>();
+        <span class="comment">// النتيجة: (-5.0, -6.0)</span>
+
+        <span class="comment">// اختبار التساوي</span>
+        System.out.println(<span class="string">"\np1 == p2? "</span> + p1.<span class="method">egal</span>(p2));
+        <span class="comment">// النتيجة: false</span>
+
+        <span class="comment">// النقطة الأقرب للمركز</span>
+        <span class="class-name">Point</span> proche = p1.<span class="method">procheDuCentre</span>(p2);
+        System.out.print(<span class="string">"\nالأقرب للمركز: "</span>);
+        proche.<span class="method">afficher</span>();
+        <span class="comment">// النتيجة: (-2.0, -7.0) لأن بعدها عن المركز أصغر</span>
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box warning" style="margin-top: 25px;">
+                        <div class="info-box-title">⚠️ التغييرات المطلوبة عند إضافة المنشئ الصريح</div>
+                        <ol>
+                            <li>عند إضافة أي منشئ صريح، <strong>يختفي المنشئ الافتراضي</strong></li>
+                            <li>يجب <strong>إعادة تعريف المنشئ الافتراضي</strong> يدوياً إذا كنا بحاجة إليه</li>
+                            <li>في صنف التنفيذ، يمكن الآن استخدام <code>new Point(x, y)</code> مباشرة</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 2 -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">2</span> تمرين صنف Segment (قطعة مستقيمة)
+                </h3>
+
+                <div class="exercise-question">
+                    <h4 style="color: #92400e; margin-bottom: 15px;"><strong>الأسئلة:</strong></h4>
+                    <ol>
+                        <li>عرّف صنف <strong>Segment</strong> يمثل قطعة مستقيمة بنقطتين debut و fin
+                            <ul>
+                                <li>أضف منشئاً ذو معاملات</li>
+                                <li><code>affiche()</code>: عرض إحداثيات القطعة</li>
+                                <li><code>longueur()</code>: حساب طول القطعة</li>
+                                <li><code>milieu()</code>: إرجاع نقطة المنتصف</li>
+                                <li><code>compareTo(Segment s)</code>: مقارنة قطعتين (0: متساويتان، 1: الأولى أكبر، -1: الثانية أكبر)</li>
+                            </ul>
+                        </li>
+                        <li>أنشئ صنف <strong>ProgSegment</span> ينشئ 100 قطعة، يرتبها تصاعدياً، ويعرضها</li>
+                        <li>عدّل الصنف لتكون كل القطعات بلون أحمر (استخدم static)</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol2')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol2" class="solution-content">
+                    <h4 style="color: var(--secondary-color); margin-bottom: 20px; font-size: 1.3rem;">
+                        💻 حل التمرين 2 - الكود الكامل:
+                    </h4>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Segment.java</span>
+                        </div>
+                        <pre><code><span class="keyword">public class</span> <span class="class-name">Segment</span> {
+    <span class="comment">// الخصائص</span>
+    <span class="keyword">private</span> <span class="class-name">Point</span> debut;
+    <span class="keyword">private</span> <span class="class-name">Point</span> fin;
+    <span class="keyword">private static</span> String couleur = <span class="string">"rouge"</span>;  <span class="comment">// مشترك بين كل الكائنات</span>
+
+    <span class="comment">// المنشئ</span>
+    <span class="keyword">public</span> <span class="class-name">Segment</span>(<span class="class-name">Point</span> d, <span class="class-name">Point</span> f) {
+        <span class="keyword">this</span>.debut = d;
+        <span class="keyword">this</span>.fin = f;
+    }
+
+    <span class="comment">// عرض القطعة</span>
+    <span class="keyword">public void</span> <span class="method">affiche</span>() {
+        System.out.print(<span class="string">"Segment ["</span>);
+        debut.<span class="method">afficher</span>();
+        System.out.print(<span class="string">" -> "</span>);
+        fin.<span class="method">afficher</span>();
+        System.out.println(<span class="string">", Couleur: "</span> + couleur + <span class="string">"]"</span>);
+    }
+
+    <span class="comment">// حساب الطول</span>
+    <span class="keyword">public double</span> <span class="method">longueur</span>() {
+        <span class="keyword">double</span> dx = fin.getX() - debut.getX();
+        <span class="keyword">double</span> dy = fin.getY() - debut.getY();
+        <span class="keyword">return</span> Math.sqrt(dx*dx + dy*dy);
+    }
+
+    <span class="comment">// نقطة المنتصف</span>
+    <span class="keyword">public</span> <span class="class-name">Point</span> <span class="method">milieu</span>() {
+        <span class="keyword">double</span> mx = (debut.getX() + fin.getX()) / <span class="number">2</span>;
+        <span class="keyword">double</span> my = (debut.getY() + fin.getY()) / <span class="number">2</span>;
+        <span class="keyword">return new</span> <span class="class-name">Point</span>(mx, my);
+    }
+
+    <span class="comment">// مقارنة قطعتين</span>
+    <span class="keyword">public int</span> <span class="method">compareTo</span>(<span class="class-name">Segment</span> s) {
+        <span class="keyword">double</span> l1 = <span class="keyword">this</span>.<span class="method">longueur</span>();
+        <span class="keyword">double</span> l2 = s.<span class="method">longueur</span>();
+        
+        <span class="keyword">if</span> (l1 == l2) <span class="keyword">return</span> <span class="number">0</span>;
+        <span class="keyword">else if</span> (l1 > l2) <span class="keyword">return</span> <span class="number">1</span>;
+        <span class="keyword">else return</span> -<span class="number">1</span>;
+    }
+
+    <span class="comment">// getter للون</span>
+    <span class="keyword">public static</span> String <span class="method">getCouleur</span>() {
+        <span class="keyword">return</span> couleur;
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="code-container" style="margin-top: 25px;">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>ProgSegment.java</span>
+                        </div>
+                        <pre><code><span class="keyword">import</span> java.util.Arrays;
+
+<span class="keyword">public class</span> <span class="class-name">ProgSegment</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        <span class="comment">// إنشاء مصفوفة من 100 قطعة</span>
+        <span class="class-name">Segment</span>[] segments = <span class="keyword">new</span> <span class="class-name">Segment</span>[<span class="number">100</span>];
+        
+        <span class="comment">// ملء المصفوفة بقيم عشوائية</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < segments.length; i++) {
+            <span class="class-name">Point</span> d = <span class="keyword">new</span> <span class="class-name">Point</span>(
+                Math.random() * <span class="number">100</span>,
+                Math.random() * <span class="number">100</span>
+            );
+            <span class="class-name">Point</span> f = <span class="keyword">new</span> <span class="class-name">Point</span>(
+                Math.random() * <span class="number">100</span>,
+                Math.random() * <span class="number">100</span>
+            );
+            segments[i] = <span class="keyword">new</span> <span class="class-name">Segment</span>(d, f);
+        }
+
+        <span class="comment">// ترتيب القطعات تصاعدياً حسب الطول</span>
+        Arrays.sort(segments, (s1, s2) -> {
+            <span class="keyword">return</span> Double.compare(s1.<span class="method">longueur</span>(), s2.<span class="method">longueur</span>());
+        });
+
+        <span class="comment">// عرض القطعات المرتبة</span>
+        System.out.println(<span class="string">"=== القطعات المرتبة ==="</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < segments.length; i++) {
+            System.out.print(<span class="string">"Segment "</span> + (i+<span class="number">1</span>) + <span class="string">": "</span>);
+            segments[i].<span class="method">affiche</span>();
+            System.out.printf(<span class="string">"   الطول: %.2f\n"</span>, segments[i].<span class="method">longueur</span>());
+        }
+
+        <span class="comment">// التحقق من اللون المشترك</span>
+        System.out.println(<span class="string">"\nلون كل القطعات: "</span> + 
+                          <span class="class-name">Segment</span>.<span class="method">getCouleur</span>());
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box success" style="margin-top: 25px;">
+                        <div class="info-box-title">💡 شرح استخدام static</div>
+                        <p>الخاصية <code>static String couleur</code> تجعل اللون <strong>مشتركاً بين كل الكائنات</strong>. عندما نغيّرها، تتغير لجميع القطعات تلقائياً.</p>
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Exercises Series 2 -->
+        <section id="exercises-s2" class="section">
+            <h2 class="section-title">✍️ سلسلة التمارين رقم 2 - الأصناف والكائنات المتقدمة</h2>
+
+            <!-- Exercise 1: Vecteur -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">1</span> صنف Vecteur (متجه)
+                </h3>
+
+                <div class="exercise-question">
+                    <p><strong>المطلوب:</strong></p>
+                    <ol>
+                        <li>عرّف صنف <strong>Vecteur</strong> للأعداد الصحيحة بخصائص: مرجع (référence) وحجم (taille)</li>
+                        <li>أضف: منشئ، طريقة <code>remplir()</code>، طريقة <code>afficher()</code>، وطريقة <code>somme(Vecteur v)</code></li>
+                        <li>اكتب برنامجاً ينشئ متجهين ويحسب مجموعهما</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol3')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol3" class="solution-content">
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Vecteur.java</span>
+                        </div>
+                        <pre><code><span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="class-name">Vecteur</span> {
+    <span class="keyword">private int</span>[] reference;
+    <span class="keyword">private int</span> taille;
+
+    <span class="comment">// المنشئ</span>
+    <span class="keyword">public</span> <span class="class-name">Vecteur</span>(<span class="keyword">int</span> t) {
+        <span class="keyword">this</span>.taille = t;
+        <span class="keyword">this</span>.reference = <span class="keyword">new int</span>[t];
+    }
+
+    <span class="comment">// ملء المتجه</span>
+    <span class="keyword">public void</span> <span class="method">remplir</span>(Scanner sc) {
+        System.out.println(<span class="string">"أدخل "</span> + taille + <span class="string">" عنصر:"</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < taille; i++) {
+            reference[i] = sc.nextInt();
+        }
+    }
+
+    <span class="comment">// عرض المتجه</span>
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        System.out.print(<span class="string">"[ "</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < taille; i++) {
+            System.out.print(reference[i]);
+            <span class="keyword">if</span> (i < taille - <span class="number">1</span>) System.out.print(<span class="string">", "</span>);
+        }
+        System.out.println(<span class="string">" ]"</span>);
+    }
+
+    <span class="comment">// حساب المجموع</span>
+    <span class="keyword">public</span> <span class="class-name">Vecteur</span> <span class="method">somme</span>(<span class="class-name">Vecteur</span> v) {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.taille != v.taille) {
+            System.out.println(<span class="string">"خطأ: المتجهان غير متساويين في الحجم!"</span>);
+            <span class="keyword">return null</span>;
+        }
+        
+        <span class="class-name">Vecteur</span> resultat = <span class="keyword">new</span> <span class="class-name">Vecteur</span>(taille);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < taille; i++) {
+            resultat.reference[i] = <span class="keyword">this</span>.reference[i] + v.reference[i];
+        }
+        <span class="keyword">return</span> resultat;
+    }
+
+    <span class="comment">// برنامج الاختبار</span>
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        Scanner sc = <span class="keyword">new</span> Scanner(System.in);
+        
+        System.out.print(<span class="string">"أدخل حجم المتجهات: "</span>);
+        <span class="keyword">int</span> n = sc.nextInt();
+        
+        <span class="class-name">Vecteur</span> v1 = <span class="keyword">new</span> <span class="class-name">Vecteur</span>(n);
+        <span class="class-name">Vecteur</span> v2 = <span class="keyword">new</span> <span class="class-name">Vecteur</span>(n);
+        
+        v1.<span class="method">remplir</span>(sc);
+        v2.<span class="method">remplir</span>(sc);
+        
+        System.out.print(<span class="string">"\nالمتجه الأول: "</span>);
+        v1.<span class="method">afficher</span>();
+        
+        System.out.print(<span class="string">"المتجه الثاني: "</span>);
+        v2.<span class="method">afficher</span>();
+        
+        <span class="class-name">Vecteur</span> v3 = v1.<span class="method">somme</span>(v2);
+        System.out.print(<span class="string">"المجموع:       "</span>);
+        v3.<span class="method">afficher</span>();
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 2: Pile -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">2</span> صنف Pile (كومة)
+                </h3>
+
+                <div class="exercise-question">
+                    <p><strong>المطلوب:</strong></p>
+                    <ol>
+                        <li>نفذ صنف <strong>Pile</strong> (باستخدام متجه) يحتوي على:
+                            <ul>
+                                <li><code>initPile(int n)</code>: تهيئة الكومة</li>
+                                <li><code>empiler(int val)</code>: إضافة عنصر</li>
+                                <li><code>depiler()</code>: حذف وإرجاع العنصر العلوي</li>
+                                <li><code>sommetPile()</code>: إرجاع العنصر العلوي بدون حذف</li>
+                                <li><code>pileVide()</code>: اختبار الفراغ</li>
+                                <li><code>pilePleine()</code>: اختبار الامتلاء</li>
+                            </ul>
+                        </li>
+                        <li>اكتب برنامجاً ينشئ كومة ثم يحذف كل تكرارات قيمة معينة</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol4')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol4" class="solution-content">
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Pile.java</span>
+                        </div>
+                        <pre><code><span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="class-name">Pile</span> {
+    <span class="keyword">private int</span>[] elements;
+    <span class="keyword">private int</span> sommet;
+    <span class="keyword">private int</span> capacite;
+
+    <span class="comment">// تهيئة الكومة</span>
+    <span class="keyword">public</span> <span class="class-name">Pile</span>(<span class="keyword">int</span> n) {
+        <span class="keyword">this</span>.capacite = n;
+        <span class="keyword">this</span>.elements = <span class="keyword">new int</span>[n];
+        <span class="keyword">this</span>.sommet = -<span class="number">1</span>;  <span class="comment">// كومة فارغة</span>
+    }
+
+    <span class="comment">// إضافة عنصر</span>
+    <span class="keyword">public boolean</span> <span class="method">empiler</span>(<span class="keyword">int</span> val) {
+        <span class="keyword">if</span> (<span class="method">pilePleine</span>()) {
+            System.out.println(<span class="string">"الكومة ممتلئة!"</span>);
+            <span class="keyword">return false</span>;
+        }
+        elements[++sommet] = val;
+        <span class="keyword">return true</span>;
+    }
+
+    <span class="comment">// حذف وإرجاع العنصر العلوي</span>
+    <span class="keyword">public int</span> <span class="method">depiler</span>() {
+        <span class="keyword">if</span> (<span class="method">pileVide</span>()) {
+            System.out.println(<span class="string">"الكومة فارغة!"</span>);
+            <span class="keyword">return</span> Integer.MIN_VALUE;
+        }
+        <span class="keyword">return</span> elements[sommet--];
+    }
+
+    <span class="comment">// إرجاع العنصر العلوي بدون حذف</span>
+    <span class="keyword">public int</span> <span class="method">sommetPile</span>() {
+        <span class="keyword">if</span> (<span class="method">pileVide</span>()) {
+            System.out.println(<span class="string">"الكومة فارغة!"</span>);
+            <span class="keyword">return</span> Integer.MIN_VALUE;
+        }
+        <span class="keyword">return</span> elements[sommet];
+    }
+
+    <span class="comment">// اختبار الفراغ</span>
+    <span class="keyword">public boolean</span> <span class="method">pileVide</span>() {
+        <span class="keyword">return</span> sommet == -<span class="number">1</span>;
+    }
+
+    <span class="comment">// اختبار الامتلاء</span>
+    <span class="keyword">public boolean</span> <span class="method">pilePleine</span>() {
+        <span class="keyword">return</span> sommet == capacite - <span class="number">1</span>;
+    }
+
+    <span class="comment">// عرض محتويات الكومة</span>
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        System.out.print(<span class="string">"[ "</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i <= sommet; i++) {
+            System.out.print(elements[i]);
+            <span class="keyword">if</span> (i < sommet) System.out.print(<span class="string">" | "</span>);
+        }
+        System.out.println(<span class="string">" ] ← أعلى الكومة"</span>);
+    }
+
+    <span class="comment">// حذف تكرارات قيمة معينة</span>
+    <span class="keyword">public void</span> <span class="method">supprimerRepetitions</span>(<span class="keyword">int</span> val) {
+        <span class="class-name">Pile</span> temp = <span class="keyword">new</span> <span class="class-name">Pile</span>(capacite);
+        <span class="keyword">boolean</span> trouve = <span class="keyword">false</span>;
+
+        <span class="comment">// نقل العناصر إلى كومة مؤقتة</span>
+        <span class="keyword">while</span> (!<span class="method">pileVide</span>()) {
+            <span class="keyword">int</span> elem = <span class="method">depiler</span>();
+            <span class="keyword">if</span> (elem != val || !trouve) {
+                temp.<span class="method">empiler</span>(elem);
+                <span class="keyword">if</span> (elem == val) trouve = <span class="keyword">true</span>;
+            }
+        }
+
+        <span class="comment">// إعادة العناصر إلى الكومة الأصلية</span>
+        <span class="keyword">while</span> (!temp.<span class="method">pileVide</span>()) {
+            <span class="method">empiler</span>(temp.<span class="method">depiler</span>());
+        }
+    }
+
+    <span class="comment">// برنامج الاختبار</span>
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        Scanner sc = <span class="keyword">new</span> Scanner(System.in);
+        
+        System.out.print(<span class="string">"أدخل عدد عناصر الكومة: "</span>);
+        <span class="keyword">int</span> n = sc.nextInt();
+        
+        <span class="class-name">Pile</span> pile = <span class="keyword">new</span> <span class="class-name">Pile</span>(n);
+        
+        System.out.println(<span class="string">"أدخل العناصر:"</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+            pile.<span class="method">empiler</span>(sc.nextInt());
+        }
+        
+        System.out.print(<span class="string">"\nالكومة الأصلية: "</span>);
+        pile.<span class="method">afficher</span>();
+        
+        System.out.print(<span class="string">"أدخل القيمة المراد حذف تكراراتها: "</span>);
+        <span class="keyword">int</span> val = sc.nextInt();
+        
+        pile.<span class="method">supprimerRepetitions</span>(val);
+        
+        System.out.print(<span class="string">"بعد الحذف:      "</span>);
+        pile.<span class="method">afficher</span>();
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 3: Ouvrage -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">3</span> صنف Ouvrage (مؤلف)
+                </h3>
+
+                <div class="exercise-question">
+                    <p><strong>المطلوب:</strong></p>
+                    <ol>
+                        <li>نفذ صنف <strong>Ouvrage</strong> بخصائص: référence, titre, auteur, anneeEdition</li>
+                        <li>أضف: منشئ، <code>saisir()</code>، <code>afficher()</code>، <code>getAnnee()</code></li>
+                        <li>اكتب برنامجاً يخزن n مؤلف في متجه T</li>
+                        <li>عرض المؤلفين الذين صدرت أعمالهم بين سنتين A1 و A2</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol5')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol5" class="solution-content">
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Ouvrage.java</span>
+                        </div>
+                        <pre><code><span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="class-name">Ouvrage</span> {
+    <span class="keyword">private</span> String reference;
+    <span class="keyword">private</span> String titre;
+    <span class="keyword">private</span> String auteur;
+    <span class="keyword">private int</span> anneeEdition;
+
+    <span class="comment">// المنشئ</span>
+    <span class="keyword">public</span> <span class="class-name">Ouvrage</span>(String ref, String tit, String aut, <span class="keyword">int</span> annee) {
+        <span class="keyword">this</span>.reference = ref;
+        <span class="keyword">this</span>.titre = tit;
+        <span class="keyword">this</span>.auteur = aut;
+        <span class="keyword">this</span>.anneeEdition = annee;
+    }
+
+    <span class="comment">// المنشئ الافتراضي</span>
+    <span class="keyword">public</span> <span class="class-name">Ouvrage</span>() {}
+
+    <span class="comment">// إدخال البيانات</span>
+    <span class="keyword">public void</span> <span class="method">saisir</span>(Scanner sc) {
+        System.out.print(<span class="string">"المرجع: "</span>);
+        reference = sc.next();
+        sc.nextLine();  <span class="comment">// تنظيف المخزن المؤقت</span>
+        
+        System.out.print(<span class="string">"العنوان: "</span>);
+        titre = sc.nextLine();
+        
+        System.out.print(<span class="string">"المؤلف: "</span>);
+        auteur = sc.nextLine();
+        
+        System.out.print(<span class="string">"سنة النشر: "</span>);
+        anneeEdition = sc.nextInt();
+    }
+
+    <span class="comment">// عرض البيانات</span>
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        System.out.println(<span class="string">"┌─────────────────────────────────────┐"</span>);
+        System.out.println(<span class="string">"│ المرجع: "</span> + reference);
+        System.out.println(<span class="string">"│ العنوان: "</span> + titre);
+        System.out.println(<span class="string">"│ المؤلف: "</span> + auteur);
+        System.out.println(<span class="string">"│ سنة النشر: "</span> + anneeEdition);
+        System.out.println(<span class="string">"└─────────────────────────────────────┘"</span>);
+    }
+
+    <span class="comment">// getter لسنة النشر</span>
+    <span class="keyword">public int</span> <span class="method">getAnnee</span>() {
+        <span class="keyword">return</span> anneeEdition;
+    }
+
+    <span class="comment">// برنامج الاختبار</span>
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        Scanner sc = <span class="keyword">new</span> Scanner(System.in);
+        
+        System.out.print(<span class="string">"عدد المؤلفات: "</span>);
+        <span class="keyword">int</span> n = sc.nextInt();
+        
+        <span class="class-name">Ouvrage</span>[] T = <span class="keyword">new</span> <span class="class-name">Ouvrage</span>[n];
+        
+        <span class="comment">// إدخال البيانات</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+            System.out.println(<span class="string">"\nالمؤلفة رقم "</span> + (i+<span class="number">1</span>) + <span class="string">":"</span>);
+            T[i] = <span class="keyword">new</span> <span class="class-name">Ouvrage</span>();
+            T[i].<span class="method">saisir</span>(sc);
+        }
+        
+        <span class="comment">// البحث حسب الفترة الزمنية</span>
+        System.out.print(<span class="string">"\nالسنة البداية: "</span>);
+        <span class="keyword">int</span> A1 = sc.nextInt();
+        System.out.print(<span class="string">"السنة النهاية: "</span>);
+        <span class="keyword">int</span> A2 = sc.nextInt();
+        
+        System.out.println(<span class="string">"\n=== المؤلفات بين "</span> + A1 + <span class="string">" و "</span> + A2 + <span class="string">" ==="</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+            <span class="keyword">if</span> (T[i].<span class="method">getAnnee</span>() >= A1 && T[i].<span class="method">getAnnee</span>() <= A2) {
+                T[i].<span class="method">afficher</span>();
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 4: Intervalle -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">4</span> صنف Intervalle (فترة)
+                </h3>
+
+                <div class="exercise-question">
+                    <p><strong>المطلوب:</strong></p>
+                    <ol>
+                        <li>نفذ صنف <strong>Intervalle</strong> بخصائص BI (البداية) و BS (النهاية)</li>
+                        <li>أضف الطرق:
+                            <ul>
+                                <li><code>afficher()</code>: عرض [BI, BS]</li>
+                                <li><code>milieu()</code>: حساب نقطة المنتصف</li>
+                                <li><code>avant(Intervalle i)</code>: هل الفترة قبل فترة أخرى؟</li>
+                                <li><code>disjoint(Intervalle i)</code>: هل الفترتان منفصلتان؟</li>
+                                <li><code>contenu(Intervalle i)</code>: هل الفترة داخل أخرى؟</li>
+                                <li><code>intersection(Intervalle i)</code>: حساب التقاطع</li>
+                                <li><code>fusion(Intervalle i)</code>: حساب الاتحاد</li>
+                            </ul>
+                        </li>
+                        <li>أنشئ متجه من n فترة ورقمها تسلسلياً، ثم حدد تقاطع الكل</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol6')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol6" class="solution-content">
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Intervalle.java</span>
+                        </div>
+                        <pre><code><span class="keyword">public class</span> <span class="class-name">Intervalle</span> {
+    <span class="keyword">private double</span> BI;  <span class="comment">// Borne Inférieure</span>
+    <span class="keyword">private double</span> BS;  <span class="comment">// Borne Supérieure</span>
+    <span class="keyword">private static int</span> compteur = <span class="number">0</span>;
+    <span class="keyword">private int</span> numero;
+
+    <span class="comment">// المنشئ</span>
+    <span class="keyword">public</span> <span class="class-name">Intervalle</span>(<span class="keyword">double</span> bi, <span class="keyword">double</span> bs) {
+        <span class="keyword">if</span> (bi > bs) {
+            <span class="keyword">double</span> temp = bi;
+            bi = bs;
+            bs = temp;
+        }
+        <span class="keyword">this</span>.BI = bi;
+        <span class="keyword">this</span>.BS = bs;
+        <span class="keyword">this</span>.numero = ++compteur;
+    }
+
+    <span class="comment">// عرض الفترة</span>
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        System.out.println(<span class="string">"I"</span> + numero + <span class="string">": ["</span> + BI + <span class="string">", "</span> + BS + <span class="string">"]"</span>);
+    }
+
+    <span class="comment">// نقطة المنتصف</span>
+    <span class="keyword">public double</span> <span class="method">milieu</span>() {
+        <span class="keyword">return</span> (BI + BS) / <span class="number">2</span>;
+    }
+
+    <span class="comment">// هل الفترة قبل فترة أخرى؟</span>
+    <span class="keyword">public boolean</span> <span class="method">avant</span>(<span class="class-name">Intervalle</span> i) {
+        <span class="keyword">return</span> <span class="keyword">this</span>.BS < i.BI;
+    }
+
+    <span class="comment">// هل الفترتان منفصلتان؟</span>
+    <span class="keyword">public boolean</span> <span class="method">disjoint</span>(<span class="class-name">Intervalle</span> i) {
+        <span class="keyword">return</span> (<span class="keyword">this</span>.BS < i.BI || <span class="keyword">this</span>.BI > i.BS);
+    }
+
+    <span class="comment">// هل الفترة داخل أخرى؟</span>
+    <span class="keyword">public boolean</span> <span class="method">contenu</span>(<span class="class-name">Intervalle</span> i) {
+        <span class="keyword">return</span> (<span class="keyword">this</span>.BI >= i.BI && <span class="keyword">this</span>.BS <= i.BS);
+    }
+
+    <span class="comment">// حساب التقاطع</span>
+    <span class="keyword">public</span> <span class="class-name">Intervalle</span> <span class="method">intersection</span>(<span class="class-name">Intervalle</span> i) {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="method">disjoint</span>(i)) {
+            System.out.println(<span class="string">"لا يوجد تقاطع!"</span>);
+            <span class="keyword">return null</span>;
+        }
+        <span class="keyword">double</span> newBI = Math.max(<span class="keyword">this</span>.BI, i.BI);
+        <span class="keyword">double</span> newBS = Math.min(<span class="keyword">this</span>.BS, i.BS);
+        <span class="keyword">return new</span> <span class="class-name">Intervalle</span>(newBI, newBS);
+    }
+
+    <span class="comment">// حساب الاتحاد</span>
+    <span class="keyword">public</span> <span class="class-name">Intervalle</span> <span class="method">fusion</span>(<span class="class-name">Intervalle</span> i) {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.<span class="method">disjoint</span>(i)) {
+            System.out.println(<span class="string">"لا يمكن الاتحاد: الفترتان منفصلتان!"</span>);
+            <span class="keyword">return null</span>;
+        }
+        <span class="keyword">double</span> newBI = Math.min(<span class="keyword">this</span>.BI, i.BI);
+        <span class="keyword">double</span> newBS = Math.max(<span class="keyword">this</span>.BS, i.BS);
+        <span class="keyword">return new</span> <span class="class-name">Intervalle</span>(newBI, newBS);
+    }
+
+    <span class="comment">// getters</span>
+    <span class="keyword">public double</span> <span class="method">getBI</span>() { <span class="keyword">return</span> BI; }
+    <span class="keyword">public double</span> <span class="method">getBS</span>() { <span class="keyword">return</span> BS; }
+
+    <span class="comment">// برنامج الاختبار</span>
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        <span class="comment">// إنشاء 5 فترات</span>
+        <span class="class-name">Intervalle</span>[] intervalles = {
+            <span class="keyword">new</span> <span class="class-name">Intervalle</span>(<span class="number">1</span>, <span class="number">5</span>),
+            <span class="keyword">new</span> <span class="class-name">Intervalle</span>(<span class="number">3</span>, <span class="number">8</span>),
+            <span class="keyword">new</span> <span class="class-name">Intervalle</span>(<span class="number">4</span>, <span class="number">10</span>),
+            <span class="keyword">new</span> <span class="class-name">Intervalle</span>(<span class="number">2</span>, <span class="number">6</span>),
+            <span class="keyword">new</span> <span class="class-name">Intervalle</span>(<span class="number">5</span>, <span class="number">9</span>)
+        };
+
+        System.out.println(<span class="string">"=== الفترات المُنشأة ==="</span>);
+        <span class="keyword">for</span> (<span class="class-name">Intervalle</span> iv : intervalles) {
+            iv.<span class="method">afficher</span>();
+        }
+
+        <span class="comment">// حساب تقاطع كل الفترات</span>
+        <span class="class-name">Intervalle</span> result = intervalles[<span class="number">0</span>];
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i < intervalles.length; i++) {
+            result = result.<span class="method">intersection</span>(intervalles[i]);
+            <span class="keyword">if</span> (result == <span class="keyword">null</span>) {
+                System.out.println(<span class="string">"لا يوجد تقاطع عام!"</span>);
+                <span class="keyword">return</span>;
+            }
+        }
+
+        System.out.println(<span class="string">"\n=== تقاطع كل الفترات ==="</span>);
+        result.<span class="method">afficher</span>();
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Exercises Series 3 -->
+        <section id="exercises-s3" class="section">
+            <h2 class="section-title">✍️ سلسلة التمارين رقم 3 - المُعدِّلات ومستويات الرؤية</h2>
+
+            <!-- Exercise 1: Calcul -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">1</span> صنف Calcul (حسابات ثابتة)
+                </h3>
+
+                <div class="exercise-question">
+                    <p><strong>المطلوب:</strong></p>
+                    <ol>
+                        <li>أنشئ صنف <strong>Calcul</strong> يحتوي على طرق ثابتة (static):
+                            <ul>
+                                <li><code>factoriel(n)</code>: حساب $n!$</li>
+                                <li><code>puissance(x, y)</code>: حساب $x^y$</li>
+                                <li><code>sommeN2(n)</code>: مجموع أول $n$ أعداد زوجية</li>
+                            </ul>
+                        </li>
+                        <li>في صنف <strong>ProgCalcul</strong>، أنشئ متجه حجمه n يحتوي في كل عنصر i على: factoriel(i), puissance(i,2), sommeN2(i)</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol7')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol7" class="solution-content">
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Calcul.java</span>
+                        </div>
+                        <pre><code><span class="keyword">public class</span> <span class="class-name">Calcul</span> {
+
+    <span class="comment">// حساب المضروب n!</span>
+    <span class="keyword">public static long</span> <span class="method">factoriel</span>(<span class="keyword">int</span> n) {
+        <span class="keyword">if</span> (n < <span class="number">0</span>) <span class="keyword">return</span> -<span class="number">1</span>;
+        <span class="keyword">long</span> result = <span class="number">1</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">2</span>; i <= n; i++) {
+            result *= i;
+        }
+        <span class="keyword">return</span> result;
+    }
+
+    <span class="comment">// حساب الأس x^y</span>
+    <span class="keyword">public static long</span> <span class="method">puissance</span>(<span class="keyword">int</span> x, <span class="keyword">int</span> y) {
+        <span class="keyword">long</span> result = <span class="number">1</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < y; i++) {
+            result *= x;
+        }
+        <span class="keyword">return</span> result;
+    }
+
+    <span class="comment">// مجموع أول n أعداد زوجية</span>
+    <span class="keyword">public static int</span> <span class="method">sommeN2</span>(<span class="keyword">int</span> n) {
+        <span class="keyword">int</span> sum = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i <= n; i++) {
+            sum += (<span class="number">2</span> * i);
+        }
+        <span class="keyword">return</span> sum;
+    }
+}
+
+<span class="comment">// صنف مساعد لتخزين النتائج</span>
+<span class="keyword">class</span> <span class="class-name">ResultatCalcul</span> {
+    <span class="keyword">long</span> fact;
+    <span class="keyword">long</span> puiss;
+    <span class="keyword">int</span> somme;
+
+    <span class="keyword">public</span> <span class="class-name">ResultatCalcul</span>(<span class="keyword">long</span> f, <span class="keyword">long</span> p, <span class="keyword">int</span> s) {
+        <span class="keyword">this</span>.fact = f;
+        <span class="keyword">this</span>.puiss = p;
+        <span class="keyword">this</span>.somme = s;
+    }
+}
+
+<span class="comment">// برنامج الاختبار</span>
+<span class="keyword">public class</span> <span class="class-name">ProgCalcul</span> {
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        java.util.Scanner sc = <span class="keyword">new</span> java.util.Scanner(System.in);
+        
+        System.out.print(<span class="string">"أدخل حجم المتجه: "</span>);
+        <span class="keyword">int</span> n = sc.nextInt();
+        
+        <span class="class-name">ResultatCalcul</span>[] vecteur = <span class="keyword">new</span> <span class="class-name">ResultatCalcul</span>[n];
+        
+        System.out.println(<span class="string">"\n|   i   |  fact(i)  |  i^2  | sum(2*i) |"</span>);
+        System.out.println(<span class="string">"|-------|----------|-------|----------|"</span>);
+        
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+            <span class="keyword">long</span> fact = <span class="class-name">Calcul</span>.<span class="method">factoriel</span>(i);
+            <span class="keyword">long</span> puiss = <span class="class-name">Calcul</span>.<span class="method">puissance</span>(i, <span class="number">2</span>);
+            <span class="keyword">int</span> somme = <span class="class-name">Calcul</span>.<span class="method">sommeN2</span>(i);
+            
+            vecteur[i] = <span class="keyword">new</span> <span class="class-name">ResultatCalcul</span>(fact, puiss, somme);
+            
+            System.out.printf(<span class="string">"| %5d | %8d | %5d | %8d |\n"</span>, 
+                             i, fact, puiss, somme);
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 2: Polynome -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">3</span> صنف Monome و Polynome (متعدد الحدود)
+                </h3>
+
+                <div class="exercise-question">
+                    <p><strong>المطلوب:</strong></p>
+                    <ol>
+                        <li>صنف <strong>Monome</strong>: coefficient (معامل), exposant (أس)
+                            <ul>
+                                <li>منشئ، <code>lire()</code>، <code>afficher()</code> (مثال: $-4x^3$)</li>
+                                <li><code>somme(Monome m)</code>: جمع حدود same degree</li>
+                                <li><code>valeur(double x)</code>: حساب القيمة عند x</li>
+                            </ul>
+                        </li>
+                        <li>صنف <strong>Polynome</strong>: degré (درجة), tableau de Monômes
+                            <ul>
+                                <li>منشئ، <code>lire()</code>، <code>afficher()</code></li>
+                                <li><code>somme(Poly p)</code>: جمع متعددي حدود</li>
+                                <li><code>valeur(double x)</code>: حساب القيمة</li>
+                            </ul>
+                        </li>
+                        <li>برنامج ينشئ P1 و P2 ويحسب المجموع والقيمة</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol8')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol8" class="solution-content">
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Monome.java</span>
+                        </div>
+                        <pre><code><span class="keyword">import</span> java.util.Scanner;
+
+<span class="keyword">public class</span> <span class="class-name">Monome</span> {
+    <span class="keyword">private double</span> coefficient;
+    <span class="keyword">private int</span> exposant;
+
+    <span class="comment">// المنشئ</span>
+    <span class="keyword">public</span> <span class="class-name">Monome</span>(<span class="keyword">double</span> coef, <span class="keyword">int</span> exp) {
+        <span class="keyword">this</span>.coefficient = coef;
+        <span class="keyword">this</span>.exposant = exp;
+    }
+
+    <span class="comment">// المنشئ الافتراضي</span>
+    <span class="keyword">public</span> <span class="class-name">Monome</span>() {}
+
+    <span class="comment">// قراءة الحد</span>
+    <span class="keyword">public void</span> <span class="method">lire</span>(Scanner sc) {
+        System.out.print(<span class="string">"المعامل: "</span>);
+        coefficient = sc.nextDouble();
+        System.out.print(<span class="string">"الأس: "</span>);
+        exposant = sc.nextInt();
+    }
+
+    <span class="comment">// عرض الحد (مثال: -4x^3 أو 5x^2 أو 3)</span>
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        <span class="keyword">if</span> (exposant == <span class="number">0</span>) {
+            System.out.print(coefficient);
+        } } <span class="keyword">else if</span> (exposant == <span class="number">1</span>) {
+            System.out.print(coefficient + <span class="string">"x"</span>);
+        } <span class="keyword">else</span> {
+            System.out.print(coefficient + <span class="string">"x^"</span> + exposant);
+        }
+    }
+
+    <span class="comment">// جمع حدان من نفس الدرجة</span>
+    <span class="keyword">public</span> <span class="class-name">Monome</span> <span class="method">somme</span>(<span class="class-name">Monome</span> m) {
+        <span class="keyword">if</span> (<span class="keyword">this</span>.exposant != m.exposant) {
+            System.out.println(<span class="string">"خطأ: لا يمكن جمع حدود من درجات مختلفة!"</span>);
+            <span class="keyword">return null</span>;
+        }
+        <span class="keyword">return new</span> <span class="class-name">Monome</span>(<span class="keyword">this</span>.coefficient + m.coefficient, exposant);
+    }
+
+    <span class="comment">// حساب القيمة عند x</span>
+    <span class="keyword">public double</span> <span class="method">valeur</span>(<span class="keyword">double</span> x) {
+        <span class="keyword">return</span> coefficient * Math.pow(x, exposant);
+    }
+
+    <span class="comment">// getters</span>
+    <span class="keyword">public double</span> <span class="method">getCoefficient</span>() { <span class="keyword">return</span> coefficient; }
+    <span class="keyword">public int</span> <span class="method">getExposant</span>() { <span class="keyword">return</span> exposant; }
+}</code></pre>
+                    </div>
+
+                    <div class="code-container" style="margin-top: 25px;">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Polynome.java</span>
+                        </div>
+                        <pre><code><span class="keyword">public class</span> <span class="class-name">Polynome</span> {
+    <span class="keyword">private int</span> degre;
+    <span class="keyword">private</span> <span class="class-name">Monome</span>[] monomes;
+
+    <span class="comment">// المنشئ</span>
+    <span class="keyword">public</span> <span class="class-name">Polynome</span>(<span class="keyword">int</span> deg) {
+        <span class="keyword">this</span>.degre = deg;
+        <span class="keyword">this</span>.monomes = <span class="keyword">new</span> <span class="class-name">Monome</span>[deg + <span class="number">1</span>];
+    }
+
+    <span class="comment">// قراءة متعدد الحدود</span>
+    <span class="keyword">public void</span> <span class="method">lire</span>(java.util.Scanner sc) {
+        System.out.println(<span class="string">"أدخل حدود متعدد الحدود (من الأعلى إلى الأدنى):"</span>);
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = degre; i >= <span class="number">0</span>; i--) {
+            System.out.println(<span class="string">"الحد من الدرجة "</span> + i + <span class="string">":"</span>);
+            monomes[i] = <span class="keyword">new</span> <span class="class-name">Monome</span>();
+            monomes[i].<span class="method">lire</span>(sc);
+        }
+    }
+
+    <span class="comment">// عرض متعدد الحدود</span>
+    <span class="keyword">public void</span> <span class="method">afficher</span>() {
+        System.out.print(<span class="string">"P(x) = "</span>);
+        <span class="keyword">boolean</span> premier = <span class="keyword">true</span>;
+        
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = degre; i >= <span class="number">0</span>; i--) {
+            <span class="keyword">if</span> (monomes[i].<span class="method">getCoefficient</span>() != <span class="number">0</span>) {
+                <span class="keyword">if</span> (!premier && monomes[i].<span class="method">getCoefficient</span>() > <span class="number">0</span>) {
+                    System.out.print(<span class="string">" + "</span>);
+                } <span class="keyword">else if</span> (!premier) {
+                    System.out.print(<span class="string">" "</span>);
+                }
+                monomes[i].<span class="method">afficher</span>();
+                premier = <span class="keyword">false</span>;
+            }
+        }
+        System.out.println();
+    }
+
+    <span class="comment">// حساب القيمة عند x</span>
+    <span class="keyword">public double</span> <span class="method">valeur</span>(<span class="keyword">double</span> x) {
+        <span class="keyword">double</span> result = <span class="number">0</span>;
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i <= degre; i++) {
+            result += monomes[i].<span class="method">valeur</span>(x);
+        }
+        <span class="keyword">return</span> result;
+    }
+
+    <span class="comment">// جمع متعددي حدود</span>
+    <span class="keyword">public</span> <span class="class-name">Polynome</span> <span class="method">somme</span>(<span class="class-name">Polynome</span> p) {
+        <span class="keyword">int</span> newDeg = Math.max(<span class="keyword">this</span>.degre, p.degre);
+        <span class="class-name">Polynome</span> result = <span class="keyword">new</span> <span class="class-name">Polynome</span>(newDeg);
+        
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i <= newDeg; i++) {
+            <span class="keyword">double</span> coef1 = <span class="number">0</span>, coef2 = <span class="number">0</span>;
+            
+            <span class="keyword">if</span> (i <= <span class="keyword">this</span>.degre) coef1 = <span class="keyword">this</span>.monomes[i].<span class="method">getCoefficient</span>();
+            <span class="keyword">if</span> (i <= p.degre) coef2 = p.monomes[i].<span class="method">getCoefficient</span>();
+            
+            result.monomes[i] = <span class="keyword">new</span> <span class="class-name">Monome</span>(coef1 + coef2, i);
+        }
+        
+        <span class="keyword">return</span> result;
+    }
+
+    <span class="comment">// برنامج الاختبار</span>
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        java.util.Scanner sc = <span class="keyword">new</span> java.util.Scanner(System.in);
+        
+        <span class="comment">// إنشاء P1</span>
+        System.out.print(<span class="string">"درجة P1: "</span>);
+        <span class="keyword">int</span> n1 = sc.nextInt();
+        <span class="class-name">Polynome</span> P1 = <span class="keyword">new</span> <span class="class-name">Polynome</span>(n1);
+        P1.<span class="method">lire</span>(sc);
+        
+        <span class="comment">// إنشاء P2</span>
+        System.out.print(<span class="string">"درجة P2: "</span>);
+        <span class="keyword">int</span> n2 = sc.nextInt();
+        <span class="class-name">Polynome</span> P2 = <span class="keyword">new</span> <span class="class-name">Polynome</span>(n2);
+        P2.<span class="method">lire</span>(sc);
+
+        System.out.println(<span class="string">"\nP1 = "</span>);
+        P1.<span class="method">afficher</span>();
+        
+        System.out.println(<span class="string">"P2 = "</span>);
+        P2.<span class="method">afficher</span>();
+
+        <span class="comment">// حساب المجموع</span>
+        <span class="class-name">Polynome</span> PSomme = P1.<span class="method">somme</span>(P2);
+        System.out.println(<span class="string">"\nP1 + P2 = "</span>);
+        PSomme.<span class="method">afficher</span>();
+
+        <span class="comment">// حساب القيمة</span>
+        System.out.print(<span class="string">"\nأدخل قيمة x: "</span>);
+        <span class="keyword">double</span> x = sc.nextDouble();
+        System.out.printf(<span class="string">"P(%s) = %.2f\n"</span>, x, PSomme.<span class="method">valeur</span>(x));
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exercise 4: Etudiant -->
+            <div class="exercise-section">
+                <h3 class="exercise-title">
+                    <span class="exercise-number">4</span> صنف Etudiant (طالب) مع Mention
+                </h3>
+
+                <div class="exercise-question">
+                    <p><strong>المطلوب:</strong></p>
+                    <ol>
+                        <li>صنف <strong>Etudiant</strong>: matricule, nom, prénom, 3 modules (C1,C2,C3), 3 notes (N1,N2,N3)
+                            <ul>
+                                <li><code>Lire()</code>: قراءة البيانات</li>
+                                <li><code>AttribuerNotes()</code>: إدخال الملاحظات</li>
+                                <li><code>CalculerMoy()</code>: حساب المعدل المرجح</li>
+                                <li><code>Afficher()</code>: عرض مع Mention</li>
+                            </ul>
+                        </li>
+                        <li>Mention: Excellent(≥18), Très bien(≥16), Bien(≥14), Assez bien(≥12), Passable(≥11)</li>
+                        <li>برنامج يخزن n طلاب ويعرضهم مع المعدلات والمذكرات</li>
+                    </ol>
+                </div>
+
+                <button class="solution-toggle" onclick="toggleSolution('sol9')">
+                    👁️ عرض/إخفاء الحل
+                </button>
+
+                <div id="sol9" class="solution-content">
+                    <div class="code-container">
+                        <div class="code-header">
+                            <div class="code-dots">
+                                <div class="code-dot dot-red"></div>
+                                <div class="code-dot dot-yellow"></div>
+                                <div class="code-dot dot-green"></div>
+                            </div>
+                            <span>Etudiant.java</span>
+                        </div>
+                        <pre><code><span class="keyword">import</span> java.util.Scanner;
+
+<span class="comment">// تعداد المذكرات</span>
+<span class="keyword">enum</span> <span class="class-name">Mention</span> {
+    EXCELLENT(<span class="string">"Excellent"</span>, <span class="number">18</span>),
+    TRES_BIEN(<span class="string">"Très Bien"</span>, <span class="number">16</span>),
+    BIEN(<span class="string">"Bien"</span>, <span class="number">14</span>),
+    ASSEZ_BIEN(<span class="string">"Assez Bien"</span>, <span class="number">12</span>),
+    PASSABLE(<span class="string">"Passable"</span>, <span class="number">11</span>),
+    AJOURNE(<span class="string">"Ajourné"</span>, <span class="number">0</span>);
+
+    <span class="keyword">private</span> String label;
+    <span class="keyword">private int</span> seuil;
+
+    <span class="keyword">private</span> <span class="class-name">Mention</span>(String label, <span class="keyword">int</span> seuil) {
+        <span class="keyword">this</span>.label = label;
+        <span class="keyword">this</span>.seuil = seuil;
+    }
+
+    <span class="keyword">public</span> String <span class="method">getLabel</span>() { <span class="keyword">return</span> label; }
+    <span class="keyword">public int</span> <span class="method">getSeuil</span>() { <span class="keyword">return</span> seuil; }
+
+    <span class="keyword">public static</span> <span class="class-name">Mention</span> <span class="method">getMention</span>(<span class="keyword">double</span> moyenne) {
+        <span class="keyword">if</span> (moyenne >= EXCELLENT.seuil) <span class="keyword">return</span> EXCELLENT;
+        <span class="keyword">if</span> (moyenne >= TRES_BIEN.seuil) <span class="keyword">return</span> TRES_BIEN;
+        <span class="keyword">if</span> (moyenne >= BIEN.seuil) <span class="keyword">return</span> BIEN;
+        <span class="keyword">if</span> (moyenne >= ASSEZ_BIEN.seuil) <span class="keyword">return</span> ASSEZ_BIEN;
+        <span class="keyword">if</span> (moyenne >= PASSABLE.seuil) <span class="keyword">return</span> PASSABLE;
+        <span class="keyword">return</span> AJOURNE;
+    }
+}
+
+<span class="keyword">public class</span> <span class="class-name">Etudiant</span> {
+    <span class="keyword">private long</span> matricule;
+    <span class="keyword">private</span> String nom;
+    <span class="keyword">private</span> String prenom;
+    <span class="keyword">private double</span> C1, C2, C3;  <span class="comment">// المعاملات</span>
+    <span class="keyword">private double</span> N1, N2, N3;  <span class="comment">// الملاحظات</span>
+    <span class="keyword">private double</span> moyenne;
+    <span class="keyword">private</span> <span class="class-name">Mention</span> mention;
+
+    <span class="comment">// قراءة البيانات الشخصية</span>
+    <span class="keyword">public void</span> <span class="method">Lire</span>(Scanner sc) {
+        System.out.print(<span class="string">"الماتريكول: "</span>);
+        matricule = sc.nextLong();
+        sc.nextLine();
+        
+        System.out.print(<span class="string">"الاسم: "</span>);
+        nom = sc.nextLine();
+        
+        System.out.print(<span class="string">"الاسم الأول: "</span>);
+        prenom = sc.nextLine();
+
+        <span class="comment">// المعاملات الافتراضية</span>
+        C1 = <span class="number">3</span>; C2 = <span class="number">2</span>; C3 = <span class="number">1</span>;
+    }
+
+    <span class="comment">// إدخال الملاحظات</span>
+    <span class="keyword">public void</span> <span class="method">AttribuerNotes</span>(Scanner sc) {
+        System.out.println(<span class="string">"\n--- ملاحظات الطالب "</span> + nom + <span class="string">" ---"</span>);
+        System.out.print(<span class="string">"ملاحظة المادة 1 (معامل "</span> + C1 + <span class="string">"): "</span>);
+        N1 = sc.nextDouble();
+        System.out.print(<span class="string">"ملاحظة المادة 2 (معامل "</span> + C2 + <span class="string">"): "</span>);
+        N2 = sc.nextDouble();
+        System.out.print(<span class="string">"ملاحظة المادة 3 (معامل "</span> + C3 + <span class="string">"): "</span>);
+        N3 = sc.nextDouble();
+    }
+
+    <span class="comment">// حساب المعدل المرجح</span>
+    <span class="keyword">public void</span> <span class="method">CalculerMoy</span>() {
+        <span class="keyword">double</span> totalCoeff = C1 + C2 + C3;
+        moyenne = (N1*C1 + N2*C2 + N3*C3) / totalCoeff;
+        mention = <span class="class-name">Mention</span>.<span class="method">getMention</span>(moyenne);
+    }
+
+    <span class="comment">// عرض البيانات</span>
+    <span class="keyword">public void</span> <span class="method">Afficher</span>() {
+        System.out.println(<span class="string">"╔══════════════════════════════════════╗"</span>);
+        System.out.printf(<span class="string">"║ الماتريكول: %-24d ║\n"</span>, matricule);
+        System.out.printf(<span class="string">"║ الاسم: %-29s ║\n"</span>, nom + <span class="string">" "</span> + prenom);
+        System.out.printf(<span class="string">"║ الملاحظات: %.2f | %.2f | %.2f       ║\n"</span>, N1, N2, N3);
+        System.out.printf(<span class="string">"║ المعدل: %-29.2f ║\n"</span>, moyenne);
+        System.out.printf(<span class="string">"║ المذكرة: %-28s ║\n"</span>, mention.<span class="method">getLabel</span>());
+        System.out.println(<span class="string">"╚══════════════════════════════════════╝"</span>);
+    }
+
+    <span class="comment">// برنامج الاختبار</span>
+    <span class="keyword">public static void</span> <span class="method">main</span>(String[] args) {
+        Scanner sc = <span class="keyword">new</span> Scanner(System.in);
+        
+        System.out.print(<span class="string">"عدد الطلاب: "</span>);
+        <span class="keyword">int</span> n = sc.nextInt();
+        
+        <span class="class-name">Etudiant</span>[] etudiants = <span class="keyword">new</span> <span class="class-name">Etudiant</span>[n];
+        
+        <span class="comment">// إدخال البيانات</span>
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+            System.out.println(<span class="string">"\n=== الطالب رقم "</span> + (i+<span class="number">1</span>) + <span class="string">" ==="</span>);
+            etudiants[i] = <span class="keyword">new</span> <span class="class-name">Etudiant</span>();
+            etudiants[i].<span class="method">Lire</span>(sc);
+            etudiants[i].<span class="method">AttribuerNotes</span>(sc);
+            etudiants[i].<span class="method">CalculerMoy</span>();
+        }
+
+        <span class="comment">// عرض النتائج</span>
+        System.out.println(<span class="string">"\n\n========================================"</span>);
+        System.out.println(<span class="string">"       قائمة الطلاب والمعدلات"</span>);
+        System.out.println(<span class="string">"========================================\n"</span>);
+        
+        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < n; i++) {
+            etudiants[i].<span class="method">Afficher</span>();
+            System.out.println();
+        }
+    }
+}</code></pre>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Summary Section -->
+        <section class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            <h2 class="section-title" style="color: white; border-bottom-color: white;">📚 ملخص الوحدة</h2>
+
+            <div class="feature-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+                <div class="feature-card" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white;">
+                    <div class="feature-icon">🏗️</div>
+                    <h4 style="color: white;">الأصناف (Classes)</h4>
+                    <p style="color: rgba(255,255,255,0.9);">قوالب تحدد هيكل الكائنات مع خصائصها وسلوكياتها</p>
+                </div>
+
+                <div class="feature-card" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white;">
+                    <div class="feature-icon">🔵</div>
+                    <h4 style="color: white;">الكائنات (Objects)</h4>
+                    <p style="color: rgba(255,255,255,0.9);">نسخ ملموسة من الأصناف تحتل ذاكرة وتتفاعل</p>
+                </div>
+
+                <div class="feature-card" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white;">
+                    <div class="feature-icon">🔧</div>
+                    <h4 style="color: white;">المنشئات (Constructors)</h4>
+                    <p style="color: rgba(255,255,255,0.9);">طرق خاصة لإنشاء وتهيئة الكائنات</p>
+                </div>
+
+                <div class="feature-card" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white;">
+                    <div class="feature-icon">🔒</div>
+                    <h4 style="color: white;">التغليف (Encapsulation)</h4>
+                    <p style="color: rgba(255,255,255,0.9);">حماية البيانات باستخدام private/public</p>
+                </div>
+
+                <div class="feature-card" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white;">
+                    <div class="feature-icon">📦</div>
+                    <h4 style="color: white;">Static</h4>
+                    <p style="color: rgba(255,255,255,0.9);">أعضاء مشتركة بين كل كائنات الصنف</p>
+                </div>
+
+                <div class="feature-card" style="background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.3); color: white;">
+                    <div class="feature-icon">🔄</div>
+                    <h4 style="color: white;">التزيين (Overloading)</h4>
+                    <p style="color: rgba(255,255,255,0.9);">تعريف عدة طرق/منشئات بنفس الاسم</p>
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px; padding: 30px; background: rgba(255,255,255,0.1); border-radius: 12px;">
+                <h3 style="font-size: 1.8rem; margin-bottom: 20px;">🎓 بالتوفيق في دراستكم!</h3>
+                <p style="font-size: 1.2rem; opacity: 0.95;">هذا الموقع التعليمي جزء من وحدة البرمجة كائنية التوجه - جامعة USTHB</p>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>📚 البرمجة كائنية التوجه (POO) - Langage JAVA</p>
+        <p style="margin-top: 15px; font-size: 1rem; opacity: 0.8;">
+            USTHB - قسم الإلكتروني والإعلام الآلي | المستوى الثاني L2
+        </p>
+        <p style="margin-top: 20px; font-size: 0.95rem; opacity: 0.7;">
+            © 2024 - جميع الحقوق محفوظة للأغراض التعليمية
+        </p>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Toggle Solution Function
+        function toggleSolution(id) {
+            const solution = document.getElementById(id);
+            solution.classList.toggle('active');
+        }
+
+        // Scroll to Top Function
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+
+        // Show/Hide Scroll Button
+        window.addEventListener('scroll', function() {
+            const scrollTopBtn = document.getElementById('scrollTopBtn');
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        // Smooth Scrolling for Navigation Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
