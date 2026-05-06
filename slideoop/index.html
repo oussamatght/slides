@@ -127,6 +127,16 @@
             padding: 15px 0;
         }
         
+        .nav-shell {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
         .nav-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -135,6 +145,35 @@
             justify-content: center;
             gap: 25px;
             flex-wrap: wrap;
+        }
+        
+        .nav-close {
+            display: none;
+        }
+        
+        .nav-toggle {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            border: none;
+            border-radius: 12px;
+            background: var(--primary-color);
+            color: white;
+            font-size: 1.4rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+        
+        .nav-toggle:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+        }
+        
+        .nav-overlay {
+            display: none;
         }
         
         .nav-link {
@@ -616,9 +655,58 @@
             .section-title {
                 font-size: 1.8rem;
             }
+            .nav-bar {
+                padding: 10px 0;
+            }
+            .nav-shell {
+                justify-content: flex-start;
+            }
+            .nav-toggle {
+                display: inline-flex;
+            }
             .nav-container {
+                position: fixed;
+                top: 0;
+                right: 0;
+                height: 100vh;
+                width: min(82vw, 320px);
+                padding: 90px 20px 30px;
+                background: var(--bg-white);
+                box-shadow: var(--shadow-lg);
                 flex-direction: column;
-                align-items: center;
+                align-items: stretch;
+                justify-content: flex-start;
+                gap: 12px;
+                flex-wrap: nowrap;
+                transform: translateX(100%);
+                transition: transform 0.3s ease;
+                z-index: 1100;
+                overflow-y: auto;
+            }
+            .nav-container.active {
+                transform: translateX(0);
+            }
+            .nav-overlay {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 23, 42, 0.45);
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.3s ease;
+                z-index: 1050;
+            }
+            .nav-overlay.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+            .nav-link {
+                width: 100%;
+                text-align: right;
+                font-size: 1rem;
+                padding: 14px 16px;
+                border-radius: 12px;
+                background: #f8fafc;
             }
             .comparison-container {
                 grid-template-columns: 1fr;
@@ -696,13 +784,18 @@
 
     <!-- Navigation Bar -->
     <nav class="nav-bar">
-        <div class="nav-container">
-            <a href="#introduction" class="nav-link">📖 المقدمة</a>
-            <a href="#concepts" class="nav-link">🔷 المفاهيم الأساسية</a>
-            <a href="#implementation" class="nav-link">💻 التنفيذ العملي</a>
-            <a href="#exercises-s1" class="nav-link">✍️ سلسلة تمارين 1</a>
-            <a href="#exercises-s2" class="nav-link">✍️ سلسلة تمارين 2</a>
-            <a href="#exercises-s3" class="nav-link">✍️ سلسلة تمارين 3</a>
+        <div class="nav-shell">
+            <button class="nav-toggle" id="navToggle" type="button" aria-label="فتح القائمة" aria-controls="navMenu" aria-expanded="false">☰</button>
+            <div class="nav-overlay" id="navOverlay"></div>
+            <div class="nav-container" id="navMenu">
+                <button class="nav-close" id="navClose" type="button" aria-label="إغلاق القائمة">✕</button>
+                <a href="#introduction" class="nav-link">📖 المقدمة</a>
+                <a href="#concepts" class="nav-link">🔷 المفاهيم الأساسية</a>
+                <a href="#implementation" class="nav-link">💻 التنفيذ العملي</a>
+                <a href="#exercises-s1" class="nav-link">✍️ سلسلة تمارين 1</a>
+                <a href="#exercises-s2" class="nav-link">✍️ سلسلة تمارين 2</a>
+                <a href="#exercises-s3" class="nav-link">✍️ سلسلة تمارين 3</a>
+            </div>
         </div>
     </nav>
 
@@ -2407,6 +2500,91 @@
             </div>
         </section>
 
+        <!-- Chapter Guide Section -->
+        <section id="chapter-guide" class="section">
+            <h2 class="section-title">شرح إضافي للفصول والمحاور</h2>
+
+            <div class="content-text">
+                <p>هذا الجزء يشرح بشكل أبسط الفصول الجديدة التي ظهرت في المادة، حتى يسهل عليك الربط بين النظرية والتمارين. الفكرة الأساسية هنا هي فهم <strong>الوراثة</strong>، <strong>الأصناف المجردة</strong>، و<strong>الواجهات</strong>، ثم تطبيقها على أمثلة
+                    عملية مثل الحسابات، الحسابات البنكية، والتمثيل البيداغوجي للمواد والبرامج.</p>
+            </div>
+
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h4>الطرق الثابتة (Static)</h4>
+                    <p>صنف <strong>Calcul</strong> مع <code>factoriel(n)</code>، <code>puissance(x,y)</code>، <code>sommeN2(n)</code>. الطريقة الثابتة تُستدعى من الصنف مباشرة: <code>Calcul.factoriel(5)</code></p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">🔐</div>
+                    <h4>مجالات الوصول (Access Modifiers)</h4>
+                    <p><strong>public:</strong> متاح من الخارج | <strong>protected:</strong> للأبناء والحزمة | <strong>private:</strong> محمي</p>
+                    <p>مثال: في <strong>CompteEpargne</strong>: <code>private double solde</code> (آمن)، <code>protected double tauxInterets</code> (للأبناء)</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">👨‍👧‍👦</div>
+                    <h4>الوراثة والتخصص (Inheritance)</h4>
+                    <p><strong>CompteEpargneBoni extends CompteEpargne</strong> وتغيير <code>verserInterets()</code> بطريقة جديدة لحساب الفوائد + المكافآت</p>
+                    <p>الابن يرث كل شيء من الأب ويمكنه override أي طريقة</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">�</div>
+                    <h4>الصنف الأب والابن (Casting)</h4>
+                    <p><code>Mother1 m = new Son1();</code> ✓ صحيح (الابن يدخل في الأب - Upcasting)</p>
+                    <p><code>Son1 s = (Son1) m;</code> يحتاج casting واضح (Downcasting)</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">�</div>
+                    <h4>الأصناف المجردة (Abstract)</h4>
+                    <p><strong>abstract class Forme</strong> مع <code>abstract perimetre()</code> و <code>abstract surface()</code></p>
+                    <p><strong>Rectangle</strong> و <strong>Trapeze</strong> ينفذان هذه الطرق بطريقتهما الخاصة</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">�</div>
+                    <h4>الواجهات (Interfaces)</h4>
+                    <p><strong>interface Comparable</strong> بـ <code>compareTo()</code> تسمح بمقارنة أي شيء</p>
+                    <p><strong>Resultat implements Comparable</strong> بدون وراثة مشتركة، فئة واحدة قد تطبق عدة واجهات</p>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <div class="info-box-title">📌 فهم Encapsulation والحماية</div>
+                <ul>
+                    <li><strong>private double solde:</strong> بيانات حساسة جداً، الوصول عبر <code>deposer()</code> و <code>retirer()</code> فقط (تحكم كامل)</li>
+                    <li><strong>protected double tauxInterets:</strong> الأبناء يحتاجونها للتخصص، الخارج لا يصل (ثقة مشروطة)</li>
+                    <li><strong>public void deposer(double montant):</strong> العقد الواضح مع العالم الخارجي</li>
+                    <li><strong>الخطأ الشائع:</strong> جعل كل شيء public = فقدان التحكم والحماية!</li>
+                </ul>
+            </div>
+
+            <div class="info-box success">
+                <div class="info-box-title">🎯 الفرق: Abstract Class vs Interface</div>
+                <ul>
+                    <li><strong>Abstract Class:</strong> قد تحتوي كود حقيقي (مثل <code>Afficher()</code> في Forme)، وراثة أب واحد فقط، متغيرات protected/private</li>
+                    <li><strong>Interface:</strong> تواقيع فقط (signatures)، بدون تنفيذ، فئة واحدة يمكنها تطبيق عدة واجهات</li>
+                    <li><strong>متى تستخدم؟</strong> فيه كود مشترك حقيقي؟ → abstract class. فقط السلوك المتوقع؟ → interface</li>
+                </ul>
+            </div>
+
+            <div class="info-box warning">
+                <div class="info-box-title">⚠️ تصميم النموذج الواقعي: Machine/Technician/Enterprise</div>
+                <p><strong>المنطق:</strong> آلات (بسيطة أو صناعية) ← فنيين يصلحونها ← مؤسسة تملكهما جميعاً</p>
+                <ul>
+                    <li><strong>Machine:</strong> code، name، date_acquisition + (للصناعية فقط: brand، lieu_achat)</li>
+                    <li><strong>Technician:</strong> code، name، email + <code>List&lt;Machine&gt;</code> الآلات التي يصلحها</li>
+                    <li><strong>OperationMaintenance:</strong> date، description، rapport المتعلقة بـ Machine</li>
+                    <li><strong>Salle:</strong> code، localisation</li>
+                    <li><strong>Enterprise:</strong> <code>List&lt;Machine&gt;</code>، <code>List&lt;Technician&gt;</code>، <code>List&lt;Salle&gt;</code></li>
+                </ul>
+                <p><strong>الروابط المهمة:</strong> كل Machine لها تاريخ OperationMaintenance (متى تم صيانتها)، كل Technician مسؤول عن Machines متعددة</p>
+            </div>
+        </section>
+
         <!-- Summary Section -->
         <section class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
             <h2 class="section-title" style="color: white; border-bottom-color: white;">📚 ملخص الوحدة</h2>
@@ -2455,6 +2633,324 @@
             </div>
         </section>
 
+        <!-- OOP Fundamentals Section -->
+        <section class="section" id="fundamentals">
+            <h2 class="section-title">🏛️ المفاهيم الأساسية في البرمجة كائنية التوجه</h2>
+            
+            <div class="content-text">
+                <p>هذا الجزء يغطي جميع المفاهيم الأساسية التي تحتاج إلى فهمها بعمق لإتقان البرمجة كائنية التوجه في Java.</p>
+            </div>
+
+            <!-- Part 1: Basic OOP Concepts -->
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #667eea;">
+                <h3 style="color: #667eea; margin-top: 0;">1️⃣ المفاهيم الأساسية</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-top: 3px solid #667eea;">
+                        <h4 style="color: #667eea;">الصنف (Class)</h4>
+                        <p><strong>تعريف:</strong> مجموعة من البيانات (متغيرات) + الطرق (functions) التي تعمل عليها</p>
+                        <p><strong>المكونات:</strong></p>
+                        <ul style="margin: 10px 0;">
+                            <li>الخصائص (Attributes)</li>
+                            <li>الطرق (Methods)</li>
+                            <li>المنشئات (Constructors)</li>
+                        </ul>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-top: 3px solid #764ba2;">
+                        <h4 style="color: #764ba2;">الكائن (Object)</h4>
+                        <p><strong>تعريف:</strong> نسخة ملموسة من صنف ما، يحتوي على قيم حقيقية للخصائص</p>
+                        <p><strong>الفرق:</strong></p>
+                        <ul style="margin: 10px 0;">
+                            <li>الصنف = قالب عام</li>
+                            <li>الكائن = حالة محددة من الصنف</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #f093fb;">
+                    <h4 style="color: #f093fb;">المنشئ (Constructor)</h4>
+                    <p>طريقة خاصة بنفس اسم الصنف، بدون نوع إرجاع، تستخدم لتهيئة قيم الكائن</p>
+                    <p><strong>خصائص المنشئ:</strong></p>
+                    <ul>
+                        <li>نفس الاسم تماماً كالصنف</li>
+                        <li>بدون نوع إرجاع (ليس حتى void)</li>
+                        <li>يمكن تعريف عدة منشئات (Overloading)</li>
+                        <li>يُستدعى تلقائياً عند إنشاء كائن جديد</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #4facfe;">
+                    <h4 style="color: #4facfe;">الكلمة المحفوظة this</h4>
+                    <p>تُستخدم للإشارة إلى الكائن الحالي داخل الطريقة. تساعد في التمييز بين:</p>
+                    <ul>
+                        <li><code>this.nom</code> = الخاصية (متغير الصنف)</li>
+                        <li><code>nom</code> = المعامل (parameter)</li>
+                    </ul>
+                    <p><strong>ملاحظة:</strong> لا يمكن استخدام this في main</p>
+                </div>
+            </div>
+
+            <!-- Part 2: Access Modifiers & Visibility -->
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #f093fb;">
+                <h3 style="color: #f093fb; margin-top: 0;">2️⃣ مجالات الرؤية والوصول</h3>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #f093fb;">مستويات الرؤية للطرق والخصائص (4 مستويات):</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <tr style="background: #f5f5f5;">
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: right;">المستوى</th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: right;">الكلمة المحفوظة</th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: right;">الوصول</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">🔓 الأعلى</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;"><code>public</code></td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">متاح من جميع الأصناف والحزم</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">🔓 متوسط</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;"><code>protected</code></td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">الحزمة + الأبناء (الأصناف الموروثة)</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">🔒 منخفض</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">بدون كلمة</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">الحزمة فقط (package)</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">🔐 الأقل</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;"><code>private</code></td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">الصنف نفسه فقط</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #f093fb;">
+                    <h4 style="color: #f093fb;">Getters و Setters</h4>
+                    <p><strong>Getter:</strong> طريقة للوصول إلى قيمة خاصية private</p>
+                    <p style="margin-left: 20px;"><code>public double getSolde() { return solde; }</code></p>
+                    <p><strong>Setter:</strong> طريقة لتعديل قيمة خاصية private</p>
+                    <p style="margin-left: 20px;"><code>public void setSolde(double s) { solde = s; }</code></p>
+                </div>
+            </div>
+
+            <!-- Part 3: Static & Final -->
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #4facfe;">
+                <h3 style="color: #4facfe; margin-top: 0;">3️⃣ Static و Final</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-top: 3px solid #4facfe;">
+                        <h4 style="color: #4facfe;">المتغير الثابت (Static Variable)</h4>
+                        <p>متغير مشترك بين جميع الكائنات من نفس الصنف</p>
+                        <p><strong>مثال:</strong> عداد يحسب عدد الكائنات المُنشأة</p>
+                        <p><strong>الوصول:</strong> <code>ClassName.variableName</code></p>
+                        <p><strong>الملاحظة:</strong> يمكن الوصول إليها بدون إنشاء كائن</p>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-top: 3px solid #4facfe;">
+                        <h4 style="color: #4facfe;">الطريقة الثابتة (Static Method)</h4>
+                        <p>طريقة مشتركة بين جميع الكائنات، مستقلة عن الكائن</p>
+                        <p><strong>مثال:</strong> <code>Math.sqrt()</code></p>
+                        <p><strong>الوصول:</strong> <code>ClassName.methodName()</code></p>
+                        <p><strong>القيد:</strong> لا تستطيع استخدام متغيرات instance</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #4facfe;">
+                    <h4 style="color: #4facfe;">Final - الثابتة</h4>
+                    <p><strong>ثابتة صنف:</strong> قيمة ثابتة لا تتغير للصنف كله</p>
+                    <p style="margin-left: 20px;"><code>public static final double PI = 3.14;</code></p>
+                    <p><strong>ثابتة instance:</strong> قيمة ثابتة لا تتغير لكل كائن</p>
+                    <p><strong>طريقة final:</strong> لا يمكن إعادة تعريفها في الأبناء</p>
+                </div>
+            </div>
+
+            <!-- Part 4: Inheritance -->
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #06ffa5;">
+                <h3 style="color: #06ffa5; margin-top: 0;">4️⃣ الوراثة (Inheritance)</h3>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #06ffa5;">التعريف</h4>
+                    <p>آلية تسمح لصنف (الابن) بوراثة خصائص وطرق من صنف آخر (الأب)</p>
+                    <p><strong>الكلمة المحفوظة:</strong> <code>extends</code></p>
+                    <p><strong>مثال:</strong> <code>class Dog extends Animal</code></p>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #06ffa5;">
+                    <h4 style="color: #06ffa5;">إعادة تعريف الطريقة (Method Overriding)</h4>
+                    <p>عندما يعيّن الابن تعريف طريقة من الأب بطريقة مختلفة</p>
+                    <p><strong>مثال:</strong></p>
+                    <p style="margin-left: 20px; background: #f5f5f5; padding: 10px; border-radius: 4px;">
+                        <code>class Animal { public void sound() { System.out.println("..."); } }</code><br/>
+                        <code>class Dog extends Animal {</code><br/>
+                        <code>&nbsp;&nbsp;public void sound() { System.out.println("Woof!"); } // Override</code><br/>
+                        <code>}</code>
+                    </p>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #06ffa5;">
+                    <h4 style="color: #06ffa5;">الكلمة super</h4>
+                    <p>تُستخدم للإشارة إلى الصنف الأب</p>
+                    <ul>
+                        <li><code>super.methodName()</code> = استدعاء طريقة من الأب</li>
+                        <li><code>super()</code> = استدعاء منشئ الأب</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Part 5: Casting -->
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #ffa502;">
+                <h3 style="color: #ffa502; margin-top: 0;">5️⃣ Casting (التحويل)</h3>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-top: 3px solid #ffa502;">
+                        <h4 style="color: #ffa502;">Upcasting</h4>
+                        <p>تحويل من الابن إلى الأب (تحويل آمن وتلقائي)</p>
+                        <p><code>Animal a = new Dog();</code> ✓ صحيح</p>
+                        <p><strong>الفكرة:</strong> الابن يدخل في الأب دائماً</p>
+                    </div>
+
+                    <div style="background: white; padding: 15px; border-radius: 8px; border-top: 3px solid #ffa502;">
+                        <h4 style="color: #ffa502;">Downcasting</h4>
+                        <p>تحويل من الأب إلى الابن (يحتاج casting واضح)</p>
+                        <p><code>Dog d = (Dog) a;</code> يحتاج cast</p>
+                        <p><strong>التحذير:</strong> قد تحدث أخطاء إذا لم يكن a فعلاً Dog</p>
+                    </div>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #ffa502;">
+                    <h4 style="color: #ffa502;">instanceof - التحقق من النوع</h4>
+                    <p>عامل للتحقق من كون الكائن نسخة من صنف معين</p>
+                    <p><code>if (a instanceof Dog) { ... }</code></p>
+                    <p><strong>الاستخدام:</strong> تجنب الأخطاء قبل downcasting</p>
+                </div>
+            </div>
+
+            <!-- Part 6: Polymorphism -->
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #ff006e;">
+                <h3 style="color: #ff006e; margin-top: 0;">6️⃣ التعددية (Polymorphism)</h3>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #ff006e;">المفهوم</h4>
+                    <p>القدرة على استدعاء نفس الطريقة على أنواع مختلفة من الكائنات والحصول على تصرفات مختلفة</p>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #ff006e;">
+                    <h4 style="color: #ff006e;">مثال عملي</h4>
+                    <p style="background: #f5f5f5; padding: 10px; border-radius: 4px; margin-top: 10px;">
+                        <code>Animal[] animals = {new Dog(), new Cat(), new Bird()};</code><br/>
+                        <code>for (Animal a : animals) {</code><br/>
+                        <code>&nbsp;&nbsp;a.sound(); // كل واحد يُصدر صوتاً مختلفاً</code><br/>
+                        <code>}</code><br/>
+                        <strong>الإخراج:</strong><br/>
+                        Woof! (Dog)<br/>
+                        Meow! (Cat)<br/>
+                        Tweet! (Bird)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Part 7: Abstract Classes & Interfaces -->
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #8338ec;">
+                <h3 style="color: #8338ec; margin-top: 0;">7️⃣ الأصناف المجردة والواجهات</h3>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #8338ec;">الصنف المجرد (Abstract Class)</h4>
+                    <p>صنف لا يمكن إنشاء كائنات منه مباشرة، يحتوي على طرق مجردة (بدون تنفيذ)</p>
+                    <ul>
+                        <li>تُستخدم عندما يكون هناك كود مشترك حقيقي</li>
+                        <li>الصنف يمكن أن يكون أب واحد فقط</li>
+                        <li>الطرق المجردة يجب أن يُعاد تعريفها في الأبناء</li>
+                        <li><strong>مثال:</strong> abstract class Shape { abstract void draw(); }</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #8338ec;">
+                    <h4 style="color: #8338ec;">الواجهة (Interface)</h4>
+                    <p>عقد يحدد السلوك المتوقع من الأصناف التي تطبقه، بدون تنفيذ فعلي</p>
+                    <ul>
+                        <li>تحتوي على توقيعات الطرق فقط</li>
+                        <li>فئة واحدة قد تطبق عدة واجهات</li>
+                        <li><code>implements</code> = تطبيق الواجهة</li>
+                        <li><strong>مثال:</strong> interface Comparable { int compareTo(Object o); }</li>
+                    </ul>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px; border-left: 4px solid #8338ec;">
+                    <h4 style="color: #8338ec;">الفرق بين Abstract و Interface</h4>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <tr style="background: #f5f5f5;">
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: right;">الميزة</th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: right;">Abstract Class</th>
+                            <th style="border: 1px solid #ddd; padding: 10px; text-align: right;">Interface</th>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">الوراثة</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">أب واحد فقط</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">عدة واجهات</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">الكود</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">يمكن أن يحتوي كود</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">توقيعات فقط</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">المتغيرات</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">أي مستوى رؤية</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">public final فقط</td>
+                        </tr>
+                        <tr>
+                            <td style="border: 1px solid #ddd; padding: 10px;">متى تُستخدم</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">كود مشترك حقيقي</td>
+                            <td style="border: 1px solid #ddd; padding: 10px;">سلوك متوقع فقط</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- General Rules -->
+            <div style="background: #f8f9fa; padding: 25px; border-radius: 12px; margin: 20px 0; border-left: 5px solid #ff4757;">
+                <h3 style="color: #ff4757; margin-top: 0;">📋 القوانين العامة للتصميم الجيد</h3>
+                
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #ff4757;">1. الخصائص (Attributes)</h4>
+                    <p>✓ يجب أن تكون <code>private</code> أو <code>protected</code></p>
+                    <p><strong>السبب:</strong> احترام مبدأ التغليف (Encapsulation)</p>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #ff4757;">2. الطرق (Methods)</h4>
+                    <p>✓ يجب أن تكون <code>public</code> أو <code>protected</code></p>
+                    <p><strong>السبب:</strong> تشجيع إعادة الاستخدام (Reusability)</p>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #ff4757;">3. الأصناف (Classes)</h4>
+                    <p>✓ يجب أن تكون <code>public</code></p>
+                    <p><strong>السبب:</strong> السماح باستخدامها من حزم أخرى</p>
+                </div>
+
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <h4 style="color: #ff4757;">⚠️ ملاحظة هامة</h4>
+                    <p>ملف Java واحد يمكنه أن يحتوي على صنف public واحد فقط، وهذا الصنف يجب أن يحمل نفس اسم الملف</p>
+                    <p>مثال: <code>public class Dog { ... }</code> → اسم الملف: <code>Dog.java</code></p>
+                </div>
+            </div>
+
+            <!-- Naming Conventions -->
+            <div style="background: white; padding: 20px; border-radius: 12px; margin: 20px 0; border: 2px solid #ddd;">
+                <h3 style="margin-top: 0;">✍️ اتفاقيات التسمية (Naming Conventions)</h3>
+                <ul>
+                    <li><strong>الأصناف:</strong> تبدأ بحرف كبير (PascalCase) مثل: <code>Dog</code>, <code>Animal</code></li>
+                    <li><strong>الخصائص والطرق:</strong> تبدأ بحرف صغير (camelCase) مثل: <code>getName()</code>, <code>age</code></li>
+                    <li><strong>الثوابت:</strong> كل الأحرف كبيرة مثل: <code>PI</code>, <code>MAX_SIZE</code></li>
+                    <li><strong>الحزم:</strong> كل الأحرف صغيرة مثل: <code>com.example.utilities</code></li>
+                </ul>
+            </div>
+
+        </section>
+
     </main>
 
     <!-- Footer -->
@@ -2472,6 +2968,44 @@
     <button class="scroll-top" id="scrollTopBtn" onclick="scrollToTop()">↑</button>
 
     <script>
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+        const navOverlay = document.getElementById('navOverlay');
+        const navClose = document.getElementById('navClose');
+
+        function setNavOpen(isOpen) {
+            navMenu.classList.toggle('active', isOpen);
+            navOverlay.classList.toggle('active', isOpen);
+            navToggle.setAttribute('aria-expanded', String(isOpen));
+            navToggle.textContent = isOpen ? '✕' : '☰';
+        }
+
+        if (navToggle && navMenu && navOverlay && navClose) {
+            navToggle.addEventListener('click', function() {
+                setNavOpen(!navMenu.classList.contains('active'));
+            });
+
+            navClose.addEventListener('click', function() {
+                setNavOpen(false);
+            });
+
+            navOverlay.addEventListener('click', function() {
+                setNavOpen(false);
+            });
+
+            navMenu.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    setNavOpen(false);
+                });
+            });
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                setNavOpen(false);
+            }
+        });
+
         // Toggle Solution Function
         function toggleSolution(id) {
             const solution = document.getElementById(id);
