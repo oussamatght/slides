@@ -51,12 +51,18 @@
             --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
         
+        html,
+        body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        
         body {
             font-family: 'Cairo', sans-serif;
             background: var(--bg-main);
             color: var(--text-primary);
             line-height: 1.8;
-            overflow-x: hidden;
         }
         /* Hero Section */
         
@@ -194,9 +200,11 @@
         /* Main Container */
         
         .container {
-            max-width: 1400px;
+            max-width: 100%;
+            width: 100%;
             margin: 0 auto;
             padding: 60px 20px;
+            overflow-x: hidden;
         }
         /* Section Styles */
         
@@ -709,23 +717,28 @@
             }
             .nav-toggle {
                 display: inline-flex;
+                position: relative;
+                z-index: 1101;
             }
             .nav-container {
                 position: fixed;
                 top: 0;
                 right: 0;
+                bottom: 0;
                 height: 100vh;
-                width: min(88vw, 320px);
+                width: min(85vw, 300px);
+                max-width: 100%;
                 padding: 18px 16px 24px;
                 background: var(--bg-white);
                 box-shadow: var(--shadow-lg);
+                display: flex;
                 flex-direction: column;
                 align-items: stretch;
                 justify-content: flex-start;
                 gap: 10px;
                 flex-wrap: nowrap;
                 transform: translateX(100%);
-                transition: transform 0.3s ease;
+                transition: transform 0.3s ease-in-out;
                 z-index: 1100;
                 overflow-y: auto;
             }
@@ -735,15 +748,20 @@
             .nav-overlay {
                 display: block;
                 position: fixed;
-                inset: 0;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
                 background: rgba(15, 23, 42, 0.45);
                 opacity: 0;
+                visibility: hidden;
                 pointer-events: none;
-                transition: opacity 0.3s ease;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
                 z-index: 1050;
             }
             .nav-overlay.active {
                 opacity: 1;
+                visibility: visible;
                 pointer-events: auto;
             }
             .nav-link {
@@ -765,15 +783,39 @@
                 font-size: 1.2rem;
             }
             .nav-close {
+                display: block;
                 width: 38px;
                 height: 38px;
                 font-size: 1.05rem;
                 margin-bottom: 8px;
+                border: none;
+                border-radius: 8px;
+                background: #f1f5f9;
+                color: var(--text-primary);
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            .nav-close:hover {
+                background: var(--border-color);
             }
             .feature-grid,
             .comparison-container {
                 grid-template-columns: 1fr;
                 gap: 16px;
+            }
+            /* Override inline grid styles */
+            [style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
+            /* Responsive tables */
+            table {
+                display: block;
+                width: 100%;
+                overflow-x: auto;
+            }
+            /* Ensure max-width on mobile */
+            * {
+                max-width: 100%;
             }
             .feature-card,
             .comparison-card,
@@ -798,6 +840,7 @@
                 padding: 16px;
                 white-space: pre;
                 font-size: 0.82rem;
+                overflow-x: auto;
             }
             code {
                 font-size: 0.82rem;
@@ -851,7 +894,8 @@
                 padding: 8px 0;
             }
             .nav-container {
-                width: 92vw;
+                width: min(80vw, 280px);
+                max-width: calc(100vw - 10px);
                 padding: 16px 12px 20px;
             }
             .nav-link {
@@ -927,6 +971,29 @@
                 break-inside: avoid;
                 box-shadow: none;
                 border: 1px solid #ddd;
+            }
+        }
+        
+        @media print and (max-width: 480px) {
+            .section {
+                padding: 20px;
+            }
+            .section-title {
+                font-size: 1.2rem;
+            }
+            .section-subtitle {
+                font-size: 1rem;
+            }
+            .content-text,
+            li,
+            p {
+                font-size: 0.9rem;
+            }
+            .code-header span {
+                font-size: 0.75rem;
+            }
+            .hero {
+                width: 100%;
             }
         }
     </style>
