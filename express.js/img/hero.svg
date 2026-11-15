@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 260" role="img">
+  <title>Client and Express server exchanging requests and responses</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#34d399"/><stop offset="1" stop-color="#22d3ee"/></linearGradient>
+    <linearGradient id="w" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fbbf24"/><stop offset="1" stop-color="#f472b6"/></linearGradient>
+    <filter id="s" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#000" flood-opacity=".35"/></filter>
+  </defs>
+  <!-- laptop -->
+  <g filter="url(#s)">
+    <rect x="22" y="70" width="150" height="100" rx="10" fill="#111827" stroke="#334155" stroke-width="2"/>
+    <rect x="32" y="80" width="130" height="80" rx="5" fill="#0f1524"/>
+    <rect x="10" y="170" width="174" height="12" rx="6" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+  </g>
+  <rect x="42" y="92" width="60" height="7" rx="3.5" fill="#22d3ee" opacity=".9"/>
+  <rect x="42" y="106" width="100" height="6" rx="3" fill="#334155"/>
+  <rect x="42" y="118" width="84" height="6" rx="3" fill="#334155"/>
+  <rect x="42" y="130" width="92" height="6" rx="3" fill="#34d399" opacity=".7"/>
+  <rect x="42" y="142" width="56" height="6" rx="3" fill="#334155"/>
+  <!-- server -->
+  <g filter="url(#s)">
+    <rect x="320" y="40" width="130" height="180" rx="14" fill="#111827" stroke="url(#g)" stroke-width="2.5"/>
+  </g>
+  <g fill="#0f1524" stroke="#334155" stroke-width="1.5">
+    <rect x="334" y="58" width="102" height="34" rx="7"/><rect x="334" y="102" width="102" height="34" rx="7"/><rect x="334" y="146" width="102" height="34" rx="7"/>
+  </g>
+  <g fill="#34d399"><circle cx="350" cy="75" r="4"><animate attributeName="opacity" values="1;.2;1" dur="1.4s" repeatCount="indefinite"/></circle><circle cx="350" cy="119" r="4"><animate attributeName="opacity" values=".2;1;.2" dur="1.4s" repeatCount="indefinite"/></circle><circle cx="350" cy="163" r="4" fill="#fbbf24"/></g>
+  <g fill="#334155"><rect x="364" y="72" width="56" height="6" rx="3"/><rect x="364" y="116" width="56" height="6" rx="3"/><rect x="364" y="160" width="56" height="6" rx="3"/></g>
+  <text x="385" y="206" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="13" font-weight="700" fill="url(#g)">express()</text>
+  <!-- wires -->
+  <path id="req" d="M184 110 C 240 70, 270 70, 318 100" fill="none" stroke="url(#g)" stroke-width="2.5" stroke-dasharray="7 7"/>
+  <path id="res" d="M318 150 C 270 185, 240 185, 184 150" fill="none" stroke="url(#w)" stroke-width="2.5" stroke-dasharray="7 7"/>
+  <rect x="214" y="58" width="78" height="22" rx="11" fill="#0f1524" stroke="#22d3ee"/>
+  <text x="253" y="73" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="11" fill="#67e8f9">GET /tasks</text>
+  <rect x="214" y="180" width="78" height="22" rx="11" fill="#0f1524" stroke="#fbbf24"/>
+  <text x="253" y="195" text-anchor="middle" font-family="JetBrains Mono, Consolas, monospace" font-size="11" fill="#fde68a">200 · JSON</text>
+  <circle r="6" fill="#34d399"><animateMotion dur="2.4s" repeatCount="indefinite"><mpath href="#req"/></animateMotion></circle>
+  <circle r="6" fill="#fbbf24"><animateMotion dur="2.4s" begin="1.2s" repeatCount="indefinite"><mpath href="#res"/></animateMotion></circle>
+  <!-- json card -->
+  <g filter="url(#s)"><rect x="190" y="214" width="126" height="40" rx="9" fill="#0f1524" stroke="#334155"/></g>
+  <text x="202" y="231" font-family="JetBrains Mono, Consolas, monospace" font-size="10.5" fill="#93c5fd">{ "id": 1,</text>
+  <text x="202" y="246" font-family="JetBrains Mono, Consolas, monospace" font-size="10.5" fill="#86efac">  "done": true }</text>
+</svg>

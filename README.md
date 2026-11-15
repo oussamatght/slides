@@ -32,6 +32,7 @@ The goal is to make technical concepts easier to understand through:
 | ⚡ JavaScript        | JavaScript fundamentals and practical examples        |
 | ⚛️ React            | React concepts and examples                           |
 | 🔀 Git & GitHub     | Version control and collaboration                     |
+| 🚂 Express.js       | Express.js from zero to senior — bilingual (AR / EN), runnable examples, quizzes and a final exam |
 | 🌐 Internet         | Web and internet fundamentals                         |
 | 🖥️ Web Development | General web development resources                     |
 | 🛠️ Workshops       | Workshop and training materials                       |
@@ -69,6 +70,12 @@ slides/
 │
 ├── css/
 │   └── ...
+│
+├── express.js/
+│   ├── index.html        # entry point (open directly in the browser)
+│   ├── css/deck.css
+│   ├── js/               # engine, highlighter, diagrams, data/ (one file per level)
+│   └── img/              # original SVG illustrations
 │
 ├── git/
 │   └── github/
