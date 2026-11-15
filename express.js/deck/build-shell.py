@@ -1,6 +1,6 @@
 """Regenerates the index.html shell of every deck that uses the shared engine.
 
-Run from the repo root:  python assets/deck/build-shell.py
+Run from the repo root:  python express.js/deck/build-shell.py
 Only the <head> settings and the list of data files differ between decks; the body
 (top bar, sidebar, overlays, nav) is identical, so all decks stay consistent.
 """
@@ -53,7 +53,7 @@ def build():
     scripts_start = tpl.index('    <!-- content')
     body = tpl[body_start:scripts_start]
     for d in DECKS:
-        assets = d['root'] + 'assets/deck/'
+        assets = 'deck/' if d['dir'] == 'express.js' else d['root'] + 'express.js/deck/'
         data_dir = d.get('data_dir', 'js/data/')
         logo = d.get('logo', 'img/logo.svg')
         head = f'''<!DOCTYPE html>
