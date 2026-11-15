@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>From Frontend + Backend to Full Stack — Talk 04</title>
+    <meta name="description" content="Talk 04 of the Micro Club USTHB Web Track: how React, Axios, Express, Prisma and PostgreSQL work together — with live demos, animated diagrams and a quiz.">
+    <meta name="theme-color" content="#0a0f1a">
+    <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../express.js/deck/deck.css">
+    <link rel="stylesheet" href="css/talk.css">
+    <style>
+        /* deck accent colour (everything else comes from assets/deck/deck.css) */
+        :root { --accent: #818cf8; --accent-rgb: 129, 140, 248; --glow-1: rgba(129, 140, 248, .15); --grid: rgba(129, 140, 248, .035); --code-line: rgba(129, 140, 248, .13); }
+        :root[data-theme="light"] { --accent: #4338ca; --accent-rgb: 67, 56, 202; --glow-1: rgba(67, 56, 202, .12); --grid: rgba(67, 56, 202, .05); }
+    </style>
+    <script>
+        /* apply saved theme/lang before first paint (no flash) — shared by all decks */
+        try {
+            var t = JSON.parse(localStorage.getItem('slides.theme') || '"dark"');
+            var l = 'en' || JSON.parse(localStorage.getItem('slides.lang') || 'null') || ((navigator.language || '').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en');
+            document.documentElement.setAttribute('data-theme', t);
+            document.documentElement.lang = l;
+            document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        } catch (e) {}
+    </script>
+</head>
+
+<body>
+    <a class="sr-only" href="#slidesContainer">Skip to slides</a>
+    <div class="bg-pattern" aria-hidden="true"></div>
+    <div class="grid-overlay" aria-hidden="true"></div>
+
+    <!-- shared SVG arrow markers for diagrams -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <defs>
+            <marker id="dg-arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dg-arrow"/></marker>
+            <marker id="dg-arr-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dg-arrow-a"/></marker>
+            <marker id="dg-arr-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dg-arrow-c"/></marker>
+            <marker id="dg-arr-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" class="dg-arrow-r"/></marker>
+        </defs>
+    </svg>
+
+    <header class="topbar">
+        <button class="tbtn" id="menuBtn" aria-controls="sidebar" aria-expanded="false" data-i18n-label="menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <div class="brand">
+            <img class="brand-logo" src="img/logo.svg" alt="" aria-hidden="true">
+            <div class="brand-text">
+                <span class="brand-title">Express.js</span>
+                <span class="brand-crumb" id="crumb" aria-live="polite"></span>
+            </div>
+        </div>
+        <div class="tools">
+            <button class="tbtn timer-chip" id="timerChip" title="Stop timer"></button>
+            <button class="tbtn hide-sm" id="zoomOut" data-i18n-label="zoomOut">A−</button>
+            <button class="tbtn hide-sm" id="zoomIn" data-i18n-label="zoomIn">A+</button>
+            <button class="tbtn" id="themeBtn" data-i18n-label="theme"></button>
+            <button class="tbtn" id="langBtn" lang="ar">AR</button>
+            <button class="tbtn" id="overviewBtn" data-i18n-label="overview">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+            </button>
+            <button class="tbtn hide-sm" id="printBtn" data-i18n-label="print">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/></svg>
+            </button>
+            <button class="tbtn hide-sm" id="fsBtn" data-i18n-label="fullscreen">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+            </button>
+            <button class="tbtn hide-md" id="helpBtn" data-i18n-label="help">?</button>
+        </div>
+    </header>
+
+    <main class="slides-container" id="slidesContainer" aria-live="polite" tabindex="-1"></main>
+
+    <div class="keyboard-hint" aria-hidden="true"><kbd>←</kbd> <kbd>→</kbd> <kbd>Esc</kbd> <kbd>?</kbd></div>
+
+    <nav class="nav-bar" aria-label="Slide navigation">
+        <div class="nav-inner">
+            <button class="nav-btn" id="prevBtn" data-i18n-label="prev">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg><span class="lbl" data-i18n="prev">Prev</span>
+            </button>
+            <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-marks" id="progressMarks"></div>
+                <div class="progress-tip" id="progressTip"></div>
+            </div>
+            <span class="slide-counter" id="slideCounter">1 / 1</span>
+            <button class="nav-btn" id="nextBtn" data-i18n-label="next">
+                <span class="lbl" data-i18n="next">Next</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+        </div>
+    </nav>
+
+    <div class="scrim" id="scrim"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters" inert>
+        <div class="side-head">
+            <div class="side-head-row">
+                <h2 data-i18n="menu">Chapters</h2>
+                <button class="tbtn" id="sideClose" data-i18n-label="close">✕</button>
+            </div>
+            <input class="search" id="sideSearch" type="search" autocomplete="off">
+            <div class="side-progress" id="sideProgress"></div>
+        </div>
+        <div class="side-body" id="sideBody"></div>
+    </aside>
+
+    <div class="overlay" id="overview" role="dialog" aria-modal="true" aria-labelledby="ovTitle">
+        <div class="overlay-head">
+            <h2 id="ovTitle" data-i18n="overview">Slide overview</h2>
+            <button class="tbtn" data-close="overview" data-i18n-label="close">✕</button>
+        </div>
+        <div class="overlay-body" id="overviewBody"></div>
+    </div>
+
+    <div class="overlay" id="help" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+        <div class="overlay-head">
+            <h2 id="helpTitle" data-i18n="help">Keyboard shortcuts</h2>
+            <button class="tbtn" data-close="help" data-i18n-label="close">✕</button>
+        </div>
+        <div class="overlay-body" id="helpBody"></div>
+    </div>
+
+    <div class="blackout" id="blackout" aria-hidden="true"></div>
+    <div class="laser" id="laser" aria-hidden="true"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- engine (shared by every deck) -->
+    <script src="../../express.js/deck/highlight.js"></script>
+    <script src="../../express.js/deck/diagrams.js"></script>
+    <!-- content -->
+    <script src="js/data/meta.js"></script>
+    <script src="js/data/diagrams.js"></script>
+    <script src="js/data/part1.js"></script>
+    <script src="js/data/part2.js"></script>
+    <script src="js/data/part3.js"></script>
+    <script src="js/data/part4.js"></script>
+    <script src="js/data/part5.js"></script>
+    <script src="js/talk.js"></script>
+    <script src="../../express.js/deck/engine.js"></script>
+</body>
+
+</html>

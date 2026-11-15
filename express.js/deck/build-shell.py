@@ -1,6 +1,7 @@
 """Regenerates the index.html shell of every deck that uses the shared engine.
 
 Run from the repo root:  python express.js/deck/build-shell.py
+Only one deck:            python express.js/deck/build-shell.py workshop/talk-04-fullstack-integration
 Only the <head> settings and the list of data files differ between decks; the body
 (top bar, sidebar, overlays, nav) is identical, so all decks stay consistent.
 """
@@ -31,6 +32,12 @@ DECKS = [
          desc='Bilingual (Arabic / English) React course: components, state, hooks, routing, data fetching, testing and deployment — with quizzes and a final project.',
          accent=('#a78bfa', '167, 139, 250', '#6d28d9', '109, 40, 217'),
          data=['meta', 'diagrams', 'chapters', 'exam']),
+    # Micro Club USTHB · Web Track talk (English only, extra widgets in talk.css / talk.js)
+    dict(dir='workshop/talk-04-fullstack-integration', root='../../', title='From Frontend + Backend to Full Stack — Talk 04',
+         desc='Talk 04 of the Micro Club USTHB Web Track: how React, Axios, Express, Prisma and PostgreSQL work together — with live demos, animated diagrams and a quiz.',
+         accent=('#818cf8', '129, 140, 248', '#4338ca', '67, 56, 202'), lang='en',
+         css=['css/talk.css'], js=['js/talk.js'],
+         data=['meta', 'diagrams', 'part1', 'part2', 'part3', 'part4', 'part5']),
 ]
 
 
@@ -50,12 +57,14 @@ def build():
     tpl = TEMPLATE_SRC.read_text(encoding='utf8')
     head_end = tpl.index('</head>')
     body_start = tpl.index('<body>')
-    scripts_start = tpl.index('    <!-- content')
+    scripts_start = tpl.index('    <!-- engine')
     body = tpl[body_start:scripts_start]
     for d in DECKS:
         assets = 'deck/' if d['dir'] == 'express.js' else d['root'] + 'express.js/deck/'
         data_dir = d.get('data_dir', 'js/data/')
         logo = d.get('logo', 'img/logo.svg')
+        extra_css = ''.join(f'    <link rel="stylesheet" href="{c}">\n' for c in d.get('css', []))
+        forced_lang = f"'{d['lang']}' || " if d.get('lang') else ''
         head = f'''<!DOCTYPE html>
 <html lang="en" dir="ltr" data-theme="dark">
 
@@ -70,11 +79,11 @@ def build():
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{assets}deck.css">
-{accent_css(d['accent'])}    <script>
+{extra_css}{accent_css(d['accent'])}    <script>
         /* apply saved theme/lang before first paint (no flash) — shared by all decks */
         try {{
             var t = JSON.parse(localStorage.getItem('slides.theme') || '"dark"');
-            var l = JSON.parse(localStorage.getItem('slides.lang') || 'null') || ((navigator.language || '').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en');
+            var l = {forced_lang}JSON.parse(localStorage.getItem('slides.lang') || 'null') || ((navigator.language || '').toLowerCase().indexOf('ar') === 0 ? 'ar' : 'en');
             document.documentElement.setAttribute('data-theme', t);
             document.documentElement.lang = l;
             document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
@@ -87,6 +96,7 @@ def build():
         scripts = '    <!-- engine (shared by every deck) -->\n'
         scripts += f'    <script src="{assets}highlight.js"></script>\n    <script src="{assets}diagrams.js"></script>\n'
         scripts += '    <!-- content -->\n' + ''.join(f'    <script src="{data_dir}{f}.js"></script>\n' for f in d['data'])
+        scripts += ''.join(f'    <script src="{j}"></script>\n' for j in d.get('js', []))
         scripts += f'    <script src="{assets}engine.js"></script>\n</body>\n\n</html>\n'
         out = ROOT / d['dir'] / 'index.html'
         out.write_text(head + b + scripts, encoding='utf8')

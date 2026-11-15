@@ -36,6 +36,7 @@ The goal is to make technical concepts easier to understand through:
 | 🌐 Internet         | Web and internet fundamentals                         |
 | 🖥️ Web Development | General web development resources                     |
 | 🛠️ Workshops       | Workshop and training materials                       |
+| 🔗 Talk 04          | **From Frontend + Backend to Full Stack**: Micro Club USTHB Web Track talk. React + Axios + Express + Prisma + PostgreSQL, live demo, animated diagrams, final quiz → [`workshop/talk-04-fullstack-integration/`](./workshop/talk-04-fullstack-integration/index.html) |
 | 📑 Slideoop         | Additional presentation materials                     |
 | 🧩 SVG              | SVG-related educational content                       |
 
@@ -73,8 +74,8 @@ slides/
 │
 ├── express.js/
 │   ├── index.html        # entry point (open directly in the browser)
-│   ├── css/deck.css
-│   ├── js/               # engine, highlighter, diagrams, data/ (one file per level)
+│   ├── deck/             # shared engine: engine.js, deck.css, highlight.js, diagrams.js, build-shell.py
+│   ├── js/data/          # Express content (one file per level)
 │   └── img/              # original SVG illustrations
 │
 ├── git/
@@ -94,7 +95,13 @@ slides/
 │   └── ...
 │
 ├── workshop/
-│   └── ...
+│   ├── index.html                         # full stack workshop deck
+│   └── talk-04-fullstack-integration/     # Talk 04 (uses the express.js/deck engine)
+│       ├── index.html                     # entry point
+│       ├── css/talk.css                   # section colours + talk widgets
+│       ├── js/talk.js                     # tours, tab explorers, live demo, error explorer
+│       ├── js/data/                       # meta, diagrams, part1…part5 (slide content)
+│       └── img/                           # hero + logo SVGs
 │
 ├── svg/
 │   └── ...
@@ -144,6 +151,51 @@ For the best local development experience:
 2. Install the **Live Server** extension.
 3. Open the desired `index.html`.
 4. Click **Open with Live Server**.
+
+---
+
+# 🔗 Talk 04: From Frontend + Backend to Full Stack
+
+**Micro Club USTHB · Web Track · Knowledge Sharing Week**, presented by Oussama Taright.
+
+How frontend, backend, APIs and databases work together, taught with one running example (a Task Manager built with React + Axios, Express 5, Prisma and PostgreSQL, deployed on Render).
+
+**Open it**
+
+* Double-click `workshop/talk-04-fullstack-integration/index.html`, **or**
+* With Live Server: right-click that file → **Open with Live Server**.
+
+It works offline, with no build step and no install. Only the fonts come from Google Fonts, and system fonts are used when you're offline.
+
+**Sections**
+
+1. Introduction · 2. Full stack architecture · 3. Frontend ↔ backend communication · 4. Axios in practice · 5. The complete integration demo · 6. Common integration problems · 7. Authentication integration · 8. From localhost to production (Render) · 9. Developer workflow & collaboration · 10. Final quiz & Q&A
+
+**Presenter controls**
+
+| Key | Action |
+| --- | --- |
+| `→` / `Space` / `PageDown` | Next slide. On a step-through slide it advances the flow first, which works with clickers |
+| `←` / `PageUp` | Previous slide / previous step |
+| `Esc` | Slide overview · `M` sections menu · `?` all shortcuts |
+| `F` · `T` · `L` · `B` · `+` / `−` | Fullscreen · theme · laser pointer · black screen · text size |
+| `1`–`4` then `Enter` | Answer quiz questions |
+
+**Interactive parts**
+
+* **Live demo** (Sections 3, 5, 6): a real Task app running in the slide against an in-browser copy of the API. Load, add, tick and delete tasks; watch the request pipeline and a DevTools-style Network log. Change the network speed and **break the next request** (404, 401, 500, offline, CORS) to show each error live.
+* **Step-through tour** (Section 5): the code at all 10 stops of `POST /api/tasks`.
+* **Explorers**: click through architecture layers, CRUD requests, Render deployment steps and 11 integration problems (what happens, why, how to debug, how to fix).
+
+**Editing**
+
+Slide content lives in `js/data/*.js` and uses the same format as the Express deck. After changing the deck list or the data files in `express.js/deck/build-shell.py`, regenerate **only** this deck's shell:
+
+```bash
+python express.js/deck/build-shell.py workshop/talk-04-fullstack-integration
+```
+
+> ⚠️ Always pass the deck folder. Running `build-shell.py` with no argument also rewrites the shells of the other decks it lists (`intrent/`, `css/`, `react/`, root), which are currently standalone pages.
 
 ---
 

@@ -34,7 +34,12 @@
     ];
 
     /* ---------- state ---------- */
-    let lang = store.get('lang', (navigator.language || '').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+    // optional per-deck settings: meta.lang forces one language (hides the AR/EN switch),
+    // meta.levelBase shifts displayed level numbers (e.g. 1 → "Part 1" instead of "Level 0")
+    const FORCED_LANG = DECK.meta && DECK.meta.lang;
+    const LV_BASE = (DECK.meta && DECK.meta.levelBase) || 0;
+    const lvNum = (i) => i + LV_BASE;
+    let lang = FORCED_LANG || store.get('lang', (navigator.language || '').toLowerCase().startsWith('ar') ? 'ar' : 'en');
     let theme = store.get('theme', 'dark');
     let scale = store.get('scale', 1);
     let scores = store.get('scores', {});
@@ -97,6 +102,8 @@
             grade: ['واصل التدريب', 'جاهز لمستوى Junior', 'جاهز لمستوى Mid', 'عقلية Senior']
         }
     };
+    // a deck can rename UI labels, e.g. DECK.ui = { en: { chapter: 'Section' } }
+    if (DECK.ui) Object.keys(DECK.ui).forEach((l) => { UI[l] = Object.assign(UI[l] || {}, DECK.ui[l]); });
     const T = (k, vars) => {
         let s = UI[lang][k] ?? UI.en[k] ?? k;
         if (vars) Object.keys(vars).forEach((v) => { s = s.replace('{' + v + '}', vars[v]); });
@@ -242,6 +249,8 @@
         return '';
     }
     const blocks = (arr) => (arr || []).map(block).join('');
+    // deck-specific widgets (e.g. a talk's js/talk.js) can reuse the block renderers inside { html: fn } blocks
+    window.DeckRender = { block, blocks, codeBlock };
 
     /* =====================================================================
        Slide list
@@ -252,13 +261,15 @@
     function build() {
         const S = [];
         const add = (o) => { o.idx = S.length; S.push(o); };
+        // meta.covers === false (talks): no chapter cover slide; the chapter's first slide takes the chapter id
+        const covers = !(DECK.meta && DECK.meta.covers === false);
         (DECK.intro || []).forEach((s, k) => add({ id: s.id || 'intro-' + k, kind: 'intro', title: s.t, data: s }));
         DECK.levels.forEach((lv, li) => {
             add({ id: 'level-' + li, lv: li, kind: 'level', title: lv.t, data: lv });
             DECK.chapters.filter((c) => c.level === li).sort((a, b) => a.n - b.n).forEach((ch) => {
-                add({ id: chId(ch), lv: li, ch, kind: 'cover', title: ch.t });
-                ch.slides.forEach((s, k) => add({ id: chId(ch) + '-' + (k + 1), lv: li, ch, kind: s.kind || 'concept', title: s.t, data: s }));
-                if (ch.quiz && ch.quiz.length) add({ id: chId(ch) + '-quiz', lv: li, ch, kind: 'quiz', title: [`Quiz: ${ch.t[0]}`, `اختبار: ${ch.t[1]}`] });
+                if (covers) add({ id: chId(ch), lv: li, ch, kind: 'cover', title: ch.t });
+                ch.slides.forEach((s, k) => add({ id: !covers && k === 0 ? chId(ch) : chId(ch) + '-' + (k + 1), lv: li, ch, kind: s.kind || 'concept', title: s.t, data: s }));
+                if (ch.quiz && ch.quiz.length) add({ id: !covers && !ch.slides.length ? chId(ch) : chId(ch) + '-quiz', lv: li, ch, kind: 'quiz', title: [`Quiz: ${ch.t[0]}`, `اختبار: ${ch.t[1]}`] });
             });
         });
         (DECK.outro || []).forEach((s, k) => add({ id: s.id || 'outro-' + k, kind: s.type === 'exam' ? 'exam' : 'outro', title: s.t, data: s }));
@@ -297,7 +308,7 @@
         if (d.type === 'roadmap') {
             const steps = DECK.levels.map((lv, i) => {
                 const n = DECK.chapters.filter((c) => c.level === i).length;
-                return `<button class="road-step" style="--lvl:var(--l${i})" data-act="goto" data-id="level-${i}"><b>${T('level')} ${i}</b><span>${L(lv.t)}</span><small>${n} ${lang === 'ar' ? 'فصول' : 'chapters'}</small></button>`;
+                return `<button class="road-step" style="--lvl:var(--l${i})" data-act="goto" data-id="level-${i}"><b>${T('level')} ${lvNum(i)}</b><span>${L(lv.t)}</span><small>${n} ${lang === 'ar' ? 'فصول' : 'chapters'}</small></button>`;
             }).join('');
             return `<div class="slide-content"><p class="slide-number"><span class="kind-pill kind-concept">${T('intro')}</span></p><h2 class="slide-title">${L(d.t)}</h2>${blocks(d.before)}<div class="roadmap">${steps}</div>${blocks(d.b)}</div>`;
         }
@@ -314,7 +325,7 @@
         const chs = DECK.chapters.filter((c) => c.level === li).sort((a, b) => a.n - b.n);
         return `<div class="slide-content center narrow">
             ${lv.img ? `<img class="level-art" src="${lv.img}" alt="${esc(L(lv.alt || lv.t))}">` : `<div class="section-icon">${lv.icon}</div>`}
-            <p class="slide-number" style="justify-content:center"><span class="kind-pill" style="color:var(--lvl)">${T('level')} ${li}</span></p>
+            <p class="slide-number" style="justify-content:center"><span class="kind-pill" style="color:var(--lvl)">${T('level')} ${lvNum(li)}</span></p>
             <h1 class="section-title">${L(lv.t)}</h1>
             <p class="section-subtitle">${L(lv.sub)}</p>
             <div class="chapter-list">${chs.map((c) => `<button class="chapter-link" data-act="goto" data-id="${chId(c)}"><span class="num">${pad(c.n)}</span><span>${c.icon} ${L(c.t)}</span></button>`).join('')}</div>
@@ -329,7 +340,7 @@
             <div class="cover">
                 <div class="cover-num" aria-hidden="true">${pad(ch.n)}</div>
                 <div>
-                    <span class="level-badge">${lv.icon} ${T('level')} ${ch.level} · ${L(lv.t)}</span>
+                    <span class="level-badge">${lv.icon} ${T('level')} ${lvNum(ch.level)} · ${L(lv.t)}</span>
                     <h1 class="section-title" style="text-align:start;margin-top:.6rem">${ch.icon} ${L(ch.t)}</h1>
                     <p class="section-subtitle" style="text-align:start;margin:0">${L(ch.sub)}</p>
                 </div>
@@ -467,7 +478,7 @@
             const bd = DECK.levels.map((lv, i) => {
                 const inL = exam.round.filter((qi) => pool[qi].level === i);
                 const okL = inL.filter((qi) => ok.includes(qi)).length;
-                return `<div class="bd" style="--lvl:var(--l${i})">${T('level')} ${i}<b>${inL.length ? okL + '/' + inL.length : '—'}</b></div>`;
+                return `<div class="bd" style="--lvl:var(--l${i})">${T('level')} ${lvNum(i)}<b>${inL.length ? okL + '/' + inL.length : '—'}</b></div>`;
             }).join('');
             const review = exam.round.map((qi, k) => {
                 const q = pool[qi], a = qAnswer(q), p = exam.picks[qi], opts = qOptions(q);
@@ -575,7 +586,7 @@
         $('#prevBtn').disabled = current === 0;
         $('#nextBtn').disabled = current === total - 1;
         const lv = s.lv ?? (s.ch ? s.ch.level : null);
-        $('#crumb').textContent = [lv != null ? `${T('level')} ${lv}` : '', s.ch ? `${T('chapter')} ${s.ch.n}` : '', L(s.ch ? s.ch.t : s.title)].filter(Boolean).join(' · ');
+        $('#crumb').textContent = [lv != null ? `${T('level')} ${lvNum(lv)}` : '', s.ch ? `${T('chapter')} ${s.ch.n}` : '', L(s.ch ? s.ch.t : s.title)].filter(Boolean).join(' · ');
         document.documentElement.style.setProperty('--lvl-cur', lvlVar(lv));
         $$('.side-item').forEach((b) => b.classList.toggle('cur', s.ch ? b.dataset.id === chId(s.ch) : b.dataset.id === s.id));
     }
@@ -596,7 +607,7 @@
         DECK.levels.forEach((lv, li) => {
             const chs = DECK.chapters.filter((c) => c.level === li && (match(c.t) || match(c.sub))).sort((a, b) => a.n - b.n);
             if (!chs.length && q) return;
-            html += `<div class="side-level" style="--lvl:var(--l${li})">${lv.icon} ${T('level')} ${li} · ${L(lv.t)}</div>`;
+            html += `<div class="side-level" style="--lvl:var(--l${li})">${lv.icon} ${T('level')} ${lvNum(li)} · ${L(lv.t)}</div>`;
             html += chs.map((c) => {
                 const sc = scores[chId(c)];
                 const badge = sc ? `<span class="badge ${sc.s / sc.n >= 0.8 ? 'good' : ''}">${sc.s}/${sc.n}</span>` : '';
@@ -670,6 +681,7 @@
         html.dir = lang === 'ar' ? 'rtl' : 'ltr';
         $('#langBtn').textContent = lang === 'ar' ? 'EN' : 'AR';
         $('#langBtn').setAttribute('aria-label', lang === 'ar' ? 'Switch to English' : 'التبديل إلى العربية');
+        if (FORCED_LANG) $('#langBtn').style.display = 'none';
         document.title = L(DECK.meta.title);
         $$('[data-i18n]').forEach((el) => { el.textContent = T(el.dataset.i18n); });
         $$('[data-i18n-label]').forEach((el) => { el.setAttribute('aria-label', T(el.dataset.i18nLabel)); el.title = T(el.dataset.i18nLabel); });
@@ -766,7 +778,7 @@
     $('#helpBtn').addEventListener('click', () => toggleOverlay('help'));
     $$('[data-close]').forEach((b) => b.addEventListener('click', () => toggleOverlay(b.dataset.close, false)));
     $('#themeBtn').addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; store.set('theme', theme); applyTheme(); });
-    $('#langBtn').addEventListener('click', () => { lang = lang === 'ar' ? 'en' : 'ar'; store.set('lang', lang); applyLang(); });
+    $('#langBtn').addEventListener('click', () => { if (FORCED_LANG) return; lang = lang === 'ar' ? 'en' : 'ar'; store.set('lang', lang); applyLang(); });
     $('#fsBtn').addEventListener('click', fullscreen);
     $('#printBtn').addEventListener('click', () => { toast(T('pdfTip')); setTimeout(() => window.print(), 300); });
     $('#zoomIn').addEventListener('click', () => { scale = Math.min(1.6, +(scale + 0.1).toFixed(2)); applyScale(); });

@@ -26,6 +26,27 @@ DECK.intro = [
         chips: [['43 chapters', '43 فصلًا'], ['5 levels', '5 مستويات'], ['200+ quiz questions', '+200 سؤال'], ['Express 5 · Node 22+', 'Express 5 · Node 22+'], ['AR / EN', 'عربي / EN']]
     },
     {
+        id: 'author', t: ['Who made these slides?', 'من صنع هذه الشرائح؟'],
+        b: [
+            { lead: ['Hi, I\'m <b>Oussama Taright</b> — a full-stack developer and Computer Science student at <b>USTHB</b> (Algiers, Algeria). I build web and mobile apps with React, Next.js, React Native, Node.js and Express, and I made this deck to teach what I use every day.', 'مرحبًا، أنا <b>أسامة تاريت</b> — مطوّر Full-Stack وطالب إعلام آلي في <b>USTHB</b> (الجزائر العاصمة). أبني تطبيقات ويب وموبايل بـ React و Next.js و React Native و Node.js و Express، وصنعت هذه الشرائح لأعلّم ما أستخدمه كل يوم.'] },
+            { cols: [
+                [{ h3: ['What I\'ve built', 'من أعمالي'] }, { ul: [
+                    ['<b>WASSLA</b> — marketplace & delivery platform, live on Google Play and the App Store (Express + MongoDB + Socket.io).', '<b>WASSLA</b> — منصة سوق وتوصيل، متاحة على Google Play و App Store (Express + MongoDB + Socket.io).'],
+                    ['<b>Code Souls</b> — gamified frontend learning platform, 🥇 1st place at GDG Hackathon.', '<b>Code Souls</b> — منصة تعليم Frontend بأسلوب الألعاب، 🥇 المركز الأول في GDG Hackathon.'],
+                    ['<b>ChoufPrice DZ</b> — community price monitoring across the 58 wilayas.', '<b>ChoufPrice DZ</b> — منصة مجتمعية لمتابعة الأسعار في 58 ولاية.'],
+                    ['<b>Sakinah</b> — open-source, offline-first Islamic app (Expo + React Native).', '<b>Sakinah</b> — تطبيق إسلامي مفتوح المصدر يعمل دون اتصال (Expo + React Native).']
+                ] }],
+                [{ h3: ['Contact me', 'تواصل معي'] }, { cards: [
+                    { i: '✉️', t: ['Email', 'البريد'], d: ['<a href="mailto:oussamatght6@gmail.com">oussamatght6@gmail.com</a>', '<a href="mailto:oussamatght6@gmail.com">oussamatght6@gmail.com</a>'] },
+                    { i: '💻', t: ['GitHub', 'GitHub'], d: ['<a href="https://github.com/oussamatght" target="_blank" rel="noopener">github.com/oussamatght</a>', '<a href="https://github.com/oussamatght" target="_blank" rel="noopener">github.com/oussamatght</a>'] },
+                    { i: '💼', t: ['LinkedIn', 'LinkedIn'], d: ['<a href="https://www.linkedin.com/in/taright-oussama" target="_blank" rel="noopener">in/taright-oussama</a>', '<a href="https://www.linkedin.com/in/taright-oussama" target="_blank" rel="noopener">in/taright-oussama</a>'] },
+                    { i: '📸', t: ['Instagram', 'Instagram'], d: ['<a href="https://www.instagram.com/oussama_soul_" target="_blank" rel="noopener">@oussama_soul_</a>', '<a href="https://www.instagram.com/oussama_soul_" target="_blank" rel="noopener">@oussama_soul_</a>'] }
+                ] }]
+            ] },
+            { tip: ['Questions, bugs in the slides, or ideas for new chapters? Message me or open an issue on <a href="https://github.com/oussamatght/slides" target="_blank" rel="noopener">github.com/oussamatght/slides</a>.', 'عندك سؤال، خطأ في الشرائح، أو فكرة لفصل جديد؟ راسلني أو افتح issue على <a href="https://github.com/oussamatght/slides" target="_blank" rel="noopener">github.com/oussamatght/slides</a>.'] }
+        ]
+    },
+    {
         id: 'how-to', t: ['How to use this deck', 'كيف تستخدم هذه الشرائح'],
         b: [
             { cards: [

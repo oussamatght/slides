@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 260" role="img" aria-label="A React app in a browser sends a request to an Express API, which talks to a PostgreSQL database and returns JSON">
+  <defs>
+    <linearGradient id="hb" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22d3ee"/>
+      <stop offset="1" stop-color="#818cf8"/>
+    </linearGradient>
+    <linearGradient id="hs" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#818cf8"/>
+      <stop offset="1" stop-color="#34d399"/>
+    </linearGradient>
+    <marker id="ha" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#818cf8"/>
+    </marker>
+    <style>
+      .wire { stroke: #818cf8; stroke-width: 2.5; fill: none; stroke-dasharray: 7 7; animation: d 1.4s linear infinite; }
+      .wire.back { stroke: #34d399; }
+      .lbl { font: 600 13px 'JetBrains Mono', ui-monospace, monospace; fill: #cbd5e1; }
+      .ttl { font: 700 15px 'Space Grotesk', system-ui, sans-serif; fill: #f1f5f9; }
+      .sub { font: 500 11px 'JetBrains Mono', ui-monospace, monospace; fill: #94a3b8; }
+      @keyframes d { to { stroke-dashoffset: -28; } }
+      @media (prefers-reduced-motion: reduce) { .wire { animation: none; } }
+    </style>
+  </defs>
+
+  <!-- browser (React) -->
+  <g transform="translate(16 36)">
+    <rect width="180" height="150" rx="14" fill="#111827" stroke="url(#hb)" stroke-width="2.5"/>
+    <rect width="180" height="26" rx="14" fill="#162033"/>
+    <rect y="13" width="180" height="13" fill="#162033"/>
+    <circle cx="16" cy="13" r="4" fill="#f87171"/><circle cx="29" cy="13" r="4" fill="#fbbf24"/><circle cx="42" cy="13" r="4" fill="#34d399"/>
+    <text class="ttl" x="16" y="52">⚛ React app</text>
+    <rect x="16" y="64" width="148" height="18" rx="5" fill="#0f1524" stroke="#334155"/>
+    <text class="sub" x="24" y="77">New task…</text>
+    <rect x="16" y="90" width="148" height="14" rx="4" fill="#1e293b"/>
+    <rect x="16" y="110" width="120" height="14" rx="4" fill="#1e293b"/>
+    <rect x="22" y="94" width="6" height="6" rx="1.5" fill="#34d399"/>
+    <rect x="22" y="114" width="6" height="6" rx="1.5" fill="#475569"/>
+  </g>
+
+  <!-- server (Express) -->
+  <g transform="translate(262 46)">
+    <rect width="140" height="130" rx="14" fill="#111827" stroke="url(#hs)" stroke-width="2.5"/>
+    <text class="ttl" x="70" y="34" text-anchor="middle">Express API</text>
+    <text class="sub" x="70" y="52" text-anchor="middle">Node.js</text>
+    <rect x="20" y="64" width="100" height="14" rx="4" fill="#1e293b"/>
+    <rect x="20" y="84" width="100" height="14" rx="4" fill="#1e293b"/>
+    <rect x="20" y="104" width="100" height="14" rx="4" fill="#1e293b"/>
+    <circle cx="30" cy="71" r="3" fill="#34d399"/><circle cx="30" cy="91" r="3" fill="#34d399"/><circle cx="30" cy="111" r="3" fill="#fbbf24"/>
+  </g>
+
+  <!-- database (PostgreSQL) -->
+  <g transform="translate(470 50)">
+    <ellipse cx="72" cy="18" rx="72" ry="18" fill="#162033" stroke="#34d399" stroke-width="2.5"/>
+    <path d="M0,18 v86 a72,18 0 0 0 144,0 v-86" fill="#111827" stroke="#34d399" stroke-width="2.5"/>
+    <path d="M0,50 a72,18 0 0 0 144,0 M0,80 a72,18 0 0 0 144,0" fill="none" stroke="#334155" stroke-width="2"/>
+    <text class="ttl" x="72" y="138" text-anchor="middle">PostgreSQL</text>
+    <text class="sub" x="72" y="154" text-anchor="middle">via Prisma</text>
+  </g>
+
+  <!-- wires -->
+  <path class="wire" d="M200,92 L256,92" marker-end="url(#ha)"/>
+  <path class="wire back" d="M256,128 L200,128" marker-end="url(#ha)"/>
+  <path class="wire" d="M406,92 L466,92" marker-end="url(#ha)"/>
+  <path class="wire back" d="M466,128 L406,128" marker-end="url(#ha)"/>
+
+  <text class="lbl" x="228" y="80" text-anchor="middle">POST</text>
+  <text class="lbl" x="228" y="150" text-anchor="middle">JSON</text>
+  <text class="lbl" x="436" y="80" text-anchor="middle">SQL</text>
+  <text class="lbl" x="436" y="150" text-anchor="middle">rows</text>
+
+  <text class="sub" x="320" y="236" text-anchor="middle">client  ⇄  HTTP / JSON  ⇄  server  ⇄  ORM  ⇄  database</text>
+</svg>
