@@ -1,14 +1,17 @@
 """Regenerates the index.html shell of every deck that uses the shared engine.
 
 Run from the repo root:  python express.js/deck/build-shell.py
-Only one deck:            python express.js/deck/build-shell.py workshop/talk-04-fullstack-integration
+Only one deck:            python express.js/deck/build-shell.py workshop
 Only the <head> settings and the list of data files differ between decks; the body
 (top bar, sidebar, overlays, nav) is identical, so all decks stay consistent.
 """
 import re
+import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
+ENGINE_DIR = ROOT / 'express.js' / 'deck'
+ENGINE_FILES = ['deck.css', 'highlight.js', 'diagrams.js', 'engine.js']
 TEMPLATE_SRC = ROOT / 'express.js' / 'index.html'
 
 DECKS = [
@@ -33,7 +36,9 @@ DECKS = [
          accent=('#a78bfa', '167, 139, 250', '#6d28d9', '109, 40, 217'),
          data=['meta', 'diagrams', 'chapters', 'exam']),
     # Micro Club USTHB · Web Track talk (English only, extra widgets in talk.css / talk.js)
-    dict(dir='workshop/talk-04-fullstack-integration', root='../../', title='From Frontend + Backend to Full Stack — Talk 04',
+    # standalone=True: deployed on its own (Vercel root = workshop/), so it gets a synced
+    # copy of the engine in workshop/deck/ instead of linking ../express.js/deck/
+    dict(dir='workshop', root='../', standalone=True, title='From Frontend + Backend to Full Stack — Talk 04',
          desc='Talk 04 of the Micro Club USTHB Web Track: how React, Axios, Express, Prisma and PostgreSQL work together — with live demos, animated diagrams and a quiz.',
          accent=('#818cf8', '129, 140, 248', '#4338ca', '67, 56, 202'), lang='en',
          css=['css/talk.css'], js=['js/talk.js'],
@@ -60,7 +65,14 @@ def build():
     scripts_start = tpl.index('    <!-- engine')
     body = tpl[body_start:scripts_start]
     for d in DECKS:
-        assets = 'deck/' if d['dir'] == 'express.js' else d['root'] + 'express.js/deck/'
+        if d.get('standalone'):
+            dst = ROOT / d['dir'] / 'deck'
+            dst.mkdir(exist_ok=True)
+            for f in ENGINE_FILES:
+                shutil.copy2(ENGINE_DIR / f, dst / f)
+            assets = 'deck/'
+        else:
+            assets = 'deck/' if d['dir'] == 'express.js' else d['root'] + 'express.js/deck/'
         data_dir = d.get('data_dir', 'js/data/')
         logo = d.get('logo', 'img/logo.svg')
         extra_css = ''.join(f'    <link rel="stylesheet" href="{c}">\n' for c in d.get('css', []))

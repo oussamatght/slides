@@ -36,7 +36,7 @@ The goal is to make technical concepts easier to understand through:
 | 🌐 Internet         | Web and internet fundamentals                         |
 | 🖥️ Web Development | General web development resources                     |
 | 🛠️ Workshops       | Workshop and training materials                       |
-| 🔗 Talk 04          | **From Frontend + Backend to Full Stack**: Micro Club USTHB Web Track talk. React + Axios + Express + Prisma + PostgreSQL, live demo, animated diagrams, final quiz → [`workshop/talk-04-fullstack-integration/`](./workshop/talk-04-fullstack-integration/index.html) |
+| 🔗 Talk 04          | **From Frontend + Backend to Full Stack**: Micro Club USTHB Web Track talk. React + Axios + Express + Prisma + PostgreSQL, live demo, animated diagrams, final quiz → [`workshop/`](./workshop/index.html) · live: https://workshop-mc.vercel.app/ |
 | 📑 Slideoop         | Additional presentation materials                     |
 | 🧩 SVG              | SVG-related educational content                       |
 
@@ -95,13 +95,12 @@ slides/
 │   └── ...
 │
 ├── workshop/
-│   ├── index.html                         # full stack workshop deck
-│   └── talk-04-fullstack-integration/     # Talk 04 (uses the express.js/deck engine)
-│       ├── index.html                     # entry point
-│       ├── css/talk.css                   # section colours + talk widgets
-│       ├── js/talk.js                     # tours, tab explorers, live demo, error explorer
-│       ├── js/data/                       # meta, diagrams, part1…part5 (slide content)
-│       └── img/                           # hero + logo SVGs
+│   ├── index.html                         # Talk 04 entry point (deployed alone on Vercel)
+│   ├── deck/                              # synced copy of express.js/deck (written by build-shell.py)
+│   ├── css/talk.css                       # section colours + talk widgets
+│   ├── js/talk.js                         # tours, tab explorers, live demo, error explorer
+│   ├── js/data/                           # meta, diagrams, part1…part5 (slide content)
+│   └── img/                               # hero + logo SVGs
 │
 ├── svg/
 │   └── ...
@@ -162,7 +161,7 @@ How frontend, backend, APIs and databases work together, taught with one running
 
 **Open it**
 
-* Double-click `workshop/talk-04-fullstack-integration/index.html`, **or**
+* Double-click `workshop/index.html`, **or**
 * With Live Server: right-click that file → **Open with Live Server**.
 
 It works offline, with no build step and no install. Only the fonts come from Google Fonts, and system fonts are used when you're offline.
@@ -192,8 +191,10 @@ It works offline, with no build step and no install. Only the fonts come from Go
 Slide content lives in `js/data/*.js` and uses the same format as the Express deck. After changing the deck list or the data files in `express.js/deck/build-shell.py`, regenerate **only** this deck's shell:
 
 ```bash
-python express.js/deck/build-shell.py workshop/talk-04-fullstack-integration
+python express.js/deck/build-shell.py workshop
 ```
+
+The workshop is deployed on its own (Vercel root directory = `workshop/`), so it can't load files from `../express.js/`. That's why it carries a copy of the engine in `workshop/deck/`. Running the command above also re-copies `express.js/deck/` into it, so run it after changing the engine and commit `workshop/deck/` too.
 
 > ⚠️ Always pass the deck folder. Running `build-shell.py` with no argument also rewrites the shells of the other decks it lists (`intrent/`, `css/`, `react/`, root), which are currently standalone pages.
 

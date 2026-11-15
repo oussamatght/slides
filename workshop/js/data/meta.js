@@ -1,5 +1,5 @@
 /* Talk 04 — metadata, sections, intro and closing slides.
-   Same data format as express.js/js/data (engine: express.js/deck/engine.js).
+   Same data format as express.js/js/data (engine: deck/engine.js, a synced copy of express.js/deck).
    English-only talk: plain strings are fine everywhere except chapter titles,
    which stay ['…'] arrays because the engine builds "Quiz: <title>" from t[0]. */
 window.DECK = window.DECK || { chapters: [] };
@@ -9,7 +9,7 @@ DECK.problems = DECK.problems || {};
 
 DECK.meta = {
     id: 'talk04',
-    root: '../../',
+    root: '../',
     lang: 'en',          // English only → hides the AR/EN switch
     levelBase: 1,        // "Section 1" … "Section 10"
     covers: false,       // no chapter cover slides — a talk moves faster
@@ -114,7 +114,7 @@ DECK.outro = [
                 'Add <b>projects</b>: a <code>Project</code> model with many tasks (a Prisma relation).',
                 'Deploy it on Render and share the link with the club. 🚀'
             ] },
-            { tip: 'Want to go deeper on the backend? The <a href="../../express.js/index.html">Express.js deck</a> in this repo goes from zero to senior, with quizzes.' }]
+            { tip: 'Want to go deeper on the backend? The <a href="../express.js/index.html">Express.js deck</a> in this repo goes from zero to senior, with quizzes.' }]
         ] }]
     },
     {
