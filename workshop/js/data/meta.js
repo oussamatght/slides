@@ -61,19 +61,7 @@ DECK.intro = [
     {
         id: 'speaker', t: 'About the speaker',
         b: [
-            { lead: 'I’m <b>Oussama Taright</b>, a full stack developer and Computer Science student at <b>USTHB</b>. I build web and mobile apps with React, Next.js, React Native, Node.js and Express. Today I’ll show you how the pieces you already know fit together.' },
-            { cols: [
-                [{ h3: 'Things I’ve shipped' }, { ul: [
-                    '<b>WASSLA</b> — marketplace & delivery platform on Google Play and the App Store (Express + MongoDB + Socket.io).',
-                    '<b>Code Souls</b> — gamified frontend learning platform, 🥇 1st place at GDG Hackathon.',
-                    '<b>ChoufPrice DZ</b> — community price monitoring across the 58 wilayas.',
-                    '<b>Sakinah</b> — open-source, offline-first app (Expo + React Native).'
-                ] }],
-                [{ h3: 'Find me' }, { cards: [
-                    { i: '💻', t: 'GitHub', d: '<a href="https://github.com/oussamatght" target="_blank" rel="noopener">github.com/oussamatght</a>' },
-                    { i: '💼', t: 'LinkedIn', d: '<a href="https://www.linkedin.com/in/taright-oussama" target="_blank" rel="noopener">in/taright-oussama</a>' }
-                ] }]
-            ] }
+            { lead: 'I’m <b>Oussama Taright</b>, a full stack developer and Computer Science student at <b>USTHB</b>. Today I’ll show you how the pieces you already know fit together.' }
         ]
     },
     {
@@ -121,8 +109,6 @@ DECK.outro = [
         id: 'thanks', center: true, narrow: true, t: 'Thank you! 🙏',
         sub: 'Frontend + backend + database + deployment = <b>full stack</b>. Now go build something real and ship it.',
         b: [{ html: `<div class="pill-row">
-                <a href="https://github.com/oussamatght" target="_blank" rel="noopener"><span>💻 github.com/oussamatght</span></a>
-                <a href="https://www.linkedin.com/in/taright-oussama" target="_blank" rel="noopener"><span>💼 in/taright-oussama</span></a>
                 <a href="https://github.com/oussamatght/slides" target="_blank" rel="noopener"><span>🗂️ Slides: github.com/oussamatght/slides</span></a>
             </div>
             <p style="color:var(--muted);margin-top:1.4rem">Micro Club USTHB · Web Track · Knowledge Sharing Week · Talk 04</p>` }]
